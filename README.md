@@ -24,12 +24,7 @@ Then
     
     npm start
     
-This will start a local server that can be reached at http://localhost:3000.  _To test with this local copy, you must use
-a different client id_.  This can be done by appending the client id to the URL - for example:
-
-    http://localhost:3000?clientId=5VB5EJFS79PRJ
-    
-You must create a web application on the appropriate Clover server and use that client id.
+This will start a local server that can be reached at http://localhost:3000.
 
 #### Create a Clover Application
 
@@ -38,5 +33,4 @@ You must create a web application on the appropriate Clover server and use that 
 
 ## Referenced Repositories
 
-This example show usage of the [Javascript Cloud Connector](https://github.com/clover/remote-pay-cloud-npm), and the 
-example [React Component to configure access to a device](https://github.com/clover/remote-pay-cloud-connector-configuration-react)in 
+This example shows usage of the [Javascript Cloud Connector](https://github.com/clover/remote-pay-cloud-npm) 
