@@ -1,5 +1,5 @@
 require("prototype");
-var $ = require('jQuery');
+var $ = require('jquery');
 SimpleCloverConfig = require("./SimpleCloverConfig");
 
 var clover = require("remote-pay-cloud");

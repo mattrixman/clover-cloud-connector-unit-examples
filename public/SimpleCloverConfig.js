@@ -1,4 +1,4 @@
-var $ = require('jQuery');
+var $ = require('jquery');
 require("prototype");
 
 SimpleCloverConfig = Class.create( {
