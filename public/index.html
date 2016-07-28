@@ -32,7 +32,8 @@ If redirected to Clover to login, you will need to select the 'test' button agai
 <script src="./built/test.js"></script>
 <script>
   function saveConfigStatic() {
-    TestBase.saveConfig("./configuration/", JSON.parse(document.getElementById("configText").value), saveConfigStaticResult)
+    TestBase.simpleCloverConfig.saveCloverConfig("./configuration/",
+        JSON.parse(document.getElementById("configText").value), saveConfigStaticResult)
   }
   function saveConfigStaticResult() {
     console.info(arguments);
@@ -53,10 +54,11 @@ If redirected to Clover to login, you will need to select the 'test' button agai
 </script>
   <!-- To add a test, add it to the test-src.js (see testSale(...), then add a button to invoke it here -->
   <button onclick="saveConfigStatic()">SaveConfig</button><br/>
-<button onclick="TestBase.testSale('./configuration/', progressinfoCallback)">Test Sale</button><br/>
-<button onclick="TestBase.testAuth('./configuration/', progressinfoCallback)">Test Auth</button><br/>
-<button onclick="TestBase.testPreAuth('./configuration/', progressinfoCallback)">Test Pre Auth</button><br/>
-<button onclick="TestBase.testPreAuthCapture('./configuration/', progressinfoCallback)">Test Pre Auth then capture</button><br/>
-
+  <div id="tests">
+    <button onclick="TestBase.TestSale('./configuration/', progressinfoCallback)">Test Sale</button><br/>
+    <button onclick="TestBase.TestAuth('./configuration/', progressinfoCallback)">Test Auth</button><br/>
+    <button onclick="TestBase.TestPreAuth('./configuration/', progressinfoCallback)">Test Pre Auth</button><br/>
+    <button onclick="TestBase.TestPreAuthCapture('./configuration/', progressinfoCallback)">Test Pre Auth then capture</button><br/>
+  </div>
 </body>
 </html>
