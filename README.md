@@ -24,7 +24,10 @@ Then
     
     npm start
     
-This will start a local server that can be reached at http://localhost:3000.
+This will start a local server that can be reached at http://localhost:3000. _To test with this local copy, you must use
+a different client id_.  This can be done by replacing the clientId in the displayed configuration.
+    
+You must create a web application on the appropriate Clover server and use that client id.
 
 #### Create a Clover Application
 
