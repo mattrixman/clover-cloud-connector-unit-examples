@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p>
+If redirected to Clover to login, you will need to select the 'test' button again.
+</p>
+<table>
+  <tr>
+    <td>
+      Configuration<br/>
+      <textarea title="Configuration" id="configText" style="width: 350px; height: 150px;">
+        {
+          "merchantId": "BBFF8NBCXEMDT",
+          "clientId": "5VB5EJFS79PRJ",
+          "deviceSerialId": "C031UQ52340045",
+          "domain": "https://dev1.dev.clover.com/",
+          "friendlyId": "test"
+        }
+      </textarea>
+    </td>
+    <td>
+      Messages<br/>
+      <textarea title="Messages" id="infoMessages" style="width: 350px; height: 150px;">
+      </textarea><br/>
+      <button onclick="clearMessages()">Clear Messages</button>
+    </td>
+  </tr>
+</table>
+
+<script src="./built/test.js"></script>
+<script>
+  function saveConfigStatic() {
+    TestBase.saveConfig("./configuration/", JSON.parse(document.getElementById("configText").value), saveConfigStaticResult)
+  }
+  function saveConfigStaticResult() {
+    console.info(arguments);
+  }
+  function progressinfoCallback(message) {
+    var infoMessagesTextArea = document.getElementById("infoMessages");
+    var strMessage = message;
+    try {
+      strMessage = JSON.stringify(message);
+    } catch(e) {
+    }
+    infoMessagesTextArea.value = strMessage + "\n" + infoMessagesTextArea.value;
+  }
+  function clearMessages(){
+    var infoMessagesTextArea = document.getElementById("infoMessages");
+    infoMessagesTextArea.value = "";
+  }
+</script>
+  <!-- To add a test, add it to the test-src.js (see testSale(...), then add a button to invoke it here -->
+  <button onclick="saveConfigStatic()">SaveConfig</button><br/>
+<button onclick="TestBase.testSale('./configuration/', progressinfoCallback)">Test Sale</button><br/>
+<button onclick="TestBase.testAuth('./configuration/', progressinfoCallback)">Test Auth</button><br/>
+<button onclick="TestBase.testPreAuth('./configuration/', progressinfoCallback)">Test Pre Auth</button><br/>
+<button onclick="TestBase.testPreAuthCapture('./configuration/', progressinfoCallback)">Test Pre Auth then capture</button><br/>
+
+</body>
+</html>

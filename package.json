@@ -1,0 +1,32 @@
+{
+  "name": "clover-cloud-connector-unit-examples",
+  "version": "0.0.4",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clover/clover-cloud-connector-unit-examples"
+  },
+  "dependencies": {
+    "fs": "*",
+    "path": "*",
+    "express": "*",
+    "body-parser": "*",
+    "babelify": "*",
+    "browserify": "*",
+    "https": "*",
+    "mkdirp": "*",
+    "jquery": "*",
+    "prototype": "*",
+    "remote-pay-cloud": "*"
+  },
+  "engines": {
+    "node": "5.9.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified, \"$npm_package_version && exit 1",
+    "postinstall": "scripts/postinstall.sh",
+    "postinstallINLINE": "browserify public/sale-src.js -o public/built/sale.js",
+    "start": "node server.js"
+  },
+  "devDependencies": {}
+}

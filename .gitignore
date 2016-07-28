@@ -1,0 +1,6 @@
+/public/built/*.js
+/.idea
+# Created by .ignore support plugin (hsz.mobi)
+/ideaConfig
+/node_modules
+/configuration
