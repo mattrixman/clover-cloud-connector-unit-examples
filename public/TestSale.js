@@ -30,7 +30,7 @@ var SaleExampleCloverConnectorListener = Class.create( ExampleCloverConnectorLis
         if(!response.getIsSale()) {
             this.displayMessage({error: "Response is not an sale!"});
         }
-        // Always call this when your test is done, orthe device may fail to connect the
+        // Always call this when your test is done, or the device may fail to connect the
         // next time, because it is already connected.
         this.testComplete();
     },

@@ -28,14 +28,16 @@ var PreAuthExampleCloverConnectorListener = Class.create( ExampleCloverConnector
         this.displayMessage({ message: "PreAuth response received", response: response});
         if(!response.getIsPreAuth()) {
             this.displayMessage({error: "Response is not a preAuth!"});
+            this.testComplete();
         } else if(!response.getSuccess()) {
             this.displayMessage({error: "Response was not successful!"});
             this.testComplete();
         } else if(response.getResult() && (response.getResult() != clover.remotepay.ResponseCode.SUCCESS)) {
             this.displayMessage({error: "Response code is not SUCCESS! It is " + response.getResult()});
             this.testComplete();
+        } else {
+            this.afterPreAuthResponse(response);
         }
-        this.afterPreAuthResponse(response);
     },
 
     afterPreAuthResponse: function(response) {
