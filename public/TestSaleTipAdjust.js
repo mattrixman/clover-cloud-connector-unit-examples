@@ -28,7 +28,7 @@ var SaleTipAdjustExampleCloverConnectorListener = Class.create( ExampleCloverCon
          */
         this.displayMessage({message: "Sale response received", response: response});
         if (!response.getIsSale()) {
-            this.displayMessage({error: "Response is not an sale!"});
+            this.displayMessage({error: "Response is not a sale!"});
         }
         var request = new clover.remotepay.TipAdjustAuthRequest();
 
