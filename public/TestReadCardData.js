@@ -18,9 +18,13 @@ var ReadCardDataExampleCloverConnectorListener = Class.create( ExampleCloverConn
          The connector is ready, send the request to read card data to the device
          */
         this.displayMessage({message: "Sending request to read card data"});
+
+        var readCardDataRequest = new clover.remotepay.ReadCardDataRequest();
+        readCardDataRequest.setIsForceSwipePinEntry(false);
         // cardEntryMethods can be `ICC_CONTACT, MAG_STRIPE, NFC_CONTACTLESS` or some combination of those,
-        // but not `MANUAL
-        this.cloverConnector.readCardData(clover.CardEntryMethods.DEFAULT);
+        // but not `MANUAL`
+        readCardDataRequest.setCardEntryMethods(clover.CardEntryMethods.DEFAULT);
+        this.cloverConnector.readCardData(readCardDataRequest);
     },
 
     /**
