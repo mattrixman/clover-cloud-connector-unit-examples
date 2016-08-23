@@ -36,4 +36,4 @@ You must create a web application on the appropriate Clover server and use that 
 
 ## Referenced Repositories
 
-This example shows usage of the [Javascript Cloud Connector](https://github.com/clover/remote-pay-cloud-npm) 
+This example shows usage of the [Javascript Cloud Connector](https://github.com/clover/remote-pay-cloud) 

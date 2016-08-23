@@ -5,6 +5,9 @@ var TestSale = require("./TestSale.js");
 var TestAuth = require("./TestAuth.js");
 var TestPreAuth = require("./TestPreAuth.js");
 var TestPreAuthCapture = require("./TestPreAuthCapture.js");
+var TestReadCardData = require("./TestReadCardData.js");
+var TestShowMessage = require("./TestShowMessage.js");
+var TestSaleTipAdjust = require("./TestSaleTipAdjust.js");
 
 if ('undefined' !== typeof module) {
     module.exports = TestBase;

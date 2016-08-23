@@ -16,7 +16,6 @@ var PreAuthCaptureExampleCloverConnectorListener = Class.create( PreAuthExampleC
      * @param {clover.remotepay.PreAuthResponse} response
      */
     afterPreAuthResponse: function(response) {
-        this.displayMessage({error: "Response code is not SUCCESS! It is " + response.getResult()});
         var capturePreAuthRequest = new clover.remotepay.CapturePreAuthRequest();
         capturePreAuthRequest.setAmount(101000);
         capturePreAuthRequest.setTipAmount(10100);
