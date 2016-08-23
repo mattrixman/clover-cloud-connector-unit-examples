@@ -6,7 +6,7 @@
 
         public/TestShowMessage.js
 
-2.  Write the test.  All that is really required is the addition of a function to TestBase.  Example: 
+2.  Write the test.  All that is required is the addition of a function to TestBase.  Example: 
  
         var TestBase = require("./TestBase.js");
 
@@ -73,6 +73,6 @@ This will allow you to run a very simple test.  If you want to test clover conne
         }
 
 
-There may be additional steps in the flow, this is dependant on the functionality being tested.  For more complex tests, look at `public/TestSale.js`, `public/TestAuth.js`, `public/TestPreAuth.js` and `public/TestPreAuthCapture.js`.    
+There may be additional steps in the flow depending on the functionality being tested.  For more complex tests, look at `public/TestSale.js`, `public/TestAuth.js`, `public/TestPreAuth.js` and `public/TestPreAuthCapture.js`.    
  
  
