@@ -9,7 +9,7 @@ var TestBase = require("./TestBase.js");
  *
  * @type {ExampleCloverConnectorListener}
  */
-var SaleExampleCloverConnectorListener = Class.create( ExampleCloverConnectorListener, {
+var SaleTipAdjustExampleCloverConnectorListener = Class.create( ExampleCloverConnectorListener, {
     onReady: function ($super, merchantInfo) {
         $super(merchantInfo);
         /*
@@ -26,10 +26,33 @@ var SaleExampleCloverConnectorListener = Class.create( ExampleCloverConnectorLis
          The sale is complete.  It might be canceled, or successful.  This can be determined by the
          values in the response.
          */
-        this.displayMessage({ message: "Sale response received", response: response});
-        if(!response.getIsSale()) {
+        this.displayMessage({message: "Sale response received", response: response});
+        if (!response.getIsSale()) {
             this.displayMessage({error: "Response is not a sale!"});
         }
+        var request = new clover.remotepay.TipAdjustAuthRequest();
+
+        request.setTipAmount(1000);
+        request.setOrderId(response.getPayment().getOrder().getId());
+        request.setPaymentId(response.getPayment().getId());
+
+        // Note, this should fail!
+        this.cloverConnector.tipAdjustAuth(request);
+    },
+
+    /**
+     * Will be called after a tip adjust request and contains the tipAmount if successful
+     * @memberof remotepay.ICloverConnectorListener
+     *
+     * @param {clover.remotepay.TipAdjustAuthResponse} response
+     * @return void
+     */
+    onTipAdjustAuthResponse: function(response) {
+        this.displayMessage({message: "TipAdjustAuthResponse received", response: response});
+        if(response.getSuccess()) {
+            this.displayMessage({message: "TipAdjustAuthResponse,  !!! something is wrong, this should have failed but it succeeded !!!"});
+        }
+
         // Always call this when your test is done, or the device may fail to connect the
         // next time, because it is already connected.
         this.testComplete();
@@ -39,7 +62,7 @@ var SaleExampleCloverConnectorListener = Class.create( ExampleCloverConnectorLis
      * @returns {string}
      */
     getTestName: function() {
-        return "Test Sale";
+        return "Test TipAdjustAuthResponse";
     }
 });
 /**
@@ -47,9 +70,9 @@ var SaleExampleCloverConnectorListener = Class.create( ExampleCloverConnectorLis
  * that defines the test flow.
  * @type {TestBase}
  */
-TestSale = Class.create( TestBase, {
+TestSaleTipAdjust = Class.create( TestBase, {
     getCloverConnectorListener: function(cloverConnector) {
-        return new SaleExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+        return new SaleTipAdjustExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
     }
 });
 
@@ -58,11 +81,11 @@ TestSale = Class.create( TestBase, {
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSale = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSale(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleTipAdjust = function(configUrl, progressinfoCallback) {
+    var testObj = new TestSaleTipAdjust(configUrl, "test", progressinfoCallback);
     testObj.test();
 };
 
 if ('undefined' !== typeof module) {
-    module.exports = TestSale;
+    module.exports = TestSaleTipAdjust;
 }
