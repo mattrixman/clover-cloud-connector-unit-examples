@@ -7,7 +7,6 @@
     "url": "https://github.com/clover/clover-cloud-connector-unit-examples"
   },
   "dependencies": {
-    "fs": "*",
     "path": "*",
     "express": "*",
     "body-parser": "*",
@@ -20,7 +19,8 @@
     "remote-pay-cloud": "*"
   },
   "engines": {
-    "node": "5.9.1"
+    "node": "5.9.1",
+    "npm": "3.3.6"
   },
   "scripts": {
     "test": "echo \"Error: no test specified, \"$npm_package_version && exit 1",
