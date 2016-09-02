@@ -9,7 +9,7 @@ var TestBase = require("./TestBase.js");
  *
  * @type {ExampleCloverConnectorListener}
  */
-var SaleVoidExampleCloverConnectorListener = Class.create( ExampleCloverConnectorListener, {
+var SaleTipAdjustExampleCloverConnectorListener = Class.create( ExampleCloverConnectorListener, {
     onReady: function ($super, merchantInfo) {
         $super(merchantInfo);
         /*
@@ -30,40 +30,39 @@ var SaleVoidExampleCloverConnectorListener = Class.create( ExampleCloverConnecto
         if (!response.getIsSale()) {
             this.displayMessage({error: "Response is not a sale!"});
         }
-        var request = new clover.remotepay.VoidPaymentRequest();
+        var request = new clover.remotepay.TipAdjustAuthRequest();
 
+        request.setTipAmount(1000);
         request.setOrderId(response.getPayment().getOrder().getId());
         request.setPaymentId(response.getPayment().getId());
-        request.setVoidReason(clover.remotepay.VoidReason.USER_CANCEL);
 
         // Note, this should fail!
-        this.cloverConnector.voidPayment(request);
+        this.cloverConnector.tipAdjustAuth(request);
     },
 
     /**
-     * Will be called after a void payment request and contains the voided paymentId
+     * Will be called after a tip adjust request and contains the tipAmount if successful
      * @memberof remotepay.ICloverConnectorListener
      *
-     * @param {remotepay.VoidPaymentResponse} response
+     * @param {clover.remotepay.TipAdjustAuthResponse} response
      * @return void
      */
-    onVoidPaymentResponse: function(response) {
-        this.displayMessage({message: "VoidPaymentResponse received", response: response});
-        if(!response.getSuccess()) {
-            this.displayMessage({message: "VoidPaymentResponse,  !!! something is wrong, this failed !!!"});
+    onTipAdjustAuthResponse: function(response) {
+        this.displayMessage({message: "TipAdjustAuthResponse received", response: response});
+        if(response.getSuccess()) {
+            this.displayMessage({message: "TipAdjustAuthResponse,  !!! something is wrong, this should have failed but it succeeded !!!"});
         }
 
         // Always call this when your test is done, or the device may fail to connect the
         // next time, because it is already connected.
         this.testComplete();
     },
-
     /**
      * Used in the test to help identify where messages come from.
      * @returns {string}
      */
     getTestName: function() {
-        return "Test VoidPaymentResponse";
+        return "Test TipAdjustAuthResponse";
     }
 });
 /**
@@ -71,9 +70,9 @@ var SaleVoidExampleCloverConnectorListener = Class.create( ExampleCloverConnecto
  * that defines the test flow.
  * @type {TestBase}
  */
-TestSaleVoid = Class.create( TestBase, {
+TestSaleTipAdjust = Class.create( TestBase, {
     getCloverConnectorListener: function(cloverConnector) {
-        return new SaleVoidExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+        return new SaleTipAdjustExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
     }
 });
 
@@ -82,11 +81,11 @@ TestSaleVoid = Class.create( TestBase, {
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSaleVoid = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSaleVoid(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleTipAdjust = function(configUrl, progressinfoCallback) {
+    var testObj = new TestSaleTipAdjust(configUrl, "test", progressinfoCallback);
     testObj.test();
 };
 
 if ('undefined' !== typeof module) {
-    module.exports = TestSaleVoid;
+    module.exports = TestSaleTipAdjust;
 }
