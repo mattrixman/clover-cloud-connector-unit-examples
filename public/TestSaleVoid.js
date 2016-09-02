@@ -35,7 +35,6 @@ var SaleVoidExampleCloverConnectorListener = Class.create( ExampleCloverConnecto
         request.setOrderId(response.getPayment().getOrder().getId());
         request.setPaymentId(response.getPayment().getId());
         request.setVoidReason(clover.order.VoidRFixeason.USER_CANCEL);
-        Fix names of filesffff
 
         // Note, this should fail!
         this.cloverConnector.voidPayment(request);
