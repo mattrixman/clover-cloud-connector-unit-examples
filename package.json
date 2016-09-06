@@ -15,7 +15,7 @@
     "https": "*",
     "mkdirp": "*",
     "jquery": "*",
-    "prototype": "*",
+    "remote-pay-cloud-api": "*",
     "remote-pay-cloud": "*"
   },
   "engines": {
