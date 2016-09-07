@@ -46,6 +46,17 @@ ExampleCloverConnectorListener.prototype.getTestName = function() {
     return "Sale Test";
 };
 
+/**
+ * Will be called when an error occurs when trying to send messages to the device
+ * @memberof remotepay.ICloverConnectorListener
+ *
+ * @param {remotepay.CloverDeviceErrorEvent} deviceErrorEvent
+ * @return void
+ */
+ExampleCloverConnectorListener.prototype.onDeviceError = function(deviceErrorEvent) {
+    console.error("onDeviceError", deviceErrorEvent);
+};
+
 if ('undefined' !== typeof module) {
     module.exports = ExampleCloverConnectorListener;
 }
