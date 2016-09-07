@@ -1,4 +1,3 @@
-require("prototype");
 var ExampleCloverConnectorListener = require("./ExampleCloverConnectorListener.js");
 var TestBase = require("./TestBase.js");
 
