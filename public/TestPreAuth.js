@@ -1,5 +1,3 @@
-require("prototype");
-
 // Following is in a separate file because it is used as a base for another test
 var PreAuthExampleCloverConnectorListener = require("./PreAuthExampleCloverConnectorListener.js");
 var TestBase = require("./TestBase.js");
@@ -10,11 +8,16 @@ var TestBase = require("./TestBase.js");
  * that defines the test flow.
  * @type {TestBase}
  */
-TestPreAuth = Class.create( TestBase, {
-    getCloverConnectorListener: function(cloverConnector) {
-        return new PreAuthExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
-    }
-});
+TestPreAuth  = function (configUrl, friendlyName, progressinfoCallback) {
+    TestBase.call(this, configUrl, friendlyName, progressinfoCallback);
+};
+
+TestPreAuth.prototype = Object.create(TestBase.prototype);
+TestPreAuth.prototype.constructor = TestSale;
+
+TestPreAuth.prototype.getCloverConnectorListener = function (cloverConnector) {
+    return new PreAuthExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+};
 
 /**
  * Attach the test of a preAuth to the testbase to facilitate calling from the main page.

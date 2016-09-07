@@ -1,4 +1,3 @@
-require("prototype");
 var ExampleCloverConnectorListener = require("./ExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
 
@@ -8,52 +7,59 @@ var clover = require("remote-pay-cloud");
  *
  * @type {ExampleCloverConnectorListener}
  */
-var PreAuthExampleCloverConnectorListener = Class.create( ExampleCloverConnectorListener, {
-    onReady: function ($super, merchantInfo) {
-        $super(merchantInfo);
-        /*
-         The connector is ready, create a preAuth request and send it to the device.
-         */
-        var preAuthRequest = new clover.remotepay.PreAuthRequest();
-        preAuthRequest.setExternalId(clover.CloverID.getNewId());
-        preAuthRequest.setAmount(10010);
-        this.displayMessage({message: "Sending preAuth", request: preAuthRequest});
-        this.cloverConnector.preAuth(preAuthRequest);
-    },
-    onPreAuthResponse: function (response) {
-        /*
-         The preAuth is complete.  It might be canceled, or successful.  This can be determined by the
-         values in the response.
-         */
-        this.displayMessage({ message: "PreAuth response received", response: response});
-        if(!response.getIsPreAuth()) {
-            this.displayMessage({error: "Response is not a preAuth!"});
-            this.testComplete();
-        } else if(!response.getSuccess()) {
-            this.displayMessage({error: "Response was not successful!"});
-            this.testComplete();
-        } else if(response.getResult() && (response.getResult() != clover.remotepay.ResponseCode.SUCCESS)) {
-            this.displayMessage({error: "Response code is not SUCCESS! It is " + response.getResult()});
-            this.testComplete();
-        } else {
-            this.afterPreAuthResponse(response);
-        }
-    },
+var PreAuthExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
+    ExampleCloverConnectorListener.call(this, cloverConnector, progressinfoCallback);
+    this.cloverConnector = cloverConnector;
+    this.progressinfoCallback = progressinfoCallback;
+};
 
-    afterPreAuthResponse: function(response) {
-        // Always call this when your test is done, orthe device may fail to connect the
-        // next time, because it is already connected.
-        this.testComplete();
-    },
+PreAuthExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
+PreAuthExampleCloverConnectorListener.prototype.constructor = PreAuthExampleCloverConnectorListener;
 
-    /**
-     * Used in the test to help identify where messages come from.
-     * @returns {string}
+PreAuthExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
+    ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
+    /*
+     The connector is ready, create a preAuth request and send it to the device.
      */
-    getTestName: function() {
-        return "Test Pre Auth";
+    var preAuthRequest = new clover.remotepay.PreAuthRequest();
+    preAuthRequest.setExternalId(clover.CloverID.getNewId());
+    preAuthRequest.setAmount(10010);
+    this.displayMessage({message: "Sending preAuth", request: preAuthRequest});
+    this.cloverConnector.preAuth(preAuthRequest);
+};
+PreAuthExampleCloverConnectorListener.prototype.onPreAuthResponse = function (response) {
+    /*
+     The preAuth is complete.  It might be canceled, or successful.  This can be determined by the
+     values in the response.
+     */
+    this.displayMessage({ message: "PreAuth response received", response: response});
+    if(!response.getIsPreAuth()) {
+        this.displayMessage({error: "Response is not a preAuth!"});
+        this.testComplete();
+    } else if(!response.getSuccess()) {
+        this.displayMessage({error: "Response was not successful!"});
+        this.testComplete();
+    } else if(response.getResult() && (response.getResult() != clover.remotepay.ResponseCode.SUCCESS)) {
+        this.displayMessage({error: "Response code is not SUCCESS! It is " + response.getResult()});
+        this.testComplete();
+    } else {
+        this.afterPreAuthResponse(response);
     }
-});
+};
+
+PreAuthExampleCloverConnectorListener.prototype.afterPreAuthResponse = function(response) {
+    // Always call this when your test is done, or the device may fail to connect the
+    // next time, because it is already connected.
+    this.testComplete();
+};
+
+/**
+ * Used in the test to help identify where messages come from.
+ * @returns {string}
+ */
+PreAuthExampleCloverConnectorListener.prototype.getTestName = function() {
+    return "Test Pre Auth";
+};
 
 if ('undefined' !== typeof module) {
     module.exports = PreAuthExampleCloverConnectorListener;
