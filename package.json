@@ -16,7 +16,7 @@
     "mkdirp": "*",
     "jquery": "*",
     "prototype": "*",
-    "remote-pay-cloud": "*"
+    "remote-pay-cloud": "1.1.0-rc4.0"
   },
   "engines": {
     "node": "5.9.1",
