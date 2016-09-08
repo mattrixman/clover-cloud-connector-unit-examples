@@ -10,7 +10,9 @@ require("./TestShowMessage.js");
 require("./TestSaleTipAdjust.js");
 require("./TestSaleVoid.js");
 require("./TestSaleRefund.js");
+require("./TestSaleRefundErr.js");
 require("./TestSalePartialRefund.js");
+
 
 if ('undefined' !== typeof module) {
     module.exports = TestBase;
