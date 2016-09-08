@@ -9,6 +9,7 @@ require("./TestReadCardData.js");
 require("./TestShowMessage.js");
 require("./TestSaleTipAdjust.js");
 require("./TestSaleVoid.js");
+require("./TestSaleRefund.js");
 
 if ('undefined' !== typeof module) {
     module.exports = TestBase;

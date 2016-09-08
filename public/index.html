@@ -3,10 +3,14 @@
 <head>
 </head>
 <body>
-<p>
+
+<div>
   <h1>Clover Cloud Connector Unit Examples</h1>
   <a href="https://github.com/clover/clover-cloud-connector-unit-examples">GIT Repository</a>
-</p>
+</div>
+
+<p></p>
+
 <p>
 If redirected to Clover to login, you will need to select a 'test' button again after you log in.
 </p>
@@ -74,6 +78,7 @@ If redirected to Clover to login, you will need to select a 'test' button again 
     <button onclick="TestBase.TestShowMessage('./configuration/', progressinfoCallback)">Test Showing a Message</button><br/>
     <button onclick="TestBase.TestSaleTipAdjust('./configuration/', progressinfoCallback)">Test doing a sale then a tip adjust (should fail)</button><br/>
     <button onclick="TestBase.TestSaleVoid('./configuration/', progressinfoCallback)">Test Voiding a Payment</button><br/>
+    <button onclick="TestBase.TestSaleRefund('./configuration/', progressinfoCallback)">Test a full refund of a sale</button><br/>
   </div>
 </body>
 </html>
