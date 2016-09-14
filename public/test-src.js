@@ -1,4 +1,6 @@
 var TestBase = require("./TestBase.js");
+// Remove the following to turn off logging.
+require("remote-pay-cloud").DebugConfig.loggingEnabled = true;
 
 // Each of the following decorates TestBase
 require("./TestSale.js");
