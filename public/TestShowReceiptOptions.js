@@ -73,7 +73,7 @@ ShowReceiptOptionsExampleCloverConnectorListener.prototype.onDeviceActivityEnd =
  * @returns {string}
  */
 ShowReceiptOptionsExampleCloverConnectorListener.prototype.getTestName = function () {
-    return "Test Refund Full Payment";
+    return "Test Show Receipt Options";
 };
 /**
  * A very simple subclass of the tests that specifies the listener (see above)
@@ -92,7 +92,7 @@ TestShowReceiptOptions.prototype.getCloverConnectorListener = function (cloverCo
 };
 
 /**
- * Attach the test of a sale to the testbase to facilitate calling from the main page.
+ * Attach the test to the testbase to facilitate calling from the main page.
  * @param configUrl
  * @param progressinfoCallback
  */
