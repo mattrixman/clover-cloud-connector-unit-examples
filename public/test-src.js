@@ -15,6 +15,9 @@ require("./TestSaleRefund.js");
 require("./TestSaleRefundErr.js");
 require("./TestSalePartialRefund.js");
 require("./TestShowReceiptOptions.js");
+require("./TestSaleWithReconnectLogic.js");
+require("./TestSaleRefuseReconnectLogic.js");
+
 
 
 if ('undefined' !== typeof module) {

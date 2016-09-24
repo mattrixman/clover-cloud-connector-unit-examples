@@ -82,6 +82,8 @@ If redirected to Clover to login, you will need to select a 'test' button again 
     <button onclick="TestBase.TestSaleRefundErr('./configuration/', progressinfoCallback)">Test a full refund of a sale that should FAIL (no order id set)</button><br/>
     <button onclick="TestBase.TestSalePartialRefund('./configuration/', progressinfoCallback)">Test a partial refund of a sale</button><br/>
     <button onclick="TestBase.TestShowReceiptOptions('./configuration/', progressinfoCallback)">Test showing the receipt screen</button><br/>
+    <button onclick="TestBase.TestSaleWithReconnectLogic('./configuration/', progressinfoCallback)">Test Sale that tries to reconnect on timeout</button><br/>
+    <button onclick="TestBase.TestSaleRefuseReconnectLogic('./configuration/', progressinfoCallback)">Test Sale, refuse reconnect request.</button><br/>
   </div>
 </body>
 </html>
