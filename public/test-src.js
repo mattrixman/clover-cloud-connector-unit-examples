@@ -17,8 +17,7 @@ require("./TestSalePartialRefund.js");
 require("./TestShowReceiptOptions.js");
 require("./TestSaleWithReconnectLogic.js");
 require("./TestSaleRefuseReconnectLogic.js");
-
-
+require("./TestLogAllFrames.js");
 
 if ('undefined' !== typeof module) {
     module.exports = TestBase;
