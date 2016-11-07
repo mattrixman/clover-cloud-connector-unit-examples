@@ -18,6 +18,7 @@ require("./TestShowReceiptOptions.js");
 require("./TestSaleWithReconnectLogic.js");
 require("./TestSaleRefuseReconnectLogic.js");
 require("./TestLogAllFrames.js");
+require("./TestVaultCard.js");
 
 if ('undefined' !== typeof module) {
     module.exports = TestBase;
