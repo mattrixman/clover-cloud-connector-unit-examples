@@ -71,6 +71,8 @@ If redirected to Clover to login, you will need to select a 'test' button again 
   <button onclick="saveConfigStatic()">SaveConfig</button><br/>
   <div id="tests">
     <button onclick="TestBase.TestSale('./configuration/', progressinfoCallback)">Test Sale</button><br/>
+    <button onclick="TestBase.TestSaleExceptionProcessing('./configuration/', progressinfoCallback)">Test Sale With Exception Processing</button><br/>
+    <button onclick="TestBase.TestSaleDoubleReceiptProcessing('./configuration/', progressinfoCallback)">Test Sale With Double Receipt Window</button><br/>
     <button onclick="TestBase.TestAuth('./configuration/', progressinfoCallback)">Test Auth</button><br/>
     <button onclick="TestBase.TestPreAuth('./configuration/', progressinfoCallback)">Test Pre Auth</button><br/>
     <button onclick="TestBase.TestPreAuthCapture('./configuration/', progressinfoCallback)">Test Pre Auth then capture</button><br/>
