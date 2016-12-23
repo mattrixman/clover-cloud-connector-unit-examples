@@ -39,8 +39,9 @@ PreAuthCaptureExampleCloverConnectorListener.prototype.onCapturePreAuthResponse 
     } else if (response.getResult() != clover.remotepay.ResponseCode.SUCCESS) {
         this.displayMessage({error: "Response code is not SUCCESS!"});
         this.testComplete();
+    } else {
+        this.testComplete(response.getSuccess());
     }
-    this.testComplete();
 };
 
 /**
@@ -64,7 +65,7 @@ TestPreAuthCapture.prototype = Object.create(TestBase.prototype);
 TestPreAuthCapture.prototype.constructor = TestPreAuthCapture;
 
 TestPreAuthCapture.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new PreAuthCaptureExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new PreAuthCaptureExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**

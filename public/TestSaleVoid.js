@@ -38,6 +38,9 @@ SaleVoidExampleCloverConnectorListener.prototype.onSaleResponse = function (resp
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
         this.displayMessage({error: "Response is not a sale!"});
+        // Failing for the wrong reason...
+        this.testComplete();
+        return;
     }
     var request = new sdk.remotepay.VoidPaymentRequest();
 
@@ -60,10 +63,9 @@ SaleVoidExampleCloverConnectorListener.prototype.onVoidPaymentResponse = functio
     if (!response.getSuccess()) {
         this.displayMessage({message: "VoidPaymentResponse,  !!! something is wrong, this failed !!!"});
     }
-
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete();
+    this.testComplete(response.getSuccess());
 };
 
 /**
@@ -86,7 +88,7 @@ TestSaleVoid.prototype = Object.create(TestBase.prototype);
 TestSaleVoid.prototype.constructor = TestSaleVoid;
 
 TestSaleVoid.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new SaleVoidExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new SaleVoidExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**

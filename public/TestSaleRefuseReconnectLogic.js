@@ -43,10 +43,12 @@ SaleRefuseReconnectLogicExampleCloverConnectorListener.prototype.onSaleResponse 
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
         this.displayMessage({error: "Response is not a sale!"});
+        this.testComplete();
+        return;
     }
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete();
+    this.testComplete(response.getSuccess());
 };
 
 /**
@@ -70,7 +72,7 @@ TestSaleRefuseReconnectLogic.prototype = Object.create(TestBase.prototype);
 TestSaleRefuseReconnectLogic.prototype.constructor = TestSaleRefuseReconnectLogic;
 
 TestSaleRefuseReconnectLogic.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new SaleRefuseReconnectLogicExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new SaleRefuseReconnectLogicExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**

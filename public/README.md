@@ -74,7 +74,7 @@ This will allow you to run a very simple test.  If you want to test clover conne
         TestShowMessage.prototype.constructor = TestShowMessage;
         
         TestShowMessage.prototype.getCloverConnectorListener = function (cloverConnector) {
-            return new ShowMessageExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+            return new ShowMessageExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
         };
 
 6.  Change your invocation to run the new extension of the `TestBase`

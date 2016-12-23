@@ -38,6 +38,9 @@ SalePartialRefundExampleCloverConnectorListener.prototype.onSaleResponse = funct
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
         this.displayMessage({error: "Response is not a sale!"});
+        // Failing for the wrong reason...
+        this.testComplete();
+        return;
     }
     var request = new sdk.remotepay.RefundPaymentRequest();
 
@@ -60,11 +63,12 @@ SalePartialRefundExampleCloverConnectorListener.prototype.onRefundPaymentRespons
     this.displayMessage({message: "RefundPaymentResponse received", response: response});
     if (!response.getSuccess()) {
         this.displayMessage({message: "RefundPaymentResponse,  !!! something is wrong, this failed !!!"});
+        this.testComplete();
+        return;
     }
-
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete();
+    this.testComplete(response.getSuccess());
 };
 
 /**
@@ -87,7 +91,7 @@ TestSalePartialRefund.prototype = Object.create(TestBase.prototype);
 TestSalePartialRefund.prototype.constructor = TestSalePartialRefund;
 
 TestSalePartialRefund.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new SalePartialRefundExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new SalePartialRefundExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**

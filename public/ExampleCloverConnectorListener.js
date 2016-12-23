@@ -35,12 +35,17 @@ ExampleCloverConnectorListener.prototype.onVerifySignatureRequest = function (re
     this.displayMessage({message: "Automatically accepting signature", request: request});
     this.cloverConnector.acceptSignature(request);
 };
-ExampleCloverConnectorListener.prototype.testComplete = function () {
-    this.displayMessage({ message: "Test Completed.  Cleaning up."});
+ExampleCloverConnectorListener.prototype.testComplete = function (success) {
+    this.displayMessage({ message: "Test Completed.  Cleaning up.", success: success});
     this.cloverConnector.dispose();
 };
 ExampleCloverConnectorListener.prototype.displayMessage = function(message) {
-    this.progressinfoCallback({testName: this.getTestName(), message: message});
+    if(message.hasOwnProperty('message') || message.hasOwnProperty('error')) {
+        message.testName = this.getTestName();
+    } else {
+        message = {testName: this.getTestName(), message: message};
+    }
+    this.progressinfoCallback(message);
 };
 ExampleCloverConnectorListener.prototype.getTestName = function() {
     return "Sale Test";

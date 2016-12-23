@@ -20,7 +20,7 @@ ShowMessageExampleCloverConnectorListener.prototype.onReady = function (merchant
     setTimeout(function () {
         // Always call this when your test is done, or the device may fail to connect the
         // next time, because it is already connected.
-        this.testComplete();
+        this.testComplete(true);
     }.bind(this), 5000);
 };
 
@@ -45,7 +45,7 @@ TestShowMessage.prototype = Object.create(TestBase.prototype);
 TestShowMessage.prototype.constructor = TestShowMessage;
 
 TestShowMessage.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new ShowMessageExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new ShowMessageExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 TestBase.TestShowMessage = function (configUrl, progressinfoCallback) {

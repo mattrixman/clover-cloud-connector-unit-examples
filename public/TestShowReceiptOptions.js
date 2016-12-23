@@ -38,6 +38,9 @@ ShowReceiptOptionsExampleCloverConnectorListener.prototype.onSaleResponse = func
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
         this.displayMessage({error: "Response is not a sale!"});
+        // Failing for the wrong reason...
+        this.testComplete();
+        return;
     }
 
     this.showingReceiptOptions = true;
@@ -51,7 +54,7 @@ ShowReceiptOptionsExampleCloverConnectorListener.prototype.onSaleResponse = func
  * @return void
  */
 ShowReceiptOptionsExampleCloverConnectorListener.prototype.onDeviceActivityEnd = function (deviceEvent) {
-    this.displayMessage({message: "Device Activity End received", deviceEvent: deviceEvent});
+    this.displayMessage({message: "Device Activity End received - " + JSON.stringify(deviceEvent)});
     if(this.showingReceiptOptions) {
         if (deviceEvent.getEventState() == sdk.remotepay.DeviceEventState.RECEIPT_OPTIONS) {
             // Always call this when your test is done, or the device may fail to connect the
@@ -60,7 +63,7 @@ ShowReceiptOptionsExampleCloverConnectorListener.prototype.onDeviceActivityEnd =
             // be shutting down the connection before the welcome screen has been shown.
             setTimeout(
               function() {
-                this.testComplete();
+                this.testComplete(true);
               }.bind(this), 6000 /* wait 6 seconds */
             );
         }
@@ -88,7 +91,7 @@ TestShowReceiptOptions.prototype = Object.create(TestBase.prototype);
 TestShowReceiptOptions.prototype.constructor = TestShowReceiptOptions;
 
 TestShowReceiptOptions.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new ShowReceiptOptionsExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new ShowReceiptOptionsExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**

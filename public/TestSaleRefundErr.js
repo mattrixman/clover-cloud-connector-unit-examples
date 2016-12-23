@@ -38,6 +38,9 @@ SaleRefundErrExampleCloverConnectorListener.prototype.onSaleResponse = function 
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
         this.displayMessage({error: "Response is not a sale!"});
+        // Failing for the wrong reason...
+        this.testComplete();
+        return;
     }
     var request = new sdk.remotepay.RefundPaymentRequest();
 
@@ -60,11 +63,12 @@ SaleRefundErrExampleCloverConnectorListener.prototype.onRefundPaymentResponse = 
     this.displayMessage({message: "RefundPaymentResponse received", response: response});
     if (!response.getSuccess()) {
         this.displayMessage({message: "RefundPaymentResponse,  !!! something is wrong, this failed !!!"});
+        this.testComplete();
+        return;
     }
-
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete();
+    this.testComplete(response.getSuccess());
 };
 
 /**
@@ -87,7 +91,7 @@ TestSaleRefundErr.prototype = Object.create(TestBase.prototype);
 TestSaleRefundErr.prototype.constructor = TestSaleRefundErr;
 
 TestSaleRefundErr.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new SaleRefundErrExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new SaleRefundErrExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**

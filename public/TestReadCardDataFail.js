@@ -10,16 +10,16 @@ var TestBase = require("./TestBase.js");
  *
  * @type {ExampleCloverConnectorListener}
  */
-var ReadCardDataExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
+var ReadCardDataFailExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
     ExampleCloverConnectorListener.call(this, cloverConnector, progressinfoCallback);
     this.cloverConnector = cloverConnector;
     this.progressinfoCallback = progressinfoCallback;
 };
 
-ReadCardDataExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
-ReadCardDataExampleCloverConnectorListener.prototype.constructor = ReadCardDataExampleCloverConnectorListener;
+ReadCardDataFailExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
+ReadCardDataFailExampleCloverConnectorListener.prototype.constructor = ReadCardDataFailExampleCloverConnectorListener;
 
-ReadCardDataExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
+ReadCardDataFailExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
     ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
     /*
      The connector is ready, send the request to read card data to the device
@@ -30,7 +30,7 @@ ReadCardDataExampleCloverConnectorListener.prototype.onReady = function (merchan
     readCardDataRequest.setIsForceSwipePinEntry(false);
     // cardEntryMethods can be `ICC_CONTACT, MAG_STRIPE, NFC_CONTACTLESS` or some combination of those,
     // but not `MANUAL`
-    readCardDataRequest.setCardEntryMethods(clover.CardEntryMethods.DEFAULT);
+    readCardDataRequest.setCardEntryMethods(0 /*clover.CardEntryMethods.DEFAULT*/);
     this.cloverConnector.readCardData(readCardDataRequest);
 };
 
@@ -40,7 +40,7 @@ ReadCardDataExampleCloverConnectorListener.prototype.onReady = function (merchan
  *
  * @param response
  */
-ReadCardDataExampleCloverConnectorListener.prototype.onReadCardDataResponse = function (response) {
+ReadCardDataFailExampleCloverConnectorListener.prototype.onReadCardDataResponse = function (response) {
     /*
      The read is complete complete.  It might be canceled, failed, or successful.  This can be determined by the
      values in the response.
@@ -48,14 +48,14 @@ ReadCardDataExampleCloverConnectorListener.prototype.onReadCardDataResponse = fu
     this.displayMessage({message: "Read card data response received", response: response});
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete(response.getSuccess());
+    this.testComplete(!response.getSuccess());
 };
 
 /**
  * Used in the test to help identify where messages come from.
  * @returns {string}
  */
-ReadCardDataExampleCloverConnectorListener.prototype.getTestName = function () {
+ReadCardDataFailExampleCloverConnectorListener.prototype.getTestName = function () {
     return "Test Read Card Data";
 };
 
@@ -64,15 +64,15 @@ ReadCardDataExampleCloverConnectorListener.prototype.getTestName = function () {
  * that defines the test flow.
  * @type {TestBase}
  */
-TestReadCardData = function (configUrl, friendlyName, progressinfoCallback) {
+TestReadCardDataFail = function (configUrl, friendlyName, progressinfoCallback) {
     TestBase.call(this, configUrl, friendlyName, progressinfoCallback);
 };
 
-TestReadCardData.prototype = Object.create(TestBase.prototype);
-TestReadCardData.prototype.constructor = TestReadCardData;
+TestReadCardDataFail.prototype = Object.create(TestBase.prototype);
+TestReadCardDataFail.prototype.constructor = TestReadCardDataFail;
 
-TestReadCardData.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new ReadCardDataExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
+TestReadCardDataFail.prototype.getCloverConnectorListener = function (cloverConnector) {
+    return new ReadCardDataFailExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**
@@ -80,11 +80,11 @@ TestReadCardData.prototype.getCloverConnectorListener = function (cloverConnecto
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestReadCardData = function (configUrl, progressinfoCallback) {
-    var testObj = new TestReadCardData(configUrl, "test", progressinfoCallback);
+TestBase.TestReadCardDataFail = function (configUrl, progressinfoCallback) {
+    var testObj = new TestReadCardDataFail(configUrl, "test", progressinfoCallback);
     testObj.test();
 };
 
 if ('undefined' !== typeof module) {
-    module.exports = TestReadCardData;
+    module.exports = TestReadCardDataFail;
 }

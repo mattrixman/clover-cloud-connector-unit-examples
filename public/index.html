@@ -53,7 +53,12 @@ If redirected to Clover to login, you will need to select a 'test' button again 
   function saveConfigStaticResult() {
     console.info(arguments);
   }
-  function progressinfoCallback(message) {
+  /**
+   *
+   * @param message - has optional properties
+   *  {message:string, request:BaseRequest, response:BaseResponse, error:Object, success:success}
+   */
+  function updateUI(message, buttonElementId) {
     var infoMessagesTextArea = document.getElementById("infoMessages");
     var strMessage = message;
     try {
@@ -61,33 +66,58 @@ If redirected to Clover to login, you will need to select a 'test' button again 
     } catch(e) {
     }
     infoMessagesTextArea.value = strMessage + "\n" + infoMessagesTextArea.value;
+
+    if(message.hasOwnProperty('success')) {
+      if(buttonElementId) {
+        if(message.success) {
+          document.getElementById(buttonElementId).style.backgroundColor = '#00FF00';
+        } else {
+          document.getElementById(buttonElementId).style.backgroundColor = '#FF0000';
+        }
+      }
+    } else if(buttonElementId){
+      // document.getElementById(buttonElementId).style.backgroundColor = '#FFFFFF';
+    }
   }
   function clearMessages(){
     var infoMessagesTextArea = document.getElementById("infoMessages");
     infoMessagesTextArea.value = "";
   }
+
+  function forceDisconnect() {
+    var force = new TestBase.ForceDisconnect('./configuration/');
+    force.run();
+  }
+
+
 </script>
   <!-- To add a test, add it to the test-src.js (see testSale(...), then add a button to invoke it here -->
-  <button onclick="saveConfigStatic()">SaveConfig</button><br/>
+  <div id="control">
+    <button onclick="saveConfigStatic()">SaveConfig</button><br/>
+    <button onclick="forceDisconnect()">Force Device Disconnect</button><br/>
+  </div>
+  <hr/>
   <div id="tests">
-    <button onclick="TestBase.TestSale('./configuration/', progressinfoCallback)">Test Sale</button><br/>
-    <button onclick="TestBase.TestSaleExceptionProcessing('./configuration/', progressinfoCallback)">Test Sale With Exception Processing</button><br/>
-    <button onclick="TestBase.TestSaleDoubleReceiptProcessing('./configuration/', progressinfoCallback)">Test Sale With Double Receipt Window</button><br/>
-    <button onclick="TestBase.TestAuth('./configuration/', progressinfoCallback)">Test Auth</button><br/>
-    <button onclick="TestBase.TestPreAuth('./configuration/', progressinfoCallback)">Test Pre Auth</button><br/>
-    <button onclick="TestBase.TestPreAuthCapture('./configuration/', progressinfoCallback)">Test Pre Auth then capture</button><br/>
-    <button onclick="TestBase.TestReadCardData('./configuration/', progressinfoCallback)">Test Reading Card Data</button><br/>
-    <button onclick="TestBase.TestShowMessage('./configuration/', progressinfoCallback)">Test Showing a Message</button><br/>
-    <button onclick="TestBase.TestSaleTipAdjust('./configuration/', progressinfoCallback)">Test doing a sale then a tip adjust (should fail)</button><br/>
-    <button onclick="TestBase.TestSaleVoid('./configuration/', progressinfoCallback)">Test Voiding a Payment</button><br/>
-    <button onclick="TestBase.TestSaleRefund('./configuration/', progressinfoCallback)">Test a full refund of a sale</button><br/>
-    <button onclick="TestBase.TestSaleRefundErr('./configuration/', progressinfoCallback)">Test a full refund of a sale that should FAIL (no order id set)</button><br/>
-    <button onclick="TestBase.TestSalePartialRefund('./configuration/', progressinfoCallback)">Test a partial refund of a sale</button><br/>
-    <button onclick="TestBase.TestShowReceiptOptions('./configuration/', progressinfoCallback)">Test showing the receipt screen</button><br/>
-    <button onclick="TestBase.TestSaleWithReconnectLogic('./configuration/', progressinfoCallback)">Test Sale that tries to reconnect on timeout</button><br/>
-    <button onclick="TestBase.TestSaleRefuseReconnectLogic('./configuration/', progressinfoCallback)">Test Sale, refuse reconnect request.</button><br/>
-    <button onclick="TestBase.TestLogAllFrames('./configuration/', progressinfoCallback)">Log all frames.</button><br/>
-    <button onclick="TestBase.TestVaultCard('./configuration/', progressinfoCallback)">Test Vaulting a card.</button><br/>
+    <button onclick="TestBase.TestSale('./configuration/',                      function(message){updateUI(message, 't1' )})" id="t1" >Test Sale</button><br/>
+    <button onclick="TestBase.TestAuth('./configuration/',                      function(message){updateUI(message, 't2' )})" id="t2" >Test Auth</button><br/>
+    <button onclick="TestBase.TestPreAuth('./configuration/',                   function(message){updateUI(message, 't3' )})" id="t3" >Test Pre Auth</button><br/>
+    <button onclick="TestBase.TestPreAuthCapture('./configuration/',            function(message){updateUI(message, 't4' )})" id="t4" >Test Pre Auth then capture</button><br/>
+    <button onclick="TestBase.TestReadCardData('./configuration/',              function(message){updateUI(message, 't5' )})" id="t5" >Test Reading Card Data</button><br/>
+    <button onclick="TestBase.TestShowMessage('./configuration/',               function(message){updateUI(message, 't6' )})" id="t6" >Test Showing a Message</button><br/>
+    <button onclick="TestBase.TestSaleTipAdjust('./configuration/',             function(message){updateUI(message, 't7' )})" id="t7" >Test doing a sale then a tip adjust (should fail)</button><br/>
+    <button onclick="TestBase.TestSaleVoid('./configuration/',                  function(message){updateUI(message, 't8' )})" id="t8" >Test Voiding a Payment</button><br/>
+    <button onclick="TestBase.TestSaleRefund('./configuration/',                function(message){updateUI(message, 't9' )})" id="t9" >Test a full refund of a sale</button><br/>
+    <button onclick="TestBase.TestSaleRefundErr('./configuration/',             function(message){updateUI(message, 't10')})" id="t10">Test a full refund of a sale that should FAIL (no order id set)</button><br/>
+    <button onclick="TestBase.TestSalePartialRefund('./configuration/',         function(message){updateUI(message, 't11')})" id="t11">Test a partial refund of a sale</button><br/>
+    <button onclick="TestBase.TestShowReceiptOptions('./configuration/',        function(message){updateUI(message, 't12')})" id="t12">Test showing the receipt screen</button><br/>
+    <button onclick="TestBase.TestSaleWithReconnectLogic('./configuration/',    function(message){updateUI(message, 't13')})" id="t13">Test Sale that tries to reconnect on timeout</button><br/>
+    <button onclick="TestBase.TestSaleRefuseReconnectLogic('./configuration/',  function(message){updateUI(message, 't14')})" id="t14">Test Sale, refuse reconnect request.</button><br/>
+    <button onclick="TestBase.TestLogAllFrames('./configuration/',              function(message){updateUI(message, 't15')})" id="t15">Log all frames.</button><br/>
+    <button onclick="TestBase.TestVaultCard('./configuration/',                 function(message){updateUI(message, 't16')})" id="t16">Test Vaulting a card.</button><br/>
+    <button onclick="TestBase.TestSaleNullRequest('./configuration/',           function(message){updateUI(message, 't17')})" id="t17">Test a Sale Failure - missing request</button><br/>
+    <button onclick="TestBase.TestSaleNullExternalId('./configuration/',        function(message){updateUI(message, 't18')})" id="t18">Test a Sale Failure - missing external id</button><br/>
+    <button onclick="TestBase.TestSaleNegZeroAmount('./configuration/',         function(message){updateUI(message, 't19')})" id="t19">Test a Sale Failure - zero amount</button><br/>
+    <button onclick="TestBase.TestReadCardDataFail('./configuration/',          function(message){updateUI(message, 't20')})" id="t20">Test a read card data Failure - 0 card entry methods</button><br/>
   </div>
 </body>
 </html>

@@ -40,7 +40,7 @@ AllFramesExampleCloverConnectorListener.prototype.onSaleResponse = function (res
     }
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete();
+    this.testComplete(response.getSuccess());
 };
 
 /**
@@ -75,7 +75,7 @@ TestLogAllFrames.prototype.getCloverConnectorListener = function (cloverConnecto
           }
       }.bind(this)
     );
-    return new AllFramesExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new AllFramesExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**

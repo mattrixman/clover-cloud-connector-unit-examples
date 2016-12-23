@@ -17,9 +17,9 @@ TestBase.prototype.test = function() {
 };
 TestBase.prototype.readyTest = function(error, configuration) {
     if(error) {
-        this.displayMessage({type:"error", message: error});
+        this.displayMessage({error: error});
     } else {
-        this.displayMessage({type:"success", message: configuration});
+        this.displayMessage({message: configuration});
         configuration = this.decorateConfiguration(configuration);
         this.connector = new clover.CloverConnectorFactory().createICloverConnector(configuration);
         var connectorListener = this.getCloverConnectorListener(this.connector, this.progressinfoCallback);
