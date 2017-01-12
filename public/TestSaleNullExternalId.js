@@ -18,8 +18,8 @@ var SaleExampleNullExternalIdCloverConnectorListener = function (cloverConnector
 SaleExampleNullExternalIdCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 SaleExampleNullExternalIdCloverConnectorListener.prototype.constructor = SaleExampleNullExternalIdCloverConnectorListener;
 
-SaleExampleNullExternalIdCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-    ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
+SaleExampleNullExternalIdCloverConnectorListener.prototype.startTest = function () {
+    ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
      */

@@ -18,8 +18,8 @@ var AuthExampleCloverConnectorListener = function (cloverConnector, progressinfo
 AuthExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 AuthExampleCloverConnectorListener.prototype.constructor = AuthExampleCloverConnectorListener;
 
-AuthExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-    ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
+AuthExampleCloverConnectorListener.prototype.startTest = function () {
+    ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a auth request and send it to the device.
      */

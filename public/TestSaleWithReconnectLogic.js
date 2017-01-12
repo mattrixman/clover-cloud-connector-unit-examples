@@ -18,19 +18,16 @@ var SaleWithReconnectLogicExampleCloverConnectorListener = function (cloverConne
 SaleWithReconnectLogicExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 SaleWithReconnectLogicExampleCloverConnectorListener.prototype.constructor = SaleWithReconnectLogicExampleCloverConnectorListener;
 
-SaleWithReconnectLogicExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-    if(!this.onReadyAlreadyCalled) {
-        ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
-        /*
-         The connector is ready, create a sale request and send it to the device.
-         */
-        var saleRequest = new sdk.remotepay.SaleRequest();
-        saleRequest.setExternalId(clover.CloverID.getNewId());
-        saleRequest.setAmount(10000);
-        this.displayMessage({message: "Sending sale", request: saleRequest});
-        this.cloverConnector.sale(saleRequest);
-        this.onReadyAlreadyCalled = true;
-    }
+SaleWithReconnectLogicExampleCloverConnectorListener.prototype.startTest = function () {
+    ExampleCloverConnectorListener.prototype.startTest.call(this);
+    /*
+     The connector is ready, create a sale request and send it to the device.
+     */
+    var saleRequest = new sdk.remotepay.SaleRequest();
+    saleRequest.setExternalId(clover.CloverID.getNewId());
+    saleRequest.setAmount(10000);
+    this.displayMessage({message: "Sending sale", request: saleRequest});
+    this.cloverConnector.sale(saleRequest);
 };
 SaleWithReconnectLogicExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
     /*

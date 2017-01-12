@@ -19,8 +19,8 @@ var ReadCardDataExampleCloverConnectorListener = function (cloverConnector, prog
 ReadCardDataExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 ReadCardDataExampleCloverConnectorListener.prototype.constructor = ReadCardDataExampleCloverConnectorListener;
 
-ReadCardDataExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-    ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
+ReadCardDataExampleCloverConnectorListener.prototype.startTest = function () {
+    ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, send the request to read card data to the device
      */

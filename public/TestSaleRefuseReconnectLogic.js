@@ -18,8 +18,8 @@ var SaleRefuseReconnectLogicExampleCloverConnectorListener = function (cloverCon
 SaleRefuseReconnectLogicExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 SaleRefuseReconnectLogicExampleCloverConnectorListener.prototype.constructor = SaleRefuseReconnectLogicExampleCloverConnectorListener;
 
-SaleRefuseReconnectLogicExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-    ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
+SaleRefuseReconnectLogicExampleCloverConnectorListener.prototype.startTest = function () {
+    ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
      */

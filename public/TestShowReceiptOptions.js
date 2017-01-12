@@ -18,8 +18,8 @@ var ShowReceiptOptionsExampleCloverConnectorListener = function (cloverConnector
 ShowReceiptOptionsExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 ShowReceiptOptionsExampleCloverConnectorListener.prototype.constructor = ShowReceiptOptionsExampleCloverConnectorListener;
 
-ShowReceiptOptionsExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-    ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
+ShowReceiptOptionsExampleCloverConnectorListener.prototype.startTest = function () {
+    ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
      */

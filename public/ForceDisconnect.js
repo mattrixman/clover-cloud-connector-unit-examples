@@ -3,7 +3,6 @@ var sdk = require("remote-pay-cloud-api");
 SimpleCloverConfig = require("./SimpleCloverConfig");
 var clover = require("remote-pay-cloud");
 
-
 /**
  * This connects to the designated device, forcing the connection.  It then disconnects.
  * This has the effect of forcing the device to close all connections.
@@ -18,13 +17,18 @@ var ForceDisconnect = function (configUrl) {
 };
 
 /**
- * After creating an instance of this, this is called to initiate the process.
+ * After creating an instance of this object, this is called to initiate the process (by the user/agent)
  */
 ForceDisconnect.prototype.run = function() {
     // Loads the configuration, then calls the supplied callback - readyTest
-    this.simpleCloverConfig.loadCloverConfig(this.configUrl, {forceConnect: true, friendlyId: 'test'}, this.readyTest.bind(this));
+    this.simpleCloverConfig.loadCloverConfig(this.configUrl, {forceConnect: true, friendlyId: 'forced'}, this.readyTest.bind(this));
 };
 
+/**
+ * Build the clover connector and listener, and configure them.
+ * @param error - if there was a problem loading configuration, or other error.
+ * @param configuration - the configuration to use in creating the connector.
+ */
 ForceDisconnect.prototype.readyTest = function(error, configuration) {
     if(error) {
         this.log.error({error: error});
@@ -45,6 +49,12 @@ ForceDisconnect.prototype.readyTest = function(error, configuration) {
     }
 };
 
+/**
+ * The constructor for the listener.  Saves a ref to the connector and log.
+ * @param cloverConnector
+ * @param log
+ * @constructor
+ */
 var ForceDisconnectConnectorListener = function (cloverConnector, log) {
     sdk.remotepay.ICloverConnectorListener.call(this);
     this.cloverConnector = cloverConnector;
@@ -54,6 +64,10 @@ var ForceDisconnectConnectorListener = function (cloverConnector, log) {
 ForceDisconnectConnectorListener.prototype = Object.create(sdk.remotepay.ICloverConnectorListener.prototype);
 ForceDisconnectConnectorListener.prototype.constructor = ForceDisconnectConnectorListener;
 
+/**
+ * Disconnects after waiting 5 seconds.
+ * @param merchantInfo
+ */
 ForceDisconnectConnectorListener.prototype.onReady = function (merchantInfo) {
     setTimeout(function () {
         // Always call this when your test is done, or the device may fail to connect the

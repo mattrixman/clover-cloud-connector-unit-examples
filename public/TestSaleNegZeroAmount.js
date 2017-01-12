@@ -18,8 +18,8 @@ var SaleExampleNegZeroAmountCloverConnectorListener = function (cloverConnector,
 SaleExampleNegZeroAmountCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 SaleExampleNegZeroAmountCloverConnectorListener.prototype.constructor = SaleExampleNegZeroAmountCloverConnectorListener;
 
-SaleExampleNegZeroAmountCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-    ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
+SaleExampleNegZeroAmountCloverConnectorListener.prototype.startTest = function () {
+    ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
      */
