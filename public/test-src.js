@@ -4,6 +4,8 @@ require("remote-pay-cloud").DebugConfig.loggingEnabled = true;
 
 // Each of the following decorates TestBase
 require("./TestSale.js");
+require("./TestSaleDoubleReceiptScreen.js");
+require("./TestSaleExceptionProcessing.js");
 require("./TestAuth.js");
 require("./TestPreAuth.js");
 require("./TestPreAuthCapture.js");
