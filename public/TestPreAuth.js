@@ -13,10 +13,10 @@ TestPreAuth  = function (configUrl, friendlyName, progressinfoCallback) {
 };
 
 TestPreAuth.prototype = Object.create(TestBase.prototype);
-TestPreAuth.prototype.constructor = TestSale;
+TestPreAuth.prototype.constructor = TestPreAuth;
 
 TestPreAuth.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new PreAuthExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new PreAuthExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**

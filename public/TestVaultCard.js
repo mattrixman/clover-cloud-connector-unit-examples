@@ -19,8 +19,8 @@ var VaultCardExampleCloverConnectorListener = function (cloverConnector, progres
 VaultCardExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 VaultCardExampleCloverConnectorListener.prototype.constructor = VaultCardExampleCloverConnectorListener;
 
-VaultCardExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-    ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
+VaultCardExampleCloverConnectorListener.prototype.startTest = function () {
+    ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, send the request to read card data to the device
      */
@@ -45,7 +45,7 @@ VaultCardExampleCloverConnectorListener.prototype.onReadCardDataResponse = funct
     this.displayMessage({message: "Read card data response received", response: response});
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete();
+    this.testComplete(response.getSuccess());
 };
 
 
@@ -63,7 +63,7 @@ VaultCardExampleCloverConnectorListener.prototype.onVaultCardResponse = function
 
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete();
+    this.testComplete(response.getSuccess());
 };
 
 /**
@@ -87,7 +87,7 @@ TestVaultCard.prototype = Object.create(TestBase.prototype);
 TestVaultCard.prototype.constructor = TestVaultCard;
 
 TestVaultCard.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new VaultCardExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new VaultCardExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**

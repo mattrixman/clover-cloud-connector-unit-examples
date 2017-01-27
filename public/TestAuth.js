@@ -18,8 +18,8 @@ var AuthExampleCloverConnectorListener = function (cloverConnector, progressinfo
 AuthExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 AuthExampleCloverConnectorListener.prototype.constructor = AuthExampleCloverConnectorListener;
 
-AuthExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-    ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
+AuthExampleCloverConnectorListener.prototype.startTest = function () {
+    ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a auth request and send it to the device.
      */
@@ -37,10 +37,12 @@ AuthExampleCloverConnectorListener.prototype.onAuthResponse = function (response
     this.displayMessage({ message: "Auth response received", response: response});
     if(!response.getIsAuth()) {
         this.displayMessage({error: "Response is not an auth!"});
+        this.testComplete();
+        return;
     }
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete();
+    this.testComplete(response.getSuccess());
 };
 
 /**
@@ -64,7 +66,7 @@ TestAuth.prototype = Object.create(TestBase.prototype);
 TestAuth.prototype.constructor = TestSale;
 
 TestAuth.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new AuthExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new AuthExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**

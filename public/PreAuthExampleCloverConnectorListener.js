@@ -16,8 +16,8 @@ var PreAuthExampleCloverConnectorListener = function (cloverConnector, progressi
 PreAuthExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 PreAuthExampleCloverConnectorListener.prototype.constructor = PreAuthExampleCloverConnectorListener;
 
-PreAuthExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-    ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
+PreAuthExampleCloverConnectorListener.prototype.startTest = function () {
+    ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a preAuth request and send it to the device.
      */
@@ -50,7 +50,7 @@ PreAuthExampleCloverConnectorListener.prototype.onPreAuthResponse = function (re
 PreAuthExampleCloverConnectorListener.prototype.afterPreAuthResponse = function(response) {
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete();
+    this.testComplete(response.getSuccess());
 };
 
 /**

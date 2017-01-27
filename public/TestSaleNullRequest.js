@@ -7,29 +7,29 @@ var TestBase = require("./TestBase.js");
 /**
  * A test of the sale functionality.
  *
- * @type {SaleExampleCloverConnectorListener}
+ * @type {SaleExampleNullRequestCloverConnectorListener}
  */
-var SaleExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
+var SaleExampleNullRequestCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
     ExampleCloverConnectorListener.call(this, cloverConnector, progressinfoCallback);
     this.cloverConnector = cloverConnector;
     this.progressinfoCallback = progressinfoCallback;
 };
 
-SaleExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
-SaleExampleCloverConnectorListener.prototype.constructor = SaleExampleCloverConnectorListener;
+SaleExampleNullRequestCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
+SaleExampleNullRequestCloverConnectorListener.prototype.constructor = SaleExampleNullRequestCloverConnectorListener;
 
-SaleExampleCloverConnectorListener.prototype.startTest = function () {
+SaleExampleNullRequestCloverConnectorListener.prototype.startTest = function () {
     ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
      */
     var saleRequest = new sdk.remotepay.SaleRequest();
     saleRequest.setExternalId(clover.CloverID.getNewId());
-    saleRequest.setAmount(10);
+    saleRequest.setAmount(10000);
     this.displayMessage({message: "Sending sale", request: saleRequest});
-    this.cloverConnector.sale(saleRequest);
+    this.cloverConnector.sale(null /*saleRequest*/);
 };
-SaleExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
+SaleExampleNullRequestCloverConnectorListener.prototype.onSaleResponse = function (response) {
     /*
      The sale is complete.  It might be canceled, or successful.  This can be determined by the
      values in the response.
@@ -37,20 +37,18 @@ SaleExampleCloverConnectorListener.prototype.onSaleResponse = function (response
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
         this.displayMessage({error: "Response is not a sale!"});
-        this.testComplete();
-        return;
     }
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete(response.getSuccess());
+    this.testComplete(!response.getSuccess());
 };
 
 /**
  * Used in the test to help identify where messages come from.
  * @returns {string}
  */
-SaleExampleCloverConnectorListener.prototype.getTestName = function () {
-    return "Test Sale";
+SaleExampleNullRequestCloverConnectorListener.prototype.getTestName = function () {
+    return "Test Sale NullRequest";
 };
 
 /**
@@ -58,15 +56,15 @@ SaleExampleCloverConnectorListener.prototype.getTestName = function () {
  * that defines the test flow.
  * @type {TestBase}
  */
-TestSale = function (configUrl, friendlyName, progressinfoCallback) {
+TestSaleNullRequest = function (configUrl, friendlyName, progressinfoCallback) {
     TestBase.call(this, configUrl, friendlyName, progressinfoCallback);
 };
 
-TestSale.prototype = Object.create(TestBase.prototype);
-TestSale.prototype.constructor = TestSale;
+TestSaleNullRequest.prototype = Object.create(TestBase.prototype);
+TestSaleNullRequest.prototype.constructor = TestSaleNullRequest;
 
-TestSale.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new SaleExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
+TestSaleNullRequest.prototype.getCloverConnectorListener = function (cloverConnector) {
+    return new SaleExampleNullRequestCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**
@@ -74,11 +72,11 @@ TestSale.prototype.getCloverConnectorListener = function (cloverConnector) {
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSale = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSale(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleNullRequest = function(configUrl, progressinfoCallback) {
+    var testObj = new TestSaleNullRequest(configUrl, "test", progressinfoCallback);
     testObj.test();
 };
 
 if ('undefined' !== typeof module) {
-    module.exports = TestSale;
+    module.exports = TestSaleNullRequest;
 }

@@ -18,8 +18,8 @@ var SaleDoubleReceiptScreenCloverConnectorListener = function (cloverConnector, 
 SaleDoubleReceiptScreenCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 SaleDoubleReceiptScreenCloverConnectorListener.prototype.constructor = SaleDoubleReceiptScreenCloverConnectorListener;
 
-SaleDoubleReceiptScreenCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-    ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
+SaleDoubleReceiptScreenCloverConnectorListener.prototype.startTest = function () {
+    ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
      */
@@ -37,16 +37,29 @@ SaleDoubleReceiptScreenCloverConnectorListener.prototype.onSaleResponse = functi
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
         this.displayMessage({error: "Response is not a sale!"});
+        this.testComplete(!response.getSuccess());
+        return;
     }
 
     // Pop up the receipt window a second time to test handling this on an already completed sale which has processed
     // the recieipt screen previously.
     this.showingReceiptOptions = true;
     this.cloverConnector.showPaymentReceiptOptions(response.getPayment().getOrder().getId(), response.getPayment().getId());
+};
 
-    // Always call this when your test is done, or the device may fail to connect the
-    // next time, because it is already connected.
-    this.testComplete();
+/**
+ * Will be called when leaving a screen or activity on the Mini. The CloverDeviceEvent passed in will contain an event type and description. Note: The Start and End events are not guaranteed to process in order, so the event type should be used to make sure the start and end events are paired.
+ * @memberof remotepay.ICloverConnectorListener
+ *
+ * @param {remotepay.CloverDeviceEvent} deviceEvent
+ * @return void
+ */
+SaleDoubleReceiptScreenCloverConnectorListener.prototype.onDeviceActivityEnd = function(deviceEvent) {
+    if(deviceEvent.getEventState() == sdk.remotepay.DeviceEventState.RECEIPT_OPTIONS) {
+        // Always call this when your test is done, or the device may fail to connect the
+        // next time, because it is already connected.
+        this.testComplete(true);
+    }
 };
 
 SaleDoubleReceiptScreenCloverConnectorListener.prototype.onConfirmPaymentRequest = function(request) {

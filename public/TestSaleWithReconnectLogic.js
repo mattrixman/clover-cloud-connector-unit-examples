@@ -18,19 +18,16 @@ var SaleWithReconnectLogicExampleCloverConnectorListener = function (cloverConne
 SaleWithReconnectLogicExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 SaleWithReconnectLogicExampleCloverConnectorListener.prototype.constructor = SaleWithReconnectLogicExampleCloverConnectorListener;
 
-SaleWithReconnectLogicExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-    if(!this.onReadyAlreadyCalled) {
-        ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
-        /*
-         The connector is ready, create a sale request and send it to the device.
-         */
-        var saleRequest = new sdk.remotepay.SaleRequest();
-        saleRequest.setExternalId(clover.CloverID.getNewId());
-        saleRequest.setAmount(10000);
-        this.displayMessage({message: "Sending sale", request: saleRequest});
-        this.cloverConnector.sale(saleRequest);
-        this.onReadyAlreadyCalled = true;
-    }
+SaleWithReconnectLogicExampleCloverConnectorListener.prototype.startTest = function () {
+    ExampleCloverConnectorListener.prototype.startTest.call(this);
+    /*
+     The connector is ready, create a sale request and send it to the device.
+     */
+    var saleRequest = new sdk.remotepay.SaleRequest();
+    saleRequest.setExternalId(clover.CloverID.getNewId());
+    saleRequest.setAmount(10000);
+    this.displayMessage({message: "Sending sale", request: saleRequest});
+    this.cloverConnector.sale(saleRequest);
 };
 SaleWithReconnectLogicExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
     /*
@@ -40,10 +37,12 @@ SaleWithReconnectLogicExampleCloverConnectorListener.prototype.onSaleResponse = 
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
         this.displayMessage({error: "Response is not a sale!"});
+        this.testComplete();
+        return;
     }
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete();
+    this.testComplete(response.getSuccess());
 };
 
 /**
@@ -67,7 +66,7 @@ TestSaleWithReconnectLogic.prototype = Object.create(TestBase.prototype);
 TestSaleWithReconnectLogic.prototype.constructor = TestSaleWithReconnectLogic;
 
 TestSaleWithReconnectLogic.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new SaleWithReconnectLogicExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new SaleWithReconnectLogicExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**

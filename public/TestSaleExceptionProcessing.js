@@ -18,8 +18,8 @@ var SaleExceptionExampleCloverConnectorListener = function (cloverConnector, pro
 SaleExceptionExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 SaleExceptionExampleCloverConnectorListener.prototype.constructor = SaleExceptionExampleCloverConnectorListener;
 
-SaleExceptionExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-    ExampleCloverConnectorListener.prototype.onReady.call(this, merchantInfo);
+SaleExceptionExampleCloverConnectorListener.prototype.startTest = function () {
+    ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
      */
@@ -37,10 +37,12 @@ SaleExceptionExampleCloverConnectorListener.prototype.onSaleResponse = function 
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
         this.displayMessage({error: "Response is not a sale!"});
+        this.testComplete(!response.getSuccess());
+        return;
     }
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete();
+    this.testComplete(!response.getSuccess());
 };
 
 SaleExceptionExampleCloverConnectorListener.prototype.onConfirmPaymentRequest = function(request) {
