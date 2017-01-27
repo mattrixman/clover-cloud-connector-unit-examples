@@ -1,4 +1,6 @@
+var sdk = require("remote-pay-cloud-api");
 var ExampleCloverConnectorListener = require("./ExampleCloverConnectorListener.js");
+var clover = require("remote-pay-cloud");
 var TestBase = require("./TestBase.js");
 
 var ResetExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
@@ -12,15 +14,25 @@ ResetExampleCloverConnectorListener.prototype.constructor = ResetExampleCloverCo
 
 ResetExampleCloverConnectorListener.prototype.startTest = function () {
     ExampleCloverConnectorListener.prototype.startTest.call(this);
+
     /*
-     The connector is ready, you can use it to communicate with the device.
-    */
-    this.displayMessage({message: "Sending reset to display"});
-    this.cloverConnector.resetDevice();
+     The connector is ready, create a sale request and send it to the device.
+     */
+    var saleRequest = new sdk.remotepay.SaleRequest();
+    saleRequest.setExternalId(clover.CloverID.getNewId());
+    saleRequest.setAmount(10);
+    this.displayMessage({message: "Sending sale", request: saleRequest});
+    this.cloverConnector.sale(saleRequest);
+
+    this.displayMessage({message: "Waiting five seconds before sending reset"});
     setTimeout(function () {
-        // Always call this when your test is done, or the device may fail to connect the
-        // next time, because it is already connected.
-        this.testComplete(true);
+        this.displayMessage({message: "Sending reset to display"});
+        this.cloverConnector.resetDevice();
+        setTimeout(function () {
+            // Always call this when your test is done, or the device may fail to connect the
+            // next time, because it is already connected.
+            this.testComplete(true);
+        }.bind(this), 5000);
     }.bind(this), 5000);
 };
 
