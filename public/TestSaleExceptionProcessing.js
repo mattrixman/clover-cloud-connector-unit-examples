@@ -18,7 +18,7 @@ var SaleExceptionExampleCloverConnectorListener = function (cloverConnector, pro
 SaleExceptionExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
 SaleExceptionExampleCloverConnectorListener.prototype.constructor = SaleExceptionExampleCloverConnectorListener;
 
-SaleExceptionExampleCloverConnectorListener.prototype.prototype.startTest = function () {
+SaleExceptionExampleCloverConnectorListener.prototype.startTest = function () {
     ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.

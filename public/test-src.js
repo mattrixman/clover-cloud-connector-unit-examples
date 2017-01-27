@@ -27,6 +27,7 @@ require("./TestSaleNullRequest.js");
 require("./TestSaleNullExternalId.js");
 require("./TestSaleNegZeroAmount.js");
 require("./TestReadCardDataFail.js");
+require("./TestReset.js");
 
 
 

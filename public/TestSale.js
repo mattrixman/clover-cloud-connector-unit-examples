@@ -25,7 +25,7 @@ SaleExampleCloverConnectorListener.prototype.startTest = function () {
      */
     var saleRequest = new sdk.remotepay.SaleRequest();
     saleRequest.setExternalId(clover.CloverID.getNewId());
-    saleRequest.setAmount(10000);
+    saleRequest.setAmount(10);
     this.displayMessage({message: "Sending sale", request: saleRequest});
     this.cloverConnector.sale(saleRequest);
 };
