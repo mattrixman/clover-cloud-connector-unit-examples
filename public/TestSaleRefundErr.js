@@ -61,14 +61,14 @@ SaleRefundErrExampleCloverConnectorListener.prototype.onSaleResponse = function 
  */
 SaleRefundErrExampleCloverConnectorListener.prototype.onRefundPaymentResponse = function (response) {
     this.displayMessage({message: "RefundPaymentResponse received", response: response});
-    if (!response.getSuccess()) {
-        this.displayMessage({message: "RefundPaymentResponse,  !!! something is wrong, this failed !!!"});
-        this.testComplete();
+    if (response.getSuccess()) {
+        this.displayMessage({message: "RefundPaymentResponse,  !!! something is wrong, this should have failed !!!"});
+        this.testComplete(false);
         return;
     }
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete(response.getSuccess());
+    this.testComplete(true);
 };
 
 /**

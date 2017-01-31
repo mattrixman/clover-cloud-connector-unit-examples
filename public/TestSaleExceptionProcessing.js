@@ -73,7 +73,7 @@ TestSaleExceptionProcessing.prototype = Object.create(TestBase.prototype);
 TestSaleExceptionProcessing.prototype.constructor = TestSaleExceptionProcessing;
 
 TestSaleExceptionProcessing.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new SaleExceptionExampleCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new SaleExceptionExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**

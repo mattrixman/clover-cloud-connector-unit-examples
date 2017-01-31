@@ -58,17 +58,10 @@ SaleDoubleReceiptScreenCloverConnectorListener.prototype.onDeviceActivityEnd = f
     if(deviceEvent.getEventState() == sdk.remotepay.DeviceEventState.RECEIPT_OPTIONS) {
         // Always call this when your test is done, or the device may fail to connect the
         // next time, because it is already connected.
-        this.testComplete(true);
+        if(this.showingReceiptOptions) {
+            this.testComplete(true);
+        }
     }
-};
-
-SaleDoubleReceiptScreenCloverConnectorListener.prototype.onConfirmPaymentRequest = function(request) {
-    /*
-     Just send an automatic verification for all challenges.  If this is not implemented
-     the device will stay on the "Merchant is verifying your payment" screen.
-     */
-    this.displayMessage({message: "Automatically accepting payment", request: request});
-    this.cloverConnector.acceptPayment(request.getPayment());
 };
 
 /**
@@ -92,7 +85,7 @@ TestSaleDoubleReceiptProcessing.prototype = Object.create(TestBase.prototype);
 TestSaleDoubleReceiptProcessing.prototype.constructor = TestSaleDoubleReceiptProcessing;
 
 TestSaleDoubleReceiptProcessing.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new SaleDoubleReceiptScreenCloverConnectorListener(cloverConnector, progressinfoCallback);
+    return new SaleDoubleReceiptScreenCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**
