@@ -122,6 +122,7 @@ If redirected to Clover to login, you will need to select a 'test' button again 
     <button onclick="TestBase.TestSaleExceptionProcessing('./configuration/',       function(message){updateUI(message, 't21')})" id="t21">Test Sale With Exception Processing</button><br/>
     <button onclick="TestBase.TestSaleDoubleReceiptProcessing('./configuration/',   function(message){updateUI(message, 't22')})" id="t22">Test Sale With Double Receipt Window</button><br/>
     <button onclick="TestBase.TestReset('./configuration/',                         function(message){updateUI(message, 't23')})" id="t23">Test resetting device</button><br/>
+    <button onclick="TestBase.TestSaleFailOnTransactionRestart('./configuration/',  function(message){updateUI(message, 't24')})" id="t24">Test Fail Transaction on restart</button><br/>
   </div>
 </body>
 </html>
