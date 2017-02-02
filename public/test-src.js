@@ -29,6 +29,7 @@ require("./TestSaleNegZeroAmount.js");
 require("./TestReadCardDataFail.js");
 require("./TestReset.js");
 require("./TestFailTransactionOnRestart.js");
+require("./TestManualRefund.js");
 
 if ('undefined' !== typeof module) {
     module.exports = TestBase;
