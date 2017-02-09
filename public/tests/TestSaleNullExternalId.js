@@ -74,8 +74,8 @@ TestSaleNullExternalId.prototype.getCloverConnectorListener = function (cloverCo
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSaleNullExternalId = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSaleNullExternalId(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleNullExternalId = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestSaleNullExternalId(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 

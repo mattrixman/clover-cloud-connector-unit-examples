@@ -26,11 +26,12 @@
       </tr>
       <tr>
         <td>
-          <select name="fiendlyId" id="friendlyId">
+          <select name="fiendlyId" id="friendlyId" class="load-config-selector">
             <option value="none">&nbsp;</option>
-          </select>&nbsp;<button class="btn load-config-btn">LoadConfig</button><br/>
+          </select><br/>
           <textarea title="Configuration" id="configText"></textarea>
-          <button class="btn save-config-btn">SaveConfig</button><br/>
+          <button class="btn save-config-btn">SaveConfig</button>
+          <button class="btn force-disconnect-btn">Force Disconnect</button>
         </td>
         <td>
           <textarea title="Messages" id="infoMessages" readonly></textarea>
@@ -208,7 +209,7 @@
       }
 
       function forceDisconnect() {
-        var force = new TestBase.ForceDisconnect(CONFIG_BASE_PATH, configFile);
+        var force = new TestBase.ForceDisconnect(CONFIG_BASE_PATH);
         force.run();
       }
 
@@ -227,8 +228,9 @@
         }
       });
       document.querySelector('button.clear-messages-btn').onclick = clearMessages;
+      document.querySelector('button.force-disconnect-btn').onclick = forceDisconnect;
       document.querySelector('button.save-config-btn').onclick = saveConfigStatic;
-      document.querySelector('button.load-config-btn').onclick = loadConfigStatic;
+      document.querySelector('select.load-config-selector').onchange = loadConfigStatic;
     </script>
   </body>
 </html>

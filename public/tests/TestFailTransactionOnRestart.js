@@ -80,8 +80,8 @@ TestSaleFailOnTransactionRestart.prototype.getCloverConnectorListener = function
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSaleFailOnTransactionRestart = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSaleFailOnTransactionRestart(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleFailOnTransactionRestart = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestSaleFailOnTransactionRestart(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 

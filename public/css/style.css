@@ -48,6 +48,10 @@ select {
 	clear: both;
 }
 
+.force-disconnect-btn {
+	float: right;
+}
+
 .config-messages-section {
 	border: 1px solid #888;
 	border-collapse: collapse;

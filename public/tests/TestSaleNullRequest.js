@@ -72,8 +72,8 @@ TestSaleNullRequest.prototype.getCloverConnectorListener = function (cloverConne
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSaleNullRequest = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSaleNullRequest(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleNullRequest = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestSaleNullRequest(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 

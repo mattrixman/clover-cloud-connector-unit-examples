@@ -69,8 +69,8 @@ TestManualRefund.prototype.getCloverConnectorListener = function (cloverConnecto
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestManualRefund = function(configUrl, progressinfoCallback) {
-    var testObj = new TestManualRefund(configUrl, "test", progressinfoCallback);
+TestBase.TestManualRefund = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestManualRefund(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 

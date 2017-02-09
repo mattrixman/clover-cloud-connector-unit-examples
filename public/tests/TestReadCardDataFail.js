@@ -80,8 +80,8 @@ TestReadCardDataFail.prototype.getCloverConnectorListener = function (cloverConn
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestReadCardDataFail = function (configUrl, progressinfoCallback) {
-    var testObj = new TestReadCardDataFail(configUrl, "test", progressinfoCallback);
+TestBase.TestReadCardDataFail = function (configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestReadCardDataFail(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 

@@ -74,8 +74,8 @@ TestSaleNegZeroAmount.prototype.getCloverConnectorListener = function (cloverCon
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSaleNegZeroAmount = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSaleNegZeroAmount(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleNegZeroAmount = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestSaleNegZeroAmount(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 

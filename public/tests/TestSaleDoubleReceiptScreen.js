@@ -93,8 +93,8 @@ TestSaleDoubleReceiptProcessing.prototype.getCloverConnectorListener = function 
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSaleDoubleReceiptProcessing = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSaleDoubleReceiptProcessing(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleDoubleReceiptProcessing = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestSaleDoubleReceiptProcessing(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 

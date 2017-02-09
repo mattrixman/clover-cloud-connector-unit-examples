@@ -81,8 +81,8 @@ TestSaleExceptionProcessing.prototype.getCloverConnectorListener = function (clo
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSaleExceptionProcessing = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSaleExceptionProcessing(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleExceptionProcessing = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestSaleExceptionProcessing(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 
