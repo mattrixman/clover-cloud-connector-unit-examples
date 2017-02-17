@@ -1,35 +1,35 @@
 var sdk = require("remote-pay-cloud-api");
-var ExampleCloverConnectorListener = require("./ExampleCloverConnectorListener.js");
+var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
-var TestBase = require("./TestBase.js");
+var TestBase = require("../TestBase.js");
 
 /* Start: Test a sale */
 /**
  * A test of the sale functionality.
  *
- * @type {SaleExceptionExampleCloverConnectorListener}
+ * @type {SaleExampleNegZeroAmountCloverConnectorListener}
  */
-var SaleExceptionExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
+var SaleExampleNegZeroAmountCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
     ExampleCloverConnectorListener.call(this, cloverConnector, progressinfoCallback);
     this.cloverConnector = cloverConnector;
     this.progressinfoCallback = progressinfoCallback;
 };
 
-SaleExceptionExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
-SaleExceptionExampleCloverConnectorListener.prototype.constructor = SaleExceptionExampleCloverConnectorListener;
+SaleExampleNegZeroAmountCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
+SaleExampleNegZeroAmountCloverConnectorListener.prototype.constructor = SaleExampleNegZeroAmountCloverConnectorListener;
 
-SaleExceptionExampleCloverConnectorListener.prototype.startTest = function () {
+SaleExampleNegZeroAmountCloverConnectorListener.prototype.startTest = function () {
     ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
      */
     var saleRequest = new sdk.remotepay.SaleRequest();
     saleRequest.setExternalId(clover.CloverID.getNewId());
-    saleRequest.setAmount(10000);
+    saleRequest.setAmount( 0 /*10000*/);
     this.displayMessage({message: "Sending sale", request: saleRequest});
     this.cloverConnector.sale(saleRequest);
 };
-SaleExceptionExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
+SaleExampleNegZeroAmountCloverConnectorListener.prototype.onSaleResponse = function (response) {
     /*
      The sale is complete.  It might be canceled, or successful.  This can be determined by the
      values in the response.
@@ -45,19 +45,12 @@ SaleExceptionExampleCloverConnectorListener.prototype.onSaleResponse = function 
     this.testComplete(!response.getSuccess());
 };
 
-SaleExceptionExampleCloverConnectorListener.prototype.onConfirmPaymentRequest = function(request) {
-    // Defined so that the device will stay on the "Merchant is verifying your payment" screen to
-    // be able to explicity perform some operations which should result in a void of the current payment
-    // transaction.
-};
-
-
 /**
  * Used in the test to help identify where messages come from.
  * @returns {string}
  */
-SaleExceptionExampleCloverConnectorListener.prototype.getTestName = function () {
-    return "Test Sale With Exceptional Processing";
+SaleExampleNegZeroAmountCloverConnectorListener.prototype.getTestName = function () {
+    return "Test Sale NegZeroAmount";
 };
 
 /**
@@ -65,15 +58,15 @@ SaleExceptionExampleCloverConnectorListener.prototype.getTestName = function () 
  * that defines the test flow.
  * @type {TestBase}
  */
-TestSaleExceptionProcessing = function (configUrl, friendlyName, progressinfoCallback) {
+TestSaleNegZeroAmount = function (configUrl, friendlyName, progressinfoCallback) {
     TestBase.call(this, configUrl, friendlyName, progressinfoCallback);
 };
 
-TestSaleExceptionProcessing.prototype = Object.create(TestBase.prototype);
-TestSaleExceptionProcessing.prototype.constructor = TestSaleExceptionProcessing;
+TestSaleNegZeroAmount.prototype = Object.create(TestBase.prototype);
+TestSaleNegZeroAmount.prototype.constructor = TestSaleNegZeroAmount;
 
-TestSaleExceptionProcessing.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new SaleExceptionExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
+TestSaleNegZeroAmount.prototype.getCloverConnectorListener = function (cloverConnector) {
+    return new SaleExampleNegZeroAmountCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**
@@ -81,11 +74,11 @@ TestSaleExceptionProcessing.prototype.getCloverConnectorListener = function (clo
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSaleExceptionProcessing = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSaleExceptionProcessing(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleNegZeroAmount = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestSaleNegZeroAmount(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 
 if ('undefined' !== typeof module) {
-    module.exports = TestSaleExceptionProcessing;
+    module.exports = TestSaleNegZeroAmount;
 }

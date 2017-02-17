@@ -96,6 +96,7 @@ ExampleCloverConnectorListener.prototype.getTestName = function() {
  */
 ExampleCloverConnectorListener.prototype.onDeviceError = function(deviceErrorEvent) {
     console.error("onDeviceError", deviceErrorEvent);
+    this.displayMessage({ message: "Test Error.", success: false, deviceErrorEvent});
 };
 
 if ('undefined' !== typeof module) {

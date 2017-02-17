@@ -7,16 +7,17 @@
     "url": "https://github.com/clover/clover-cloud-connector-unit-examples"
   },
   "dependencies": {
-    "path": "*",
-    "express": "*",
-    "body-parser": "*",
     "babelify": "*",
+    "body-parser": "*",
     "browserify": "*",
+    "express": "*",
     "https": "*",
-    "mkdirp": "*",
     "jquery": "*",
-    "remote-pay-cloud-api": "1.1.0",
-    "remote-pay-cloud": "1.1.0"
+    "mkdirp": "*",
+    "path": "*",
+    "require-globify": "*",
+    "remote-pay-cloud": "1.1.0",
+    "remote-pay-cloud-api": "1.1.0"
   },
   "engines": {
     "node": "5.9.1",
@@ -24,7 +25,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified, \"$npm_package_version && exit 1",
-    "postinstall": "browserify public/test-src.js -o public/built/test.js",
+    "postinstall": "browserify -t require-globify public/test-src.js -o public/built/test.js",
     "start": "node server.js"
   },
   "devDependencies": {}

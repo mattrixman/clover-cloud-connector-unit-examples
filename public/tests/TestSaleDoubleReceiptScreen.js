@@ -1,7 +1,7 @@
 var sdk = require("remote-pay-cloud-api");
-var ExampleCloverConnectorListener = require("./ExampleCloverConnectorListener.js");
+var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
-var TestBase = require("./TestBase.js");
+var TestBase = require("../TestBase.js");
 
 /* Start: Test a sale */
 /**
@@ -93,8 +93,8 @@ TestSaleDoubleReceiptProcessing.prototype.getCloverConnectorListener = function 
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSaleDoubleReceiptProcessing = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSaleDoubleReceiptProcessing(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleDoubleReceiptProcessing = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestSaleDoubleReceiptProcessing(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 

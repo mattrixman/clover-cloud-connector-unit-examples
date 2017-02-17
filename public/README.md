@@ -2,32 +2,30 @@
 
 ## Create The Test To Include
 
-1.  Create a javascript file, and place it into the `public` directory, prefix the name with `Test`.  Example: 
+1.  Create a javascript file, and place it into the `public/tests/` directory, prefix the name with `Test`.  Example: 
 
-        public/TestShowMessage.js
+        public/tests/TestShowMessage.js
 
-2.  Write the test.  All that is required is the addition of a function to TestBase.  Example: 
- 
-        var TestBase = require("./TestBase.js");
+2.  Write the test.  All that is required is the addition of a function to the TestBase object.  Example: 
 
-        TestBase.TestShowMessage = function(configUrl, progressinfoCallback) {
-          console.log("TestShowMessage was called");
-        }
+        File: public/tests/TestShowMessage.js
+        -----------------------------------------------------------------------------------------
+          var TestBase = require("../TestBase.js");
 
-3.  In `public/test-src.js` require the file. Example: 
-        
-        require("./TestShowMessage.js");
+          TestBase.TestShowMessage = function(configUrl, configFile, progressinfoCallback) {
+            console.log("TestShowMessage was called");
+          };
 
-4.  In `public/index.html` add a button for the test, so that it can be manually invoked.  Example:
+3.  In `public/index.html` add a button for the test, so that it can be manually invoked. Make sure the data-test attribute contains the exact spelling and case of the test class.  Example:
 
-        <button onclick="TestBase.TestShowMessage('./configuration/', updateUI)">Test Showing a Message</button><br/>
+        <button class="btn brk test-btn" data-test="TestShowMessage">Test Showing a Message</button><br/>
 
 ## Make the test useful
-This will allow you to run a very simple test.  If you want to test clover connector functionality (considering where this is, that is reasonable), then you will write an extension of the ICloverConnectorListener.  The easiest way to do this is to extend the ExampleCloverConnectorListener.  You can look at `public/TestShowMessage.js` for an example of a written test of the connector, or follow the process below.  For this, a simple message is displayed on the device for 5 seconds, then the connection to the device is shutdown (via the testComplete() call).
+This will allow you to run a very simple test.  If you want to test clover connector functionality (considering where this is, that is reasonable), then you will write an extension of the ICloverConnectorListener.  The easiest way to do this is to extend the ExampleCloverConnectorListener.  You can look at `public/tests/TestShowMessage.js` for an example of a written test of the connector, or follow the process below.  For this, a simple message is displayed on the device for 5 seconds, then the connection to the device is shutdown (via the testComplete() call).
 
 1.  `require()` the `ExampleCloverConnectorListener` so you can make your own extension to it.  Example:
 
-        var ExampleCloverConnectorListener = require("./ExampleCloverConnectorListener.js");
+        var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
 
 2.  Create the extension to the class.  Accept the `cloverConnector` parameter and the `progressinfoCallback`.  Ensure that the prototype for the object and the constructor are properly set up.  Example:
         
@@ -79,11 +77,11 @@ This will allow you to run a very simple test.  If you want to test clover conne
 
 6.  Change your invocation to run the new extension of the `TestBase`
 
-        TestBase.TestShowMessage = function (configUrl, progressinfoCallback) {
-            var testObj = new TestShowMessage(configUrl, "test", progressinfoCallback);
+        TestBase.TestShowMessage = function (configUrl, configFile, progressinfoCallback) {
+            var testObj = new TestShowMessage(configUrl, configFile, progressinfoCallback);
             testObj.test();
         };
 
-There may be additional steps in the flow depending on the functionality being tested.  For more complex tests, look at `public/TestSale.js`, `public/TestAuth.js`, `public/TestPreAuth.js` as well as the other tests in this directory.    
+There may be additional steps in the flow depending on the functionality being tested.  For more complex tests, look at `public/tests/TestSale.js`, `public/tests/TestAuth.js`, `public/tests/TestPreAuth.js` as well as the other tests in this directory.
  
  

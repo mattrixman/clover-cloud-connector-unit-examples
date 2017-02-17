@@ -1,7 +1,7 @@
 var sdk = require("remote-pay-cloud-api");
-var PreAuthExampleCloverConnectorListener = require("./PreAuthExampleCloverConnectorListener.js");
+var PreAuthExampleCloverConnectorListener = require("../PreAuthExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
-var TestBase = require("./TestBase.js");
+var TestBase = require("../TestBase.js");
 
 /* Start: Test a preAuth, then capture it */
 /**
@@ -73,8 +73,8 @@ TestPreAuthCapture.prototype.getCloverConnectorListener = function (cloverConnec
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestPreAuthCapture = function(configUrl, progressinfoCallback) {
-    var testObj = new TestPreAuthCapture(configUrl, "test", progressinfoCallback);
+TestBase.TestPreAuthCapture = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestPreAuthCapture(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 

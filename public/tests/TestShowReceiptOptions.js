@@ -1,7 +1,7 @@
 var sdk = require("remote-pay-cloud-api");
-var ExampleCloverConnectorListener = require("./ExampleCloverConnectorListener.js");
+var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
-var TestBase = require("./TestBase.js");
+var TestBase = require("../TestBase.js");
 
 /* Start: Test a sale */
 /**
@@ -99,8 +99,8 @@ TestShowReceiptOptions.prototype.getCloverConnectorListener = function (cloverCo
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestShowReceiptOptions = function (configUrl, progressinfoCallback) {
-    var testObj = new TestShowReceiptOptions(configUrl, "test", progressinfoCallback);
+TestBase.TestShowReceiptOptions = function (configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestShowReceiptOptions(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 

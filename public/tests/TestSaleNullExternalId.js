@@ -1,35 +1,35 @@
 var sdk = require("remote-pay-cloud-api");
-var ExampleCloverConnectorListener = require("./ExampleCloverConnectorListener.js");
+var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
-var TestBase = require("./TestBase.js");
+var TestBase = require("../TestBase.js");
 
 /* Start: Test a sale */
 /**
  * A test of the sale functionality.
  *
- * @type {SaleExampleNegZeroAmountCloverConnectorListener}
+ * @type {SaleExampleNullExternalIdCloverConnectorListener}
  */
-var SaleExampleNegZeroAmountCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
+var SaleExampleNullExternalIdCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
     ExampleCloverConnectorListener.call(this, cloverConnector, progressinfoCallback);
     this.cloverConnector = cloverConnector;
     this.progressinfoCallback = progressinfoCallback;
 };
 
-SaleExampleNegZeroAmountCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
-SaleExampleNegZeroAmountCloverConnectorListener.prototype.constructor = SaleExampleNegZeroAmountCloverConnectorListener;
+SaleExampleNullExternalIdCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
+SaleExampleNullExternalIdCloverConnectorListener.prototype.constructor = SaleExampleNullExternalIdCloverConnectorListener;
 
-SaleExampleNegZeroAmountCloverConnectorListener.prototype.startTest = function () {
+SaleExampleNullExternalIdCloverConnectorListener.prototype.startTest = function () {
     ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
      */
     var saleRequest = new sdk.remotepay.SaleRequest();
-    saleRequest.setExternalId(clover.CloverID.getNewId());
-    saleRequest.setAmount( 0 /*10000*/);
+    saleRequest.setExternalId(null /*clover.CloverID.getNewId()*/);
+    saleRequest.setAmount(10000);
     this.displayMessage({message: "Sending sale", request: saleRequest});
     this.cloverConnector.sale(saleRequest);
 };
-SaleExampleNegZeroAmountCloverConnectorListener.prototype.onSaleResponse = function (response) {
+SaleExampleNullExternalIdCloverConnectorListener.prototype.onSaleResponse = function (response) {
     /*
      The sale is complete.  It might be canceled, or successful.  This can be determined by the
      values in the response.
@@ -49,8 +49,8 @@ SaleExampleNegZeroAmountCloverConnectorListener.prototype.onSaleResponse = funct
  * Used in the test to help identify where messages come from.
  * @returns {string}
  */
-SaleExampleNegZeroAmountCloverConnectorListener.prototype.getTestName = function () {
-    return "Test Sale NegZeroAmount";
+SaleExampleNullExternalIdCloverConnectorListener.prototype.getTestName = function () {
+    return "Test Sale NullExternalId";
 };
 
 /**
@@ -58,15 +58,15 @@ SaleExampleNegZeroAmountCloverConnectorListener.prototype.getTestName = function
  * that defines the test flow.
  * @type {TestBase}
  */
-TestSaleNegZeroAmount = function (configUrl, friendlyName, progressinfoCallback) {
+TestSaleNullExternalId = function (configUrl, friendlyName, progressinfoCallback) {
     TestBase.call(this, configUrl, friendlyName, progressinfoCallback);
 };
 
-TestSaleNegZeroAmount.prototype = Object.create(TestBase.prototype);
-TestSaleNegZeroAmount.prototype.constructor = TestSaleNegZeroAmount;
+TestSaleNullExternalId.prototype = Object.create(TestBase.prototype);
+TestSaleNullExternalId.prototype.constructor = TestSaleNullExternalId;
 
-TestSaleNegZeroAmount.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new SaleExampleNegZeroAmountCloverConnectorListener(cloverConnector, this.progressinfoCallback);
+TestSaleNullExternalId.prototype.getCloverConnectorListener = function (cloverConnector) {
+    return new SaleExampleNullExternalIdCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**
@@ -74,11 +74,11 @@ TestSaleNegZeroAmount.prototype.getCloverConnectorListener = function (cloverCon
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSaleNegZeroAmount = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSaleNegZeroAmount(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleNullExternalId = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestSaleNullExternalId(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 
 if ('undefined' !== typeof module) {
-    module.exports = TestSaleNegZeroAmount;
+    module.exports = TestSaleNullExternalId;
 }

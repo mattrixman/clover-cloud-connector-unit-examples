@@ -1,7 +1,7 @@
 var sdk = require("remote-pay-cloud-api");
-var ExampleCloverConnectorListener = require("./ExampleCloverConnectorListener.js");
+var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
-var TestBase = require("./TestBase.js");
+var TestBase = require("../TestBase.js");
 
 /**
  * A test of the read card data functionality.
@@ -95,8 +95,8 @@ TestVaultCard.prototype.getCloverConnectorListener = function (cloverConnector) 
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestVaultCard = function (configUrl, progressinfoCallback) {
-    var testObj = new TestVaultCard(configUrl, "test", progressinfoCallback);
+TestBase.TestVaultCard = function (configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestVaultCard(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 

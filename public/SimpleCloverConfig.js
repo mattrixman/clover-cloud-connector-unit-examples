@@ -36,6 +36,21 @@ SimpleCloverConfig.prototype.loadCloverConfig = function(configUrl, configuratio
         }.bind(this)
     });
 };
+SimpleCloverConfig.prototype.getConfigsList = function(configUrl, callback) {
+    $.ajax({
+        url: configUrl,
+        method: "GET",
+        dataType: 'json',
+        cache: false,
+        success: function (files) {
+            callback(null, files);
+        }.bind(this),
+        error: function (xhr, status, err) {
+            this.log.debug("load config error response: ", status, err);
+            callback(err, {message: "load config error response", data: err});
+        }.bind(this)
+    });
+};
 
 
 if ('undefined' !== typeof module) {

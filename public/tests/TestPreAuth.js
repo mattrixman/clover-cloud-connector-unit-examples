@@ -1,6 +1,6 @@
 // Following is in a separate file because it is used as a base for another test
-var PreAuthExampleCloverConnectorListener = require("./PreAuthExampleCloverConnectorListener.js");
-var TestBase = require("./TestBase.js");
+var PreAuthExampleCloverConnectorListener = require("../PreAuthExampleCloverConnectorListener.js");
+var TestBase = require("../TestBase.js");
 
 /* Start: Test a preAuth */
 /**
@@ -24,8 +24,8 @@ TestPreAuth.prototype.getCloverConnectorListener = function (cloverConnector) {
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestPreAuth = function(configUrl, progressinfoCallback) {
-    var testObj = new TestPreAuth(configUrl, "test", progressinfoCallback);
+TestBase.TestPreAuth = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestPreAuth(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 

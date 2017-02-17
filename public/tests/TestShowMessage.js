@@ -1,5 +1,5 @@
-var ExampleCloverConnectorListener = require("./ExampleCloverConnectorListener.js");
-var TestBase = require("./TestBase.js");
+var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
+var TestBase = require("../TestBase.js");
 
 var ShowMessageExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
     ExampleCloverConnectorListener.call(this, cloverConnector, progressinfoCallback);
@@ -48,7 +48,8 @@ TestShowMessage.prototype.getCloverConnectorListener = function (cloverConnector
     return new ShowMessageExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
-TestBase.TestShowMessage = function (configUrl, progressinfoCallback) {
-    var testObj = new TestShowMessage(configUrl, "test", progressinfoCallback);
+TestBase.TestShowMessage = function (configUrl, configFile, progressinfoCallback) {
+    console.log('Running test TestShowMessage with config '+configUrl+configFile);
+    var testObj = new TestShowMessage(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };

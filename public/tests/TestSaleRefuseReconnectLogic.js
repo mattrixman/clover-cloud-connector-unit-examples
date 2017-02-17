@@ -1,7 +1,7 @@
 var sdk = require("remote-pay-cloud-api");
-var ExampleCloverConnectorListener = require("./ExampleCloverConnectorListener.js");
+var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
-var TestBase = require("./TestBase.js");
+var TestBase = require("../TestBase.js");
 
 /* Start: Test a sale */
 /**
@@ -9,30 +9,33 @@ var TestBase = require("./TestBase.js");
  *
  * @type {SaleExampleCloverConnectorListener}
  */
-var SaleExampleFailOnTransactionRestartCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
+var SaleRefuseReconnectLogicExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
     ExampleCloverConnectorListener.call(this, cloverConnector, progressinfoCallback);
     this.cloverConnector = cloverConnector;
     this.progressinfoCallback = progressinfoCallback;
 };
 
-SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
-SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.constructor = SaleExampleFailOnTransactionRestartCloverConnectorListener;
+SaleRefuseReconnectLogicExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
+SaleRefuseReconnectLogicExampleCloverConnectorListener.prototype.constructor = SaleRefuseReconnectLogicExampleCloverConnectorListener;
 
-SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.startTest = function () {
+SaleRefuseReconnectLogicExampleCloverConnectorListener.prototype.startTest = function () {
     ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
      */
     var saleRequest = new sdk.remotepay.SaleRequest();
     saleRequest.setExternalId(clover.CloverID.getNewId());
-    saleRequest.setAmount(10);
-
-    saleRequest.setDisableRestartTransactionOnFail(true);
-
+    saleRequest.setAmount(10000);
     this.displayMessage({message: "Sending sale", request: saleRequest});
     this.cloverConnector.sale(saleRequest);
+    this.onReadyAlreadyCalled = true;
+
+    this.cloverConnector.onResetRequest = function(){
+        this.displayMessage({message: "Refusing to reconnect!  This is a bad idea!"});
+    }.bind(this);
+
 };
-SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.onSaleResponse = function (response) {
+SaleRefuseReconnectLogicExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
     /*
      The sale is complete.  It might be canceled, or successful.  This can be determined by the
      values in the response.
@@ -45,17 +48,14 @@ SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.onSaleRespo
     }
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-
-    // Note that this is expecting that the user cancels the transaction on the device, either in
-    // the signature screen or the transaction screen itself.
-    this.testComplete(!response.getSuccess());
+    this.testComplete(response.getSuccess());
 };
 
 /**
  * Used in the test to help identify where messages come from.
  * @returns {string}
  */
-SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.getTestName = function () {
+SaleRefuseReconnectLogicExampleCloverConnectorListener.prototype.getTestName = function () {
     return "Test Sale";
 };
 
@@ -64,15 +64,15 @@ SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.getTestName
  * that defines the test flow.
  * @type {TestBase}
  */
-TestSaleFailOnTransactionRestart = function (configUrl, friendlyName, progressinfoCallback) {
+TestSaleRefuseReconnectLogic = function (configUrl, friendlyName, progressinfoCallback) {
     TestBase.call(this, configUrl, friendlyName, progressinfoCallback);
 };
 
-TestSaleFailOnTransactionRestart.prototype = Object.create(TestBase.prototype);
-TestSaleFailOnTransactionRestart.prototype.constructor = TestSaleFailOnTransactionRestart;
+TestSaleRefuseReconnectLogic.prototype = Object.create(TestBase.prototype);
+TestSaleRefuseReconnectLogic.prototype.constructor = TestSaleRefuseReconnectLogic;
 
-TestSaleFailOnTransactionRestart.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new SaleExampleFailOnTransactionRestartCloverConnectorListener(cloverConnector, this.progressinfoCallback);
+TestSaleRefuseReconnectLogic.prototype.getCloverConnectorListener = function (cloverConnector) {
+    return new SaleRefuseReconnectLogicExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**
@@ -80,11 +80,11 @@ TestSaleFailOnTransactionRestart.prototype.getCloverConnectorListener = function
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSaleFailOnTransactionRestart = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSaleFailOnTransactionRestart(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleRefuseReconnectLogic = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestSaleRefuseReconnectLogic(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 
 if ('undefined' !== typeof module) {
-    module.exports = TestSaleFailOnTransactionRestart;
+    module.exports = TestSaleRefuseReconnectLogic;
 }

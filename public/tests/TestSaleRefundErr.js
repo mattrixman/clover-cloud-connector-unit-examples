@@ -1,7 +1,7 @@
 var sdk = require("remote-pay-cloud-api");
-var ExampleCloverConnectorListener = require("./ExampleCloverConnectorListener.js");
+var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
-var TestBase = require("./TestBase.js");
+var TestBase = require("../TestBase.js");
 
 /* Start: Test a sale */
 /**
@@ -9,16 +9,16 @@ var TestBase = require("./TestBase.js");
  *
  * @type {ExampleCloverConnectorListener}
  */
-var SaleRefundExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
+var SaleRefundErrExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
     ExampleCloverConnectorListener.call(this, cloverConnector, progressinfoCallback);
     this.cloverConnector = cloverConnector;
     this.progressinfoCallback = progressinfoCallback;
 };
 
-SaleRefundExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
-SaleRefundExampleCloverConnectorListener.prototype.constructor = SaleRefundExampleCloverConnectorListener;
+SaleRefundErrExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
+SaleRefundErrExampleCloverConnectorListener.prototype.constructor = SaleRefundErrExampleCloverConnectorListener;
 
-SaleRefundExampleCloverConnectorListener.prototype.startTest = function () {
+SaleRefundErrExampleCloverConnectorListener.prototype.startTest = function () {
     ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
@@ -30,7 +30,7 @@ SaleRefundExampleCloverConnectorListener.prototype.startTest = function () {
     this.cloverConnector.sale(saleRequest);
 };
 
-SaleRefundExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
+SaleRefundErrExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
     /*
      The sale is complete.  It might be canceled, or successful.  This can be determined by the
      values in the response.
@@ -44,7 +44,8 @@ SaleRefundExampleCloverConnectorListener.prototype.onSaleResponse = function (re
     }
     var request = new sdk.remotepay.RefundPaymentRequest();
 
-    request.setOrderId(response.getPayment().getOrder().getId());
+    // Force error by omitting order id
+    // request.setOrderId(response.getPayment().getOrder().getId());
     request.setPaymentId(response.getPayment().getId());
     request.setFullRefund(true);
 
@@ -58,23 +59,23 @@ SaleRefundExampleCloverConnectorListener.prototype.onSaleResponse = function (re
  * @param {remotepay.RefundPaymentResponse} response
  * @return void
  */
-SaleRefundExampleCloverConnectorListener.prototype.onRefundPaymentResponse = function (response) {
+SaleRefundErrExampleCloverConnectorListener.prototype.onRefundPaymentResponse = function (response) {
     this.displayMessage({message: "RefundPaymentResponse received", response: response});
-    if (!response.getSuccess()) {
-        this.displayMessage({message: "RefundPaymentResponse,  !!! something is wrong, this failed !!!"});
-        this.testComplete();
+    if (response.getSuccess()) {
+        this.displayMessage({message: "RefundPaymentResponse,  !!! something is wrong, this should have failed !!!"});
+        this.testComplete(false);
         return;
     }
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete(response.getSuccess());
+    this.testComplete(true);
 };
 
 /**
  * Used in the test to help identify where messages come from.
  * @returns {string}
  */
-SaleRefundExampleCloverConnectorListener.prototype.getTestName = function () {
+SaleRefundErrExampleCloverConnectorListener.prototype.getTestName = function () {
     return "Test Refund Full Payment";
 };
 /**
@@ -82,15 +83,15 @@ SaleRefundExampleCloverConnectorListener.prototype.getTestName = function () {
  * that defines the test flow.
  * @type {TestBase}
  */
-TestSaleRefund = function (configUrl, friendlyName, progressinfoCallback) {
+TestSaleRefundErr = function (configUrl, friendlyName, progressinfoCallback) {
     TestBase.call(this, configUrl, friendlyName, progressinfoCallback);
 };
 
-TestSaleRefund.prototype = Object.create(TestBase.prototype);
-TestSaleRefund.prototype.constructor = TestSaleRefund;
+TestSaleRefundErr.prototype = Object.create(TestBase.prototype);
+TestSaleRefundErr.prototype.constructor = TestSaleRefundErr;
 
-TestSaleRefund.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new SaleRefundExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
+TestSaleRefundErr.prototype.getCloverConnectorListener = function (cloverConnector) {
+    return new SaleRefundErrExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**
@@ -98,11 +99,11 @@ TestSaleRefund.prototype.getCloverConnectorListener = function (cloverConnector)
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSaleRefund = function (configUrl, progressinfoCallback) {
-    var testObj = new TestSaleRefund(configUrl, "test", progressinfoCallback);
+TestBase.TestSaleRefundErr = function (configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestSaleRefundErr(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 
 if ('undefined' !== typeof module) {
-    module.exports = TestSaleRefund;
+    module.exports = TestSaleRefundErr;
 }

@@ -44,14 +44,30 @@ app.use(function (req, res, next) {
 Get configurations
  */
 app.get('/configuration/*', function (req, res) {
-   console.log(req.path);
-   console.log(__dirname);
-   fs.readFile( __dirname + req.path, 'utf8', function (err, data) {
-       console.log( data );
-       // Firefox will display error if this is missing
-       res.setHeader("Content-Type", 'application/json');
-       res.end( data );
-   });
+  console.log(req.path);
+  console.log(__dirname);
+  if (req.path == '/configuration/') {
+    // Get the directory listing.
+    fs.readdir( __dirname + req.path, 'utf8', function (err, files) {
+      files = {
+        "files": files
+      };
+      console.log(files);
+      // Firefox will display error if this is missing
+      res.setHeader("Content-Type", 'application/json');
+      res.send( files );
+      res.end();
+    });
+  }
+  else {
+    // Read a single file.
+    fs.readFile( __dirname + req.path, 'utf8', function (err, data) {
+      console.log( data );
+      // Firefox will display error if this is missing
+      res.setHeader("Content-Type", 'application/json');
+      res.end( data );
+    });
+  }
 });
 
 /*
@@ -66,7 +82,7 @@ app.post('/configuration/*', function(request, response){
   var formattedToWrite = JSON.stringify(request.body, null, 4);
   fs.writeFile(__dirname + request.path, formattedToWrite, function(err) {
     if(err) {
-        return console.log(err);
+      return console.log(err);
     }
     console.log("The file was saved to " + __dirname + request.path);
   }); 
@@ -82,5 +98,5 @@ https.createServer(options, app).listen(443, function () {
 app.set('port', (process.env.PORT || 3000));
 
 app.listen(app.get('port'), function() {
-    console.log('Server started: http://localhost:' + app.get('port') + '/');
+  console.log('Server started: http://localhost:' + app.get('port') + '/');
 });

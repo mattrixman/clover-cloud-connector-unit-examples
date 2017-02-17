@@ -1,24 +1,24 @@
 var sdk = require("remote-pay-cloud-api");
-var ExampleCloverConnectorListener = require("./ExampleCloverConnectorListener.js");
+var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
-var TestBase = require("./TestBase.js");
+var TestBase = require("../TestBase.js");
 
 /* Start: Test a sale */
 /**
  * A test of the sale functionality.
  *
- * @type {SaleExampleCloverConnectorListener}
+ * @type {AllFramesExampleCloverConnectorListener}
  */
-var SaleWithReconnectLogicExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
+var AllFramesExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
     ExampleCloverConnectorListener.call(this, cloverConnector, progressinfoCallback);
     this.cloverConnector = cloverConnector;
     this.progressinfoCallback = progressinfoCallback;
 };
 
-SaleWithReconnectLogicExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
-SaleWithReconnectLogicExampleCloverConnectorListener.prototype.constructor = SaleWithReconnectLogicExampleCloverConnectorListener;
+AllFramesExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
+AllFramesExampleCloverConnectorListener.prototype.constructor = AllFramesExampleCloverConnectorListener;
 
-SaleWithReconnectLogicExampleCloverConnectorListener.prototype.startTest = function () {
+AllFramesExampleCloverConnectorListener.prototype.startTest = function () {
     ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
@@ -29,7 +29,7 @@ SaleWithReconnectLogicExampleCloverConnectorListener.prototype.startTest = funct
     this.displayMessage({message: "Sending sale", request: saleRequest});
     this.cloverConnector.sale(saleRequest);
 };
-SaleWithReconnectLogicExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
+AllFramesExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
     /*
      The sale is complete.  It might be canceled, or successful.  This can be determined by the
      values in the response.
@@ -37,8 +37,6 @@ SaleWithReconnectLogicExampleCloverConnectorListener.prototype.onSaleResponse = 
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
         this.displayMessage({error: "Response is not a sale!"});
-        this.testComplete();
-        return;
     }
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
@@ -49,7 +47,7 @@ SaleWithReconnectLogicExampleCloverConnectorListener.prototype.onSaleResponse = 
  * Used in the test to help identify where messages come from.
  * @returns {string}
  */
-SaleWithReconnectLogicExampleCloverConnectorListener.prototype.getTestName = function () {
+AllFramesExampleCloverConnectorListener.prototype.getTestName = function () {
     return "Test Sale";
 };
 
@@ -58,15 +56,26 @@ SaleWithReconnectLogicExampleCloverConnectorListener.prototype.getTestName = fun
  * that defines the test flow.
  * @type {TestBase}
  */
-TestSaleWithReconnectLogic = function (configUrl, friendlyName, progressinfoCallback) {
+TestLogAllFrames = function (configUrl, friendlyName, progressinfoCallback) {
     TestBase.call(this, configUrl, friendlyName, progressinfoCallback);
 };
 
-TestSaleWithReconnectLogic.prototype = Object.create(TestBase.prototype);
-TestSaleWithReconnectLogic.prototype.constructor = TestSaleWithReconnectLogic;
+TestLogAllFrames.prototype = Object.create(TestBase.prototype);
+TestLogAllFrames.prototype.constructor = TestLogAllFrames;
 
-TestSaleWithReconnectLogic.prototype.getCloverConnectorListener = function (cloverConnector) {
-    return new SaleWithReconnectLogicExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
+TestLogAllFrames.prototype.getCloverConnectorListener = function (cloverConnector) {
+    /*
+     This is a hook into the cloverConnector to listen to all messages and react to them in some way.
+     */
+    cloverConnector.device.on(clover.WebSocketDevice.ALL_MESSAGES,
+      function (message) {
+          // Do not handle ping or pong
+          if ((message['type'] != 'PONG') && (message['type'] != 'PING')) {
+              console.log("Handle all messages", message);
+          }
+      }.bind(this)
+    );
+    return new AllFramesExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
 };
 
 /**
@@ -74,11 +83,11 @@ TestSaleWithReconnectLogic.prototype.getCloverConnectorListener = function (clov
  * @param configUrl
  * @param progressinfoCallback
  */
-TestBase.TestSaleWithReconnectLogic = function(configUrl, progressinfoCallback) {
-    var testObj = new TestSaleWithReconnectLogic(configUrl, "test", progressinfoCallback);
+TestBase.TestLogAllFrames = function(configUrl, configFile, progressinfoCallback) {
+    var testObj = new TestLogAllFrames(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };
 
 if ('undefined' !== typeof module) {
-    module.exports = TestSaleWithReconnectLogic;
+    module.exports = TestLogAllFrames;
 }
