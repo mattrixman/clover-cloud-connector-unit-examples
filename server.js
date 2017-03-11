@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 log all request bodies.
  */
 app.use(function (req, res, next) {
-  console.log(req.body); // populated!
+  // console.log(req.body); // populated!
   next()
 });
 
@@ -44,15 +44,19 @@ app.use(function (req, res, next) {
 Get configurations
  */
 app.get('/configuration/*', function (req, res) {
-  console.log(req.path);
-  console.log(__dirname);
+  console.log('');
+  console.log('-------------------------------------------------------');
+  console.log('Requested Configuration: ' + __dirname + req.path);
   if (req.path == '/configuration/') {
     // Get the directory listing.
     fs.readdir( __dirname + req.path, 'utf8', function (err, files) {
       files = {
         "files": files
       };
-      console.log(files);
+      console.log('Configuration Files Found: ');
+      console.log(JSON.stringify(files, null, 2));
+      console.log('-------------------------------------------------------');
+      console.log('');
       // Firefox will display error if this is missing
       res.setHeader("Content-Type", 'application/json');
       res.send( files );
@@ -62,7 +66,10 @@ app.get('/configuration/*', function (req, res) {
   else {
     // Read a single file.
     fs.readFile( __dirname + req.path, 'utf8', function (err, data) {
-      console.log( data );
+      console.log('File Requested: ');
+      console.log(JSON.stringify(JSON.parse(data), null, 2));
+      console.log('-------------------------------------------------------');
+      console.log('');
       // Firefox will display error if this is missing
       res.setHeader("Content-Type", 'application/json');
       res.end( data );
@@ -74,17 +81,32 @@ app.get('/configuration/*', function (req, res) {
  Save configurations
  */
 app.post('/configuration/*', function(request, response){
-  console.log(request.body);      // your JSON
+  console.log('');
+  console.log('-------------------------------------------------------');
+  console.log('Saving configuration file: ');
+  console.log(JSON.stringify(request.body, null, 2));      // your JSON
   mkdirp(__dirname + '/configuration', function(err) { 
-    console.log(err);
+    if (err) {
+      console.log('Error: ');
+      console.error(err);
+      console.log('-------------------------------------------------------');
+      console.log('');
+      return err;
+    }
   });
 
   var formattedToWrite = JSON.stringify(request.body, null, 4);
   fs.writeFile(__dirname + request.path, formattedToWrite, function(err) {
-    if(err) {
-      return console.log(err);
+    if (err) {
+      console.log('Error: ');
+      console.error(err);
+      console.log('-------------------------------------------------------');
+      console.log('');
+      return err;
     }
     console.log("The file was saved to " + __dirname + request.path);
+    console.log('-------------------------------------------------------');
+    console.log('');
   }); 
   response.send(request.body);    // echo the result back
 });

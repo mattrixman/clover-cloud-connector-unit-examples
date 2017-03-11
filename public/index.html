@@ -218,7 +218,7 @@
        * **************************************************************************/
 
       // Create button click handlers.
-      [...document.querySelectorAll('button.test-btn')].forEach(function(btn) {
+      [].slice.call(document.querySelectorAll('button.test-btn')).forEach(function(btn) {
         btn.onclick = function(el) {
           // Get the test name.
           var testName = el.target.getAttribute('data-test');
