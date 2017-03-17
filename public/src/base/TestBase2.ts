@@ -1,5 +1,6 @@
+import * as sdk from 'remote-pay-cloud-api';
 import * as Clover from 'remote-pay-cloud';
-import SimpleCloverConfig = require('../SimpleCloverConfig');
+import {SimpleCloverConfig} from '../SimpleCloverConfig';
 
 export abstract class TestBase2 {
 	private logger: Clover.Logger = Clover.Logger.create();
@@ -93,7 +94,7 @@ export abstract class TestBase2 {
 	 * @param cloverConnector 
 	 * @param progressInfoCallback 
 	 */
-	protected getCloverConnectorListener(cloverConnector: Clover.CloverConnector, progressInfoCallback) {
+	protected getCloverConnectorListener(cloverConnector: Clover.CloverConnector, progressInfoCallback: any): sdk.remotepay.ICloverConnectorListener {
         throw new Error('Method not implemented');
 	}
 }
