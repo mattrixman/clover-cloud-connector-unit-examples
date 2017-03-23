@@ -48,7 +48,8 @@ app.get('/configuration/*', function (req, res) {
   console.log(__dirname);
   if (req.path == '/configuration/') {
     // Get the directory listing.
-    fs.readdir( __dirname + req.path, 'utf8', function (err, files) {
+    //fs.readdir( __dirname + req.path, 'utf8', function (err, files) {
+    fs.readdir( __dirname + req.path, function (err, files) {
       files = {
         "files": files
       };
