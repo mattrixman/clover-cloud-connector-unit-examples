@@ -74,7 +74,7 @@ BadRejectExampleCloverConnectorListener.prototype.onConfirmPaymentRequest = func
  */
 BadRejectExampleCloverConnectorListener.prototype.onDeviceError = function(deviceErrorEvent) {
     ExampleCloverConnectorListener.prototype.onDeviceError.call(this, deviceErrorEvent);
-    setTimeout(function(){ this.testComplete(true);}.bind(this), 10000);
+    setTimeout(function(){ this.testComplete(true);}.bind(this), 15000);
 };
 
 
