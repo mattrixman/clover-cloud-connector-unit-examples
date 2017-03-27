@@ -21,7 +21,7 @@ ShowMessageExampleCloverConnectorListener.prototype.startTest = function () {
         // Always call this when your test is done, or the device may fail to connect the
         // next time, because it is already connected.
         this.testComplete(true);
-    }.bind(this), 5000);
+    }.bind(this), 15000);
 };
 
 /**

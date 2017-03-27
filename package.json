@@ -1,6 +1,6 @@
 {
   "name": "clover-cloud-connector-unit-examples",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "ISC",
   "repository": {
     "type": "git",
@@ -16,8 +16,7 @@
     "mkdirp": "*",
     "path": "*",
     "require-globify": "*",
-    "remote-pay-cloud": "1.1.0",
-    "remote-pay-cloud-api": "1.1.0"
+    "remote-pay-cloud": "1.2.0-rc1.0"
   },
   "engines": {
     "node": "5.9.1",
