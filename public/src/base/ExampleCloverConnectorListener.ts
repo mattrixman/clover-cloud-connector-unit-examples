@@ -7,7 +7,10 @@ import sdk = require("remote-pay-cloud-api");
  * @param progressinfoCallback
  * @constructor
  */
-export abstract class ExampleCloverConnectorListener implements sdk.remotepay.ICloverConnectorListener {
+export abstract class ExampleCloverConnectorListener
+//implements
+    extends
+    sdk.remotepay.ICloverConnectorListener {
 
     protected cloverConnector: sdk.remotepay.ICloverConnector;
     private progressinfoCallback: any; // todo - type this later?
@@ -15,6 +18,8 @@ export abstract class ExampleCloverConnectorListener implements sdk.remotepay.IC
 
 
     constructor(cloverConnector: sdk.remotepay.ICloverConnector, progressinfoCallback) {
+        super();
+
         this.cloverConnector = cloverConnector;
         this.progressinfoCallback = progressinfoCallback;
         this.testStarted = false;

@@ -49,7 +49,7 @@ app.get('/configuration/*', function (req, res) {
   console.log('Requested Configuration: ' + __dirname + req.path);
   if (req.path == '/configuration/') {
     // Get the directory listing.
-    fs.readdir( __dirname + req.path, 'utf8', function (err, files) {
+    fs.readdir( __dirname + req.path, function (err, files) {
       files = {
         "files": files
       };
@@ -65,7 +65,7 @@ app.get('/configuration/*', function (req, res) {
   }
   else {
     // Read a single file.
-    fs.readFile( __dirname + req.path, 'utf8', function (err, data) {
+    fs.readFile( __dirname + req.path, function (err, data) {
       console.log('File Requested: ');
       console.log(JSON.stringify(JSON.parse(data), null, 2));
       console.log('-------------------------------------------------------');
