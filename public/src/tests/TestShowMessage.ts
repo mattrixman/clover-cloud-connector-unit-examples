@@ -2,8 +2,21 @@ import * as sdk from 'remote-pay-cloud-api';
 import * as Clover from 'remote-pay-cloud';
 import {TestBase2} from '../base/TestBase2';
 import {ExampleCloverConnectorListener} from '../base/ExampleCloverConnectorListener';
+import {CloverConfigLoader} from '../configurationLoader/CloverConfigLoader';
 
 export class TestShowMessage extends TestBase2 {
+
+    constructor(loader: CloverConfigLoader, progressInfoCallback: any) {
+        super(loader, progressInfoCallback);
+    }
+
+    /**
+     *
+     */
+    public getName(): string {
+        return "Test Showing a message on the Clover Device";
+    }
+
     /**
      * Method to get the connector listener for this test
      *

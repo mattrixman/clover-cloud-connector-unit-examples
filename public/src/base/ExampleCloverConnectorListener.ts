@@ -76,6 +76,7 @@ export abstract class ExampleCloverConnectorListener
      */
     protected testComplete(success: boolean): void {
         this.displayMessage({ message: "Test Completed.  Cleaning up.", success: success});
+        this.cloverConnector.showWelcomeScreen();
         this.cloverConnector.dispose();
     }
 

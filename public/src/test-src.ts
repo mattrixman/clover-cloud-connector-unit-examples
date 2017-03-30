@@ -1,112 +1,198 @@
+var $ = require('jquery');
+
 import * as Clover from 'remote-pay-cloud';
 import {ExampleCloverConnectorListener} from './base/ExampleCloverConnectorListener';
-import {ExampleWebsocketCloverDeviceConfiguration} from './base/ExampleWebsocketCloverDeviceConfiguration';
+import {CloverConfigLoaderListener} from './configurationLoader/CloverConfigLoaderListener';
+import {URLCloverConfigLoader} from './configurationLoader/URLCloverConfigLoader';
+import {CloverConfigLoader} from './configurationLoader/CloverConfigLoader';
+import {TestBase2} from './base/TestBase2';
 
-//function requireAll(r) {
-//    r.keys().forEach(r);
+import * as tests from './tests';
 
 // Remove the following to turn off logging.
 Clover.DebugConfig.loggingEnabled = true;
 
-export class BrowserWebSocketImpl extends Clover.CloverWebSocketInterface {
-
-    constructor(endpoint: string) {
-        super(endpoint);
+export class ExampleWebsocketPairedCloverDeviceConfiguration extends Clover.WebSocketPairedCloverDeviceConfiguration {
+    /**
+     * @param rawConfiguration - a raw json object for initialization.
+     */
+    public constructor(
+        rawConfiguration: any ) {
+        super(
+            rawConfiguration.uri,
+            rawConfiguration.appId,
+            rawConfiguration.posName,
+            rawConfiguration.serialNumber,
+            rawConfiguration.authToken,
+            Clover.BrowserWebSocketImpl.createInstance,
+            rawConfiguration.heartbeatInterval,
+            rawConfiguration.reconnectDelay);
     }
 
-    /**
-     *
-     * @override
-     * @param endpoint - the url that will connected to
-     * @returns {WebSocket} - the specific implementation of a websocket
-     */
-    public createWebSocket(endpoint: string): any {
-        return new WebSocket(endpoint);
+    public onPairingCode(pairingCode: string): void {
+        console.log("Pairing code is " + pairingCode);
+        showPairingCode(pairingCode);
     }
 
-    /**
-     * Browser implementations do not do pong frames
-     */
-    public sendPong(): Clover.CloverWebSocketInterface {
-        return this;
-    }
-
-    /**
-     * Browser implementations do not do ping frames
-     */
-    public sendPing(): Clover.CloverWebSocketInterface {
-        return this;
-    }
-
-    /**
-     * Create an instance of this class
-     *
-     * @param endpoint
-     * @returns {BrowserWebSocketImpl}
-     */
-    public static createInstance(endpoint: string): BrowserWebSocketImpl {
-        return new BrowserWebSocketImpl(endpoint);
+    public onPairingSuccess(authToken: string): void {
+        console.log("Pairing succeeded, authToken is " + authToken);
+        clearPairingCode();
     }
 }
 
+export class ExampleWebsocketCloudCloverDeviceConfiguration extends Clover.WebSocketCloudCloverDeviceConfiguration {
+    /**
+     * @param rawConfiguration - a raw json object for initialization.
+     */
+    public constructor(
+        rawConfiguration: any ) {
+        super(
+            rawConfiguration.appId,
+            Clover.BrowserWebSocketImpl.createInstance,
+            rawConfiguration.cloverServer,
+            rawConfiguration.accessToken,
+            new Clover.HttpSupport(XMLHttpRequest),
+            rawConfiguration.merchantId,
+            rawConfiguration.deviceId,
+            rawConfiguration.friendlyId,
+            rawConfiguration.forceConnect,
+            rawConfiguration.heartbeatInterval,
+            rawConfiguration.reconnectDelay);
+    }
+};
 
-let configuration: Clover.CloverDeviceConfiguration = new ExampleWebsocketCloverDeviceConfiguration(
-    //endpoint: string,
-    "wss://Clover-C030UQ50550081.local.:12345/remote_pay",
-    //applicationId: string
-    "test.js.test",
-    //posName: string,
-    "pos.name",
-    //serialNumber: string,
-    "1122334455",
-    // authToken: string,
-    null,
-    // webSocketImplClass:any,
-    BrowserWebSocketImpl.createInstance
-    // heartbeatInterval?: number, reconnectDelay?: number
+// Example of configuration
+let configuration: Clover.CloverDeviceConfiguration = new ExampleWebsocketPairedCloverDeviceConfiguration(
+    {
+        endpoint: "wss://Clover-C030UQ50550081.local.:12345/remote_pay",
+        applicationId: "test.js.test",
+        posName: "pos.name",
+        serialNumber: "1122334455",
+        authToken: null,
+        heartbeatInterval: null,
+        reconnectDelay: null
+    }
 );
-console.log(configuration);
 
-export class TestCloverConnectorListener extends ExampleCloverConnectorListener {
+// Configuration persistence.
+// These examples use this path to persist.  This is part of the example 'server.js'
+const CONFIG_BASE_PATH = './configuration/';
+let configLoader:CloverConfigLoader = new (class ExampleLoader extends URLCloverConfigLoader {
+
+    constructor() {
+        super(CONFIG_BASE_PATH);
+    }
+
     /**
-     * Used to identify the test in progress messages.
+     * Returns a typed configuration for a raw persisted configuration.
      *
-     * @override
-     * @returns {string}
+     * @param rawConfiguration - {type: <instance.constructor.name>, value: <untyped jsonobject CloverDeviceConfiguration>}
+     * @returns {any}
      */
-    protected getTestName(): string {
-        return "Test Displaying a message on the device";
-    }
+    public typeConfiguration(rawConfiguration: any): Clover.CloverDeviceConfiguration {
+        if(rawConfiguration.type == "ExampleWebsocketPairedCloverDeviceConfiguration") {
+            return new ExampleWebsocketPairedCloverDeviceConfiguration(rawConfiguration.value);
+        } else if(rawConfiguration.type == "ExampleWebsocketCloudCloverDeviceConfiguration") {
+            return new ExampleWebsocketCloudCloverDeviceConfiguration(rawConfiguration.value);
+        }
+        // try to figure it out
+        else if(rawConfiguration.cloverServer && rawConfiguration.accessToken) {
+            return new ExampleWebsocketCloudCloverDeviceConfiguration(rawConfiguration);
+        } else if(rawConfiguration.uri && rawConfiguration.serialNumber) {
+            return new ExampleWebsocketPairedCloverDeviceConfiguration(rawConfiguration);
+        }
 
-    /**
-     * @override
-     */
-    protected startTest(): void {
-        super.startTest();
-        /*
-         The connector is ready, you can use it to communicate with the device.
-         */
-        this.displayMessage({message: "Sending message to display"});
-        this.cloverConnector.showMessage("This message was sent to this device from the test framework");
-        setTimeout(function () {
-            // Always call this when your test is done, or the device may fail to connect the
-            // next time, because it is already connected.
-            this.cloverConnector.showWelcomeScreen();
-            this.testComplete(true);
-        }.bind(this), 5000);
+        console.log("Don't know how to type configuration", rawConfiguration);
+        return null;
     }
+});
+
+// gui crap below
+var pairingCodeDisplay = $('<div>  </div>');
+$('body').append(pairingCodeDisplay);
+$('body').append('<BR/>');
+function showPairingCode(pairingCode) {
+    pairingCodeDisplay.text("Enter code '"+pairingCode+"' on the Clover device.");
+}
+function clearPairingCode() {
+    pairingCodeDisplay.text("  ");
 }
 
-var connector:Clover.CloverConnector = new Clover.CloverConnector(configuration);
-var connectorListener:TestCloverConnectorListener = new TestCloverConnectorListener(connector, function(message){console.log(message)});
-connector.addCloverConnectorListener(connectorListener);
-connector.initializeConnection();
+var confignameeditor = $('<input type="text" id="confignameeditor" size="60">');
+var configeditor = $('<textarea id="configeditor" style="margin: 0px; width: 882px; height: 193px;">');
+// Make the configuration select
+var configurationSelect = $('<select>');
+// Example of the configuration loader listener.
+configLoader.addCloverConfigLoaderListener( {
+    onCloverConfigSaveComplete: (success:boolean, configurationKey:string, configuration:Clover.CloverDeviceConfiguration) => {
+        console.log("onCloverConfigSaveComplete", success, configurationKey, configuration);
+        configLoader.getConfigsList();
+    },
+    onCloverConfigLoadComplete: (success:boolean, configurationKey:string, configuration:Clover.CloverDeviceConfiguration) => {
+        console.log("onCloverConfigLoadComplete", success, configurationKey, configuration);
+        configeditor.val(JSON.stringify(configuration, null, '\t'));
+        // $("#confignameeditor").val(configurationKey);
+        confignameeditor.val(configurationKey);
+    },
+    onConfigsList: (configurations: Array<string>) => {
+        console.log("onConfigsList", configurations);
+        // Put the list of configurations in the select
+        configurationSelect.empty();
+        $(configurations).each(function() {
+            configurationSelect.append($("<option>").attr('value',this).text(this));
+        });
+        configLoader.loadCloverConfig(configurations[0]);
+    }
+});
 
-//TestBase.ForceDisconnect = require("./ForceDisconnect.js");
-//
-//// Each of the following decorates TestBase
-//requireAll(require.context('./tests', true, /\.js$/));
-//
-//if ('undefined' !== typeof module) {
-//    module.exports = TestBase;
-//}
+// Handle the change of the select
+configurationSelect.on('change', function() {
+    configLoader.loadCloverConfig( this.value );
+});
+
+// Add a button to load configurations
+var btn = document.createElement("BUTTON");
+var t = document.createTextNode("Load Configurations");
+btn.appendChild(t);
+btn.addEventListener("click", function(){
+    configeditor.readOnly = false;
+    configLoader.getConfigsList()
+}, false);
+document.body.appendChild(btn);
+$('body').append('<BR/>');
+
+// Put the configuration select below the buttons
+confignameeditor.appendTo('body');
+$('body').append('<BR/>');
+configurationSelect.appendTo('body');
+$(document).ready(function(){configLoader.getConfigsList();});
+
+// Add a button to Edit/Save the configuration being edited
+var btn = document.createElement("BUTTON");
+var editSaveConfig = document.createTextNode("Save Configuration");
+btn.appendChild(editSaveConfig);
+btn.addEventListener("click", function(){
+    var parsedConfig = JSON.parse(configeditor.val());
+    configLoader.saveCloverConfig(confignameeditor.val(), parsedConfig);
+    configLoader.getConfigsList();
+}, false);
+document.body.appendChild(btn);
+$('body').append('<BR/>');
+
+// A place to edit the configuration
+$('body').append(configeditor);
+$('body').append('<BR/>');
+
+// Build the buttons
+for (var property in tests) {
+    if (tests.hasOwnProperty(property)) {
+        let testMessage: TestBase2 = new tests[property](configLoader, function(message){console.log(message)});
+
+        var btn = document.createElement("BUTTON");
+        var t = document.createTextNode(testMessage.getName());
+        btn.appendChild(t);
+        btn.addEventListener("click", function(){testMessage.test()}, false);
+        document.body.appendChild(btn);
+        document.body.appendChild(document.createElement("BR") );
+    }
+}
