@@ -2,6 +2,26 @@
 	outline: none;
 }
 
+.pageTitle {
+	font-size: 1.6em;
+	float: left;
+}
+
+.config-select {
+	width: 475px;
+}
+
+.load-config-selector {
+	width: 100%;
+}
+
+.load-config-selector {
+	width: 100%;
+}
+
+.config-select textarea{
+	resize: vertical;
+}
 .btn {
 	float: left;
 	-webkit-border-radius: 2px;
@@ -55,7 +75,7 @@ select {
 .config-messages-section {
 	border: 1px solid #888;
 	border-collapse: collapse;
-	width: 85%;
+	width: 100%;
 	margin-bottom: 10px;
 }
 
@@ -76,4 +96,10 @@ select {
 .tests-wrapper {
 	display: inline-block;
 	margin-bottom: 20px;
+	overflow:scroll;
+	height:400px;
+	width:100%;
+	background-color: #cccccc;
+	border: 1px solid #888;
 }
+

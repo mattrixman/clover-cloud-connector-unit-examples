@@ -20,6 +20,7 @@ ReadCardDataFailExampleCloverConnectorListener.prototype = Object.create(Example
 ReadCardDataFailExampleCloverConnectorListener.prototype.constructor = ReadCardDataFailExampleCloverConnectorListener;
 
 ReadCardDataFailExampleCloverConnectorListener.prototype.startTest = function () {
+try{
     ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, send the request to read card data to the device
@@ -30,8 +31,12 @@ ReadCardDataFailExampleCloverConnectorListener.prototype.startTest = function ()
     readCardDataRequest.setIsForceSwipePinEntry(false);
     // cardEntryMethods can be `ICC_CONTACT, MAG_STRIPE, NFC_CONTACTLESS` or some combination of those,
     // but not `MANUAL`
-    readCardDataRequest.setCardEntryMethods(0 /*clover.CardEntryMethods.DEFAULT*/);
+    readCardDataRequest.setCardEntryMethods(1 /*clover.CardEntryMethods.DEFAULT*/);
     this.cloverConnector.readCardData(readCardDataRequest);
+} catch (e) {
+    console.log(e);
+    this.testComplete(false);
+}
 };
 
 /**
@@ -41,14 +46,20 @@ ReadCardDataFailExampleCloverConnectorListener.prototype.startTest = function ()
  * @param response
  */
 ReadCardDataFailExampleCloverConnectorListener.prototype.onReadCardDataResponse = function (response) {
+try{
     /*
      The read is complete complete.  It might be canceled, failed, or successful.  This can be determined by the
      values in the response.
      */
+
     this.displayMessage({message: "Read card data response received", response: response});
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
     this.testComplete(!response.getSuccess());
+} catch (e) {
+    console.log(e);
+    this.testComplete(false);
+}
 };
 
 /**

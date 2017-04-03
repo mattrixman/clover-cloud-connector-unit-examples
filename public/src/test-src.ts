@@ -59,7 +59,7 @@ export class ExampleWebsocketCloudCloverDeviceConfiguration extends Clover.WebSo
             rawConfiguration.heartbeatInterval,
             rawConfiguration.reconnectDelay);
     }
-};
+}
 
 // Example of configuration
 let configuration: Clover.CloverDeviceConfiguration = new ExampleWebsocketPairedCloverDeviceConfiguration(

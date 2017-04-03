@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-	entry: './public/src/test-src.ts',
+	entry: './public/test-src.js',
 	resolve: {
 		extensions: ['.js', '.ts']
 	},

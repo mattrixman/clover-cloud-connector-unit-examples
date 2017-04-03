@@ -19,36 +19,43 @@ SaleRefundExampleCloverConnectorListener.prototype = Object.create(ExampleClover
 SaleRefundExampleCloverConnectorListener.prototype.constructor = SaleRefundExampleCloverConnectorListener;
 
 SaleRefundExampleCloverConnectorListener.prototype.startTest = function () {
-    ExampleCloverConnectorListener.prototype.startTest.call(this);
-    /*
-     The connector is ready, create a sale request and send it to the device.
-     */
-    var saleRequest = new sdk.remotepay.SaleRequest();
-    saleRequest.setExternalId(clover.CloverID.getNewId());
-    saleRequest.setAmount(10000);
-    this.displayMessage({message: "Sending sale", request: saleRequest});
-    this.cloverConnector.sale(saleRequest);
+    try {
+        ExampleCloverConnectorListener.prototype.startTest.call(this);
+        /*
+         The connector is ready, create a sale request and send it to the device.
+         */
+        var saleRequest = new sdk.remotepay.SaleRequest();
+        saleRequest.setExternalId(clover.CloverID.getNewId());
+        saleRequest.setAmount(10000);
+        this.displayMessage({message: "Sending sale", request: saleRequest});
+        this.cloverConnector.sale(saleRequest);
+    } catch (e) {
+        console.log(e);
+        this.testComplete(false);
+    }
 };
 
 SaleRefundExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
-    /*
-     The sale is complete.  It might be canceled, or successful.  This can be determined by the
-     values in the response.
-     */
-    this.displayMessage({message: "Sale response received", response: response});
-    if (!response.getIsSale()) {
-        this.displayMessage({error: "Response is not a sale!"});
-        // Failing for the wrong reason...
-        this.testComplete();
-        return;
+    try {
+        /*
+         The sale is complete.  It might be canceled, or successful.  This can be determined by the
+         values in the response.
+         */
+        this.displayMessage({message: "Sale response received", response: response});
+        if (!response.getIsSale()) {
+            this.displayMessage({error: "Response is not a sale!  Will try to refund anyway..."});
+        }
+        var request = new sdk.remotepay.RefundPaymentRequest();
+
+        request.setOrderId(response.getPayment().getOrder().getId());
+        request.setPaymentId(response.getPayment().getId());
+        request.setFullRefund(true);
+
+        this.cloverConnector.refundPayment(request);
+    } catch (e) {
+        console.log(e);
+        this.testComplete(false);
     }
-    var request = new sdk.remotepay.RefundPaymentRequest();
-
-    request.setOrderId(response.getPayment().getOrder().getId());
-    request.setPaymentId(response.getPayment().getId());
-    request.setFullRefund(true);
-
-    this.cloverConnector.refundPayment(request);
 };
 
 /**
@@ -59,15 +66,20 @@ SaleRefundExampleCloverConnectorListener.prototype.onSaleResponse = function (re
  * @return void
  */
 SaleRefundExampleCloverConnectorListener.prototype.onRefundPaymentResponse = function (response) {
-    this.displayMessage({message: "RefundPaymentResponse received", response: response});
-    if (!response.getSuccess()) {
-        this.displayMessage({message: "RefundPaymentResponse,  !!! something is wrong, this failed !!!"});
-        this.testComplete();
-        return;
+    try {
+        this.displayMessage({message: "RefundPaymentResponse received", response: response});
+        if (!response.getSuccess()) {
+            this.displayMessage({message: "RefundPaymentResponse,  !!! something is wrong, this failed !!!"});
+            this.testComplete();
+            return;
+        }
+        // Always call this when your test is done, or the device may fail to connect the
+        // next time, because it is already connected.
+        this.testComplete(response.getSuccess());
+    } catch (e) {
+        console.log(e);
+        this.testComplete(false);
     }
-    // Always call this when your test is done, or the device may fail to connect the
-    // next time, because it is already connected.
-    this.testComplete(response.getSuccess());
 };
 
 /**

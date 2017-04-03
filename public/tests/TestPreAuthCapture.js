@@ -1,4 +1,3 @@
-var sdk = require("remote-pay-cloud-api");
 var PreAuthExampleCloverConnectorListener = require("../PreAuthExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
 var TestBase = require("../TestBase.js");
