@@ -93,7 +93,7 @@ ExampleCloverConnectorListener.prototype.getTestName = function() {
  *
  * @param {remotepay.CloverDeviceErrorEvent} deviceErrorEvent
  * @return void
- */
+*/
 ExampleCloverConnectorListener.prototype.onDeviceError = function(deviceErrorEvent) {
     console.error("onDeviceError", deviceErrorEvent);
     this.displayMessage({ message: "Test Error.", success: false, deviceErrorEvent});

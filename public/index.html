@@ -71,6 +71,12 @@
       <button class="btn brk test-btn" data-test="TestReset">Test resetting device</button><br/>
       <button class="btn brk test-btn" data-test="TestSaleFailOnTransactionRestart">Test Fail Transaction on restart</button><br/>
       <button class="btn brk test-btn" data-test="TestManualRefund">Test a Manual Refund</button><br/>
+      <button class="btn brk test-btn" data-test="TestBadConfirm">Test sending an invalid payment in to confirm.  Fails in sdk on confirm</button><br/>
+      <button class="btn brk test-btn" data-test="TestBadConfirm2">Test sending an invalid payment in to confirm. Fails on sdk on confirm (2nd case)</button><br/>
+      <button class="btn brk test-btn" data-test="TestBadConfirm3">Test sending an invalid payment in to confirm. Fails on device.</button><br/>
+      <button class="btn brk test-btn" data-test="TestBadReject">Test sending an invalid payment in to reject. Fails on device.</button><br/>
+      <button class="btn brk test-btn" data-test="TestBadSigVerify">1 Test sending an invalid payment in verify signature. Fails on device.</button><br/>
+      <button class="btn brk test-btn" data-test="TestBadSigVerify2">2 Test sending an invalid payment in verify signature. Fails on device.</button><br/>
     </div>
 
     <script src="./built/test.js"></script>

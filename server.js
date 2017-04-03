@@ -107,7 +107,7 @@ app.post('/configuration/*', function(request, response){
     console.log("The file was saved to " + __dirname + request.path);
     console.log('-------------------------------------------------------');
     console.log('');
-  }); 
+  });
   response.send(request.body);    // echo the result back
 });
 
