@@ -19,6 +19,7 @@ SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype = Object.cr
 SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.constructor = SaleExampleFailOnTransactionRestartCloverConnectorListener;
 
 SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.startTest = function () {
+    try{
     ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
@@ -31,8 +32,13 @@ SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.startTest =
 
     this.displayMessage({message: "Sending sale", request: saleRequest});
     this.cloverConnector.sale(saleRequest);
+    } catch (e) {
+        console.log(e);
+        this.testComplete(false);
+    }
 };
 SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.onSaleResponse = function (response) {
+try{
     /*
      The sale is complete.  It might be canceled, or successful.  This can be determined by the
      values in the response.
@@ -40,8 +46,6 @@ SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.onSaleRespo
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
         this.displayMessage({error: "Response is not a sale!"});
-        this.testComplete();
-        return;
     }
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
@@ -49,6 +53,10 @@ SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.onSaleRespo
     // Note that this is expecting that the user cancels the transaction on the device, either in
     // the signature screen or the transaction screen itself.
     this.testComplete(!response.getSuccess());
+} catch (e) {
+    console.log(e);
+    this.testComplete(false);
+}
 };
 
 /**
@@ -56,7 +64,7 @@ SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.onSaleRespo
  * @returns {string}
  */
 SaleExampleFailOnTransactionRestartCloverConnectorListener.prototype.getTestName = function () {
-    return "Test Sale";
+    return "Test Failing the transaction if it times out";
 };
 
 /**
