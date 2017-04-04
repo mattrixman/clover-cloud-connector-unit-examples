@@ -19,6 +19,7 @@ BadConfirmExampleCloverConnectorListener3.prototype = Object.create(ExampleClove
 BadConfirmExampleCloverConnectorListener3.prototype.constructor = BadConfirmExampleCloverConnectorListener3;
 
 BadConfirmExampleCloverConnectorListener3.prototype.startTest = function () {
+try{
     ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
@@ -28,21 +29,28 @@ BadConfirmExampleCloverConnectorListener3.prototype.startTest = function () {
     saleRequest.setAmount(10);
     this.displayMessage({message: "Sending sale", request: saleRequest});
     this.cloverConnector.sale(saleRequest);
+} catch (e) {
+    console.log(e);
+    this.testComplete(false);
+}
 };
 BadConfirmExampleCloverConnectorListener3.prototype.onSaleResponse = function (response) {
+try{
     /*
      The sale is complete.  It might be canceled, or successful.  This can be determined by the
      values in the response.
      */
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
-        this.displayMessage({error: "Response is not a sale!"});
-        this.testComplete();
-        return;
+        this.displayMessage({error: "Response is not a sale!  Trying to continue..."});
     }
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
-    this.testComplete(response.getSuccess());
+    this.testComplete(!response.getSuccess());
+} catch (e) {
+    console.log(e);
+    this.testComplete(false);
+}
 };
 
 /**
@@ -50,7 +58,7 @@ BadConfirmExampleCloverConnectorListener3.prototype.onSaleResponse = function (r
  * @returns {string}
  */
 BadConfirmExampleCloverConnectorListener3.prototype.getTestName = function () {
-    return "Test Sale";
+    return "Test Bad Confirm, invalid payment id";
 };
 
 /**
@@ -59,10 +67,15 @@ BadConfirmExampleCloverConnectorListener3.prototype.getTestName = function () {
  * @param request
  */
 BadConfirmExampleCloverConnectorListener3.prototype.onConfirmPaymentRequest = function(request) {
+try{
     this.displayMessage({message: "Sending in bad payment to acceptPayment", request: request});
     var badPayment = new sdk.payments.Payment();
     badPayment.setId("1234567890123");
     this.cloverConnector.acceptPayment(badPayment);
+} catch (e) {
+    console.log(e);
+    this.testComplete(false);
+}
 };
 
 /**

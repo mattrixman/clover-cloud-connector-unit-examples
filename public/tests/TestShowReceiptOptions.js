@@ -19,7 +19,9 @@ ShowReceiptOptionsExampleCloverConnectorListener.prototype = Object.create(Examp
 ShowReceiptOptionsExampleCloverConnectorListener.prototype.constructor = ShowReceiptOptionsExampleCloverConnectorListener;
 
 ShowReceiptOptionsExampleCloverConnectorListener.prototype.startTest = function () {
+try{
     ExampleCloverConnectorListener.prototype.startTest.call(this);
+
     /*
      The connector is ready, create a sale request and send it to the device.
      */
@@ -28,23 +30,29 @@ ShowReceiptOptionsExampleCloverConnectorListener.prototype.startTest = function 
     saleRequest.setAmount(10000);
     this.displayMessage({message: "Sending sale", request: saleRequest});
     this.cloverConnector.sale(saleRequest);
+} catch (e) {
+    console.log(e);
+    this.testComplete(false);
+}
 };
 
 ShowReceiptOptionsExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
+try{
     /*
      The sale is complete.  It might be canceled, or successful.  This can be determined by the
      values in the response.
      */
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
-        this.displayMessage({error: "Response is not a sale!"});
-        // Failing for the wrong reason...
-        this.testComplete();
-        return;
+        this.displayMessage({error: "Response is not a sale!  Will try to continue anyway..."});
     }
 
     this.showingReceiptOptions = true;
     this.cloverConnector.showPaymentReceiptOptions(response.getPayment().getOrder().getId(), response.getPayment().getId());
+} catch (e) {
+    console.log(e);
+    this.testComplete(false);
+}
 };
 
 /**
@@ -54,6 +62,7 @@ ShowReceiptOptionsExampleCloverConnectorListener.prototype.onSaleResponse = func
  * @return void
  */
 ShowReceiptOptionsExampleCloverConnectorListener.prototype.onDeviceActivityEnd = function (deviceEvent) {
+try{
     this.displayMessage({message: "Device Activity End received - " + JSON.stringify(deviceEvent)});
     if(this.showingReceiptOptions) {
         if (deviceEvent.getEventState() == sdk.remotepay.DeviceEventState.RECEIPT_OPTIONS) {
@@ -68,6 +77,10 @@ ShowReceiptOptionsExampleCloverConnectorListener.prototype.onDeviceActivityEnd =
             );
         }
     }
+} catch (e) {
+    console.log(e);
+    this.testComplete(false);
+}
 };
 
 

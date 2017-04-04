@@ -6,36 +6,34 @@
   <body>
 
     <div>
-      <h1>Clover Cloud Connector Unit Examples</h1>
+      <div class="pageTitle">Clover Cloud Connector Unit Examples</div>&nbsp;&nbsp;
       <a href="https://github.com/clover/clover-cloud-connector-unit-examples">GIT Repository</a>
     </div>
 
-    <p>If redirected to Clover to login, you will need to select a 'test' button again after you log in.</p>
+    <p>If you select a test and are redirected to Clover to login, you will need to select a 'test' button again <i>after</i> you log in.</p>
 
     <table class="config-messages-section">
       <tr>
-        <td colspan="2">You can make changes to the configuration and select the [SaveConfig] button to save them. Configurations are identified by their "friendlyId".</td>
-      </tr>
-      <tr>
-        <td>
-          <b>Configuration</b>
+        <td class="config-select">
+          <b>Configuration</b><br/>
+          You can make changes to the configuration and select the [SaveConfig] button to save them. Configurations are identified by their "friendlyId".
         </td>
-        <td>
+        <td rowspan="2">
           <b>Messages</b>
+          <textarea title="Messages" id="infoMessages" readonly="readonly"></textarea>
+          <button class="btn clear-messages-btn">Clear Messages</button>
         </td>
       </tr>
       <tr>
-        <td>
-          <select name="fiendlyId" id="friendlyId" class="load-config-selector">
-            <option value="none">&nbsp;</option>
-          </select><br/>
-          <textarea title="Configuration" id="configText"></textarea>
-          <button class="btn save-config-btn">SaveConfig</button>
-          <button class="btn force-disconnect-btn">Force Disconnect</button>
-        </td>
-        <td>
-          <textarea title="Messages" id="infoMessages" readonly></textarea>
-          <button class="btn clear-messages-btn">Clear Messages</button>
+        <td class="config-select">
+          <div class="config-select">
+            <select id="friendlyId" class="load-config-selector">
+              <option value="none">&nbsp;</option>
+            </select><br/>
+            <textarea title="Configuration" id="configText"></textarea>
+            <button class="btn save-config-btn">SaveConfig</button>
+            <button class="btn force-disconnect-btn" data-test="ForceDisconnect">Force Disconnect</button>
+          </div>
         </td>
       </tr>
     </table>
@@ -50,18 +48,24 @@
       <button class="btn brk test-btn" data-test="TestShowMessage">Test Showing a Message</button><br/>
       <button class="btn brk test-btn" data-test="TestSaleTipAdjust">Test doing a sale then a tip adjust (should fail)</button><br/>
       <button class="btn brk test-btn" data-test="TestSaleVoid">Test Voiding a Payment</button><br/>
+      <button class="btn brk test-btn" data-test="TestSaleVoidErrorNoPaymentId">Test Failing to Void a Payment: no payment id</button><br/>
       <button class="btn brk test-btn" data-test="TestSaleRefund">Test a full refund of a sale</button><br/>
       <button class="btn brk test-btn" data-test="TestSaleRefundErr">Test a full refund of a sale that should FAIL (no order id set)</button><br/>
       <button class="btn brk test-btn" data-test="TestSalePartialRefund">Test a partial refund of a sale</button><br/>
       <button class="btn brk test-btn" data-test="TestShowReceiptOptions">Test showing the receipt screen</button><br/>
       <button class="btn brk test-btn" data-test="TestSaleWithReconnectLogic">Test Sale that tries to reconnect on timeout</button><br/>
+      <!--
+      This is no longer possible with new design.  That is ok, because we don't want people doing this anyway.
       <button class="btn brk test-btn" data-test="TestSaleRefuseReconnectLogic">Test Sale, refuse reconnect request.</button><br/>
+
+      No longer possible to hook into connector this way
       <button class="btn brk test-btn" data-test="TestLogAllFrames">Log all frames.</button><br/>
+      -->
       <button class="btn brk test-btn" data-test="TestVaultCard">Test Vaulting a card.</button><br/>
       <button class="btn brk test-btn" data-test="TestSaleNullRequest">Test a Sale Failure - missing request</button><br/>
       <button class="btn brk test-btn" data-test="TestSaleNullExternalId">Test a Sale Failure - missing external id</button><br/>
       <button class="btn brk test-btn" data-test="TestSaleNegZeroAmount">Test a Sale Failure - zero amount</button><br/>
-      <button class="btn brk test-btn" data-test="TestReadCardDataFail">Test a read card data Failure - 0 card entry methods</button><br/>
+      <button class="btn brk test-btn" data-test="TestReadCardDataFail">Test a read card data - card entry methods = 1</button><br/>
       <button class="btn brk test-btn" data-test="TestSaleExceptionProcessing">Test Sale With Exception Processing</button><br/>
       <button class="btn brk test-btn" data-test="TestSaleDoubleReceiptProcessing">Test Sale With Double Receipt Window</button><br/>
       <button class="btn brk test-btn" data-test="TestReset">Test resetting device</button><br/>
@@ -83,7 +87,8 @@
 
       // Defaults for base path, config name and configuration.
       const CONFIG_BASE_PATH = './configuration/';
-      const DEFAULT_CONFIG_NAME = 'test';
+      const DEFAULT_CONFIG_KEY = 'configKey';
+      var DEFAULT_CONFIG_NAME = 'test';
       const DEFAULT_CONFIGURATION = {
         'clientId': 'V1T1VKQC8Y65Y',
         'remoteApplicationId': 'com.clover.remotepay.cloud.unit.examples:0.0.1-beta1',
@@ -95,9 +100,16 @@
       // Use the default config name.
       var configFile = DEFAULT_CONFIG_NAME;
 
-      // Load the default config.
-      document.getElementById("configText").value = JSON.stringify(DEFAULT_CONFIGURATION, null, '\t');
-      saveConfigStatic();
+      var searchInfo = parseSearch({});
+      if(searchInfo[DEFAULT_CONFIG_KEY]) {
+        configFile = searchInfo[DEFAULT_CONFIG_KEY];
+        // loadConfigStaticByKey(configFile);
+        saveConfigStaticResult(configFile);
+      } else {
+        // Load the default config.
+        document.getElementById("configText").value = JSON.stringify(DEFAULT_CONFIGURATION, null, '\t');
+        saveConfigStatic();
+      }
 
       function saveConfigStatic() {
         var newConfig = JSON.parse(document.getElementById("configText").value);
@@ -113,13 +125,19 @@
       function loadConfigStatic() {
         // Get the selected config id.
         var friendlyId = document.getElementById("friendlyId").value;
+        reloadWithSelectedConfig(friendlyId);
+        loadConfigStaticByKey(friendlyId);
+      }
 
+      function loadConfigStaticByKey(friendlyId) {
         // Load the configuration for this id.
         TestBase.simpleCloverConfig.loadCloverConfig(CONFIG_BASE_PATH, {friendlyId: friendlyId}, 
           function(error, configuration) {
             if (!error) {
               configFile = friendlyId;
               document.getElementById("configText").value = JSON.stringify(configuration, null, '\t');
+              var selectObj = document.querySelector('select.load-config-selector');
+              selectObj.value = configFile;
             }
           }.bind(this));
       }
@@ -153,6 +171,7 @@
               // Append the new option.
               availableConfigs.appendChild(option);
             }
+            loadConfigStaticByKey(configFile);
           }
         });
       }
@@ -215,8 +234,63 @@
       }
 
       function forceDisconnect() {
-        var force = new TestBase.ForceDisconnect(CONFIG_BASE_PATH);
-        force.run();
+        executeTest("ForceDisconnect");
+      }
+
+
+      function reloadWithSelectedConfig(configname) {
+        var searchInfo = parseSearch({});
+
+        if(searchInfo[DEFAULT_CONFIG_KEY] != configname) {
+          searchInfo[DEFAULT_CONFIG_KEY] = configname;
+          var hashInfo = parseHash({});
+
+          var reloadURI = window.location.origin +
+              window.location.pathname;
+          var tie = "?";
+          for(var property in searchInfo) {
+            if(searchInfo.hasOwnProperty(property)) {
+              reloadURI+=tie+property+"="+searchInfo[property];
+            }
+            tie = "&";
+          }
+          tie = "";
+          for(var property in hashInfo) {
+            if(hashInfo.hasOwnProperty(property)) {
+              reloadURI+=tie+property+"="+hashInfo[property];
+            }
+            tie = "&";
+          }
+          if (window.location.href != reloadURI) {
+            window.location.href = reloadURI;
+          }
+        }
+      }
+
+      function parseWindowURL() {
+        return parseURL(window.location);
+      }
+
+      function parseHash(urlParamsInfo) {
+        var params = window.location.hash.split('&');
+        parseStuff(params, urlParamsInfo);
+        return urlParamsInfo;
+      }
+
+      function parseSearch(urlParamsInfo) {
+        var params2 = window.location.search.substr(1).split('&');
+        parseStuff(params2, urlParamsInfo);
+        return urlParamsInfo;
+      }
+
+      function parseStuff(params, urlParamsInfo) {
+        var i = 0;
+        var param = null;
+        while (param = params[i++]) {
+          var multiParam = param.split("=");
+          urlParamsInfo[multiParam[0]] = multiParam[1];
+        }
+        return urlParamsInfo;
       }
 
       /* **************************************************************************
@@ -224,7 +298,7 @@
        * **************************************************************************/
 
       // Create button click handlers.
-      [...document.querySelectorAll('button.test-btn')].forEach(function(btn) {
+      [].slice.call(document.querySelectorAll('button.test-btn')).forEach(function(btn) {
         btn.onclick = function(el) {
           // Get the test name.
           var testName = el.target.getAttribute('data-test');

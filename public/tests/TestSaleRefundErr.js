@@ -19,6 +19,7 @@ SaleRefundErrExampleCloverConnectorListener.prototype = Object.create(ExampleClo
 SaleRefundErrExampleCloverConnectorListener.prototype.constructor = SaleRefundErrExampleCloverConnectorListener;
 
 SaleRefundErrExampleCloverConnectorListener.prototype.startTest = function () {
+try{
     ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
@@ -28,19 +29,21 @@ SaleRefundErrExampleCloverConnectorListener.prototype.startTest = function () {
     saleRequest.setAmount(10000);
     this.displayMessage({message: "Sending sale", request: saleRequest});
     this.cloverConnector.sale(saleRequest);
+} catch (e) {
+    console.log(e);
+    this.testComplete(false);
+}
 };
 
 SaleRefundErrExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
+try {
     /*
      The sale is complete.  It might be canceled, or successful.  This can be determined by the
      values in the response.
      */
     this.displayMessage({message: "Sale response received", response: response});
     if (!response.getIsSale()) {
-        this.displayMessage({error: "Response is not a sale!"});
-        // Failing for the wrong reason...
-        this.testComplete();
-        return;
+        this.displayMessage({error: "Response is not a sale!  Will try to continue anyway..."});
     }
     var request = new sdk.remotepay.RefundPaymentRequest();
 
@@ -50,6 +53,10 @@ SaleRefundErrExampleCloverConnectorListener.prototype.onSaleResponse = function 
     request.setFullRefund(true);
 
     this.cloverConnector.refundPayment(request);
+} catch (e) {
+    console.log(e);
+    this.testComplete(false);
+}
 };
 
 /**
@@ -60,7 +67,9 @@ SaleRefundErrExampleCloverConnectorListener.prototype.onSaleResponse = function 
  * @return void
  */
 SaleRefundErrExampleCloverConnectorListener.prototype.onRefundPaymentResponse = function (response) {
+try {
     this.displayMessage({message: "RefundPaymentResponse received", response: response});
+
     if (response.getSuccess()) {
         this.displayMessage({message: "RefundPaymentResponse,  !!! something is wrong, this should have failed !!!"});
         this.testComplete(false);
@@ -69,6 +78,10 @@ SaleRefundErrExampleCloverConnectorListener.prototype.onRefundPaymentResponse = 
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
     this.testComplete(true);
+} catch (e) {
+    console.log(e);
+    this.testComplete(false);
+}
 };
 
 /**
@@ -76,7 +89,7 @@ SaleRefundErrExampleCloverConnectorListener.prototype.onRefundPaymentResponse = 
  * @returns {string}
  */
 SaleRefundErrExampleCloverConnectorListener.prototype.getTestName = function () {
-    return "Test Refund Full Payment";
+    return "Test Refund Full Payment, should fail";
 };
 /**
  * A very simple subclass of the tests that specifies the listener (see above)

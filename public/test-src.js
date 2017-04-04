@@ -1,12 +1,17 @@
+var Clover = require("remote-pay-cloud");
 var TestBase = require('./TestBase.js');
 
-// Remove the following to turn off logging.
-require("remote-pay-cloud").DebugConfig.loggingEnabled = true;
+function requireAll(r) {
+    r.keys().forEach(r);
+}
 
-TestBase.ForceDisconnect = require("./ForceDisconnect.js");
+// Remove the following to turn off logging.
+Clover.DebugConfig.loggingEnabled = true;
+
+// TestBase.ForceDisconnect = require("./ForceDisconnect.js");
 
 // Each of the following decorates TestBase
-require('./tests/*.js', {mode: 'expand'});
+requireAll(require.context('./tests', true, /\.js$/));
 
 if ('undefined' !== typeof module) {
     module.exports = TestBase;

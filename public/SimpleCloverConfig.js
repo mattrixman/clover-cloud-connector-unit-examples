@@ -1,10 +1,10 @@
 var $ = require('jquery');
 
-var SimpleCloverConfig = function (log) {
+var SimpleCloverConfig = function(log) {
     this.log = log;
 };
 
-SimpleCloverConfig.prototype.saveCloverConfig = function (configUrl, configuration, callback) {
+SimpleCloverConfig.prototype.saveCloverConfig = function(configUrl, configuration, callback) {
     $.ajax({
         url: configUrl + configuration.friendlyId,
         type: "POST",
@@ -52,8 +52,5 @@ SimpleCloverConfig.prototype.getConfigsList = function(configUrl, callback) {
     });
 };
 
-
-if ('undefined' !== typeof module) {
-    module.exports = SimpleCloverConfig;
-}
-
+exports = SimpleCloverConfig;
+module.exports = SimpleCloverConfig;

@@ -1,1 +1,1 @@
-holds the browserified artifact used to run.
+holds the webpacked artifact used to run.

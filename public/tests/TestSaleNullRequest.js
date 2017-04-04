@@ -19,6 +19,7 @@ SaleExampleNullRequestCloverConnectorListener.prototype = Object.create(ExampleC
 SaleExampleNullRequestCloverConnectorListener.prototype.constructor = SaleExampleNullRequestCloverConnectorListener;
 
 SaleExampleNullRequestCloverConnectorListener.prototype.startTest = function () {
+    try{
     ExampleCloverConnectorListener.prototype.startTest.call(this);
     /*
      The connector is ready, create a sale request and send it to the device.
@@ -26,10 +27,15 @@ SaleExampleNullRequestCloverConnectorListener.prototype.startTest = function () 
     var saleRequest = new sdk.remotepay.SaleRequest();
     saleRequest.setExternalId(clover.CloverID.getNewId());
     saleRequest.setAmount(10000);
-    this.displayMessage({message: "Sending sale", request: saleRequest});
+    this.displayMessage({message: "Sending sale", request: null});
     this.cloverConnector.sale(null /*saleRequest*/);
+    } catch (e) {
+        console.log(e);
+        this.testComplete(false);
+    }
 };
 SaleExampleNullRequestCloverConnectorListener.prototype.onSaleResponse = function (response) {
+try{
     /*
      The sale is complete.  It might be canceled, or successful.  This can be determined by the
      values in the response.
@@ -41,6 +47,10 @@ SaleExampleNullRequestCloverConnectorListener.prototype.onSaleResponse = functio
     // Always call this when your test is done, or the device may fail to connect the
     // next time, because it is already connected.
     this.testComplete(!response.getSuccess());
+} catch (e) {
+    console.log(e);
+    this.testComplete(false);
+}
 };
 
 /**
@@ -48,7 +58,7 @@ SaleExampleNullRequestCloverConnectorListener.prototype.onSaleResponse = functio
  * @returns {string}
  */
 SaleExampleNullRequestCloverConnectorListener.prototype.getTestName = function () {
-    return "Test Sale NullRequest";
+    return "Test Sale Null Request";
 };
 
 /**
