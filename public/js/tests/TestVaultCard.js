@@ -1,4 +1,3 @@
-var sdk = require("remote-pay-cloud-api");
 var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
 var TestBase = require("../TestBase.js");
@@ -57,8 +56,6 @@ VaultCardExampleCloverConnectorListener.prototype.onReadCardDataResponse = funct
  * @return void
  */
 VaultCardExampleCloverConnectorListener.prototype.onVaultCardResponse = function(response) {
-    var vaultedCard = response.getCard();
-
     this.displayMessage({message: "Vault card response received", response: response});
 
     // Always call this when your test is done, or the device may fail to connect the
@@ -93,6 +90,7 @@ TestVaultCard.prototype.getCloverConnectorListener = function (cloverConnector) 
 /**
  * Attach the test to the testbase to facilitate calling from the main page.
  * @param configUrl
+ * @param configFile
  * @param progressinfoCallback
  */
 TestBase.TestVaultCard = function (configUrl, configFile, progressinfoCallback) {

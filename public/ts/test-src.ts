@@ -1,3 +1,9 @@
+/*
+
+This is an ugly file, but it is intended to be used only as a test tool.
+
+ */
+
 var $ = require('jquery');
 
 import * as Clover from 'remote-pay-cloud';
@@ -25,6 +31,7 @@ export class ExampleWebsocketPairedCloverDeviceConfiguration extends Clover.WebS
             rawConfiguration.serialNumber,
             rawConfiguration.authToken,
             Clover.BrowserWebSocketImpl.createInstance,
+            new Clover.ImageUtil(),
             rawConfiguration.heartbeatInterval,
             rawConfiguration.reconnectDelay);
     }
@@ -49,6 +56,7 @@ export class ExampleWebsocketCloudCloverDeviceConfiguration extends Clover.WebSo
         super(
             rawConfiguration.appId,
             Clover.BrowserWebSocketImpl.createInstance,
+            new Clover.ImageUtil(),
             rawConfiguration.cloverServer,
             rawConfiguration.accessToken,
             new Clover.HttpSupport(XMLHttpRequest),
@@ -76,7 +84,7 @@ let configuration: Clover.CloverDeviceConfiguration = new ExampleWebsocketPaired
 
 // Configuration persistence.
 // These examples use this path to persist.  This is part of the example 'server.js'
-const CONFIG_BASE_PATH = './configuration/';
+const CONFIG_BASE_PATH = '../configuration/';
 let configLoader:CloverConfigLoader = new (class ExampleLoader extends URLCloverConfigLoader {
 
     constructor() {
@@ -100,8 +108,10 @@ let configLoader:CloverConfigLoader = new (class ExampleLoader extends URLClover
             return new ExampleWebsocketCloudCloverDeviceConfiguration(rawConfiguration);
         } else if(rawConfiguration.uri && rawConfiguration.serialNumber) {
             return new ExampleWebsocketPairedCloverDeviceConfiguration(rawConfiguration);
+        } else if(rawConfiguration.clientId && rawConfiguration.domain) {
+            console.log("Configuration appears to be 1.1.0", rawConfiguration);
+            return null;
         }
-
         console.log("Don't know how to type configuration", rawConfiguration);
         return null;
     }
@@ -121,7 +131,7 @@ function clearPairingCode() {
 var confignameeditor = $('<input type="text" id="confignameeditor" size="60">');
 var configeditor = $('<textarea id="configeditor" style="margin: 0px; width: 882px; height: 193px;">');
 // Make the configuration select
-var configurationSelect = $('<select>');
+var configurationSelect = $('<select id="friendlyId" class="load-config-selector">');
 // Example of the configuration loader listener.
 configLoader.addCloverConfigLoaderListener( {
     onCloverConfigSaveComplete: (success:boolean, configurationKey:string, configuration:Clover.CloverDeviceConfiguration) => {
@@ -178,6 +188,8 @@ btn.addEventListener("click", function(){
 }, false);
 document.body.appendChild(btn);
 $('body').append('<BR/>');
+$('body').append('<BR/>');
+$('body').append('<BR/>');
 
 // A place to edit the configuration
 $('body').append(configeditor);
@@ -196,3 +208,5 @@ for (var property in tests) {
         document.body.appendChild(document.createElement("BR") );
     }
 }
+
+console.log("Done loading typescript example.");

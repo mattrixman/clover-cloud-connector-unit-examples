@@ -22,6 +22,7 @@ TestPreAuth.prototype.getCloverConnectorListener = function (cloverConnector) {
 /**
  * Attach the test of a preAuth to the testbase to facilitate calling from the main page.
  * @param configUrl
+ * @param configFile
  * @param progressinfoCallback
  */
 TestBase.TestPreAuth = function(configUrl, configFile, progressinfoCallback) {

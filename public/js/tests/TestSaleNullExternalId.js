@@ -1,4 +1,3 @@
-var sdk = require("remote-pay-cloud-api");
 var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
 var TestBase = require("../TestBase.js");
@@ -23,7 +22,7 @@ SaleExampleNullExternalIdCloverConnectorListener.prototype.startTest = function 
     /*
      The connector is ready, create a sale request and send it to the device.
      */
-    var saleRequest = new sdk.remotepay.SaleRequest();
+    var saleRequest = new clover.remotepay.SaleRequest();
     saleRequest.setExternalId(null /*clover.CloverID.getNewId()*/);
     saleRequest.setAmount(10000);
     this.displayMessage({message: "Sending sale", request: saleRequest});
@@ -72,6 +71,7 @@ TestSaleNullExternalId.prototype.getCloverConnectorListener = function (cloverCo
 /**
  * Attach the test of a sale to the testbase to facilitate calling from the main page.
  * @param configUrl
+ * @param configFile
  * @param progressinfoCallback
  */
 TestBase.TestSaleNullExternalId = function(configUrl, configFile, progressinfoCallback) {
