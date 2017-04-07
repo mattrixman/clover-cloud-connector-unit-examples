@@ -28,11 +28,11 @@
     "gulp-typedoc": "^2.0.2",
     "gulp-typescript": "3.1.5",
     "typescript": "2.2.1",
+    "del": "2.2.2",
     "remote-pay-cloud": "1.2.0-rc1.0"
   },
   "devDependencies": {
     "@types/node": "7.0.5",
-    "del": "2.2.2",
     "gulp-sourcemaps": "2.4.1",
     "ts-loader": "^2.0.1",
     "webpack": "2.2.1"
