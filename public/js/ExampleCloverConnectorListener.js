@@ -1,4 +1,4 @@
-var sdk = require("remote-pay-cloud-api");
+var clover = require("remote-pay-cloud");
 
 /**
  * This is the base listener for the examples.
@@ -8,18 +8,18 @@ var sdk = require("remote-pay-cloud-api");
  * @constructor
  */
 var ExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
-    sdk.remotepay.ICloverConnectorListener.call(this);
+    clover.remotepay.ICloverConnectorListener.call(this);
     this.cloverConnector = cloverConnector;
     this.progressinfoCallback = progressinfoCallback;
     this.testStarted = false;
 };
 
-ExampleCloverConnectorListener.prototype = Object.create(sdk.remotepay.ICloverConnectorListener.prototype);
+ExampleCloverConnectorListener.prototype = Object.create(clover.remotepay.ICloverConnectorListener.prototype);
 ExampleCloverConnectorListener.prototype.constructor = ExampleCloverConnectorListener;
 
 /**
  * Call startTest() if not already flagged as a started test.
- * @param {sdk.remotepay.MerchantInfo} merchantInfo - information on supported operations, and configurations.
+ * @param {clover.remotepay.MerchantInfo} merchantInfo - information on supported operations, and configurations.
  */
 ExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
     this.displayMessage({message: "In onReady, starting test"});

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="eng">
+  <head>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+  </head>
+  <body>
+
+    <div>
+
+      <div class="pageTitle"><a href="../">&lt; Back</a> &nbsp;Clover Cloud Connector Unit Examples (Javascript)</div><br/>
+      <a href="https://github.com/clover/clover-cloud-connector-unit-examples">GIT Repository</a>
+    </div>
+
+    <p>If you select a test and are redirected to Clover to login, you will need to select a 'test' button again <i>after</i> you log in.</p>
+
+    <table class="config-messages-section">
+      <tr>
+        <td class="config-select">
+          <b>Configuration</b><br/>
+          You can make changes to the configuration and select the [SaveConfig] button to save them. Configurations are identified by their "friendlyId".
+        </td>
+        <td rowspan="2">
+          <b>Messages</b>
+          <textarea title="Messages" id="infoMessages" readonly="readonly"></textarea>
+          <button class="btn clear-messages-btn">Clear Messages</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="config-select">
+          <div class="config-select">
+            <select id="friendlyId" class="load-config-selector">
+              <option value="none">&nbsp;</option>
+            </select><br/>
+            <textarea title="Configuration" id="configText"></textarea>
+            <button class="btn save-config-btn">SaveConfig</button>
+            <button class="btn force-disconnect-btn" data-test="ForceDisconnect">Force Disconnect</button>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- To add a test, add it to the test-src.js (see testSale(...), then add a button to invoke it here -->
+    <div id="tests" class="tests-wrapper">
+      <button class="btn brk test-btn" data-test="TestSale">Test Sale</button><br/>
+      <button class="btn brk test-btn" data-test="TestAuth">Test Auth</button><br/>
+      <button class="btn brk test-btn" data-test="TestPreAuth">Test Pre Auth</button><br/>
+      <button class="btn brk test-btn" data-test="TestPreAuthCapture">Test Pre Auth then capture</button><br/>
+      <button class="btn brk test-btn" data-test="TestReadCardData">Test Reading Card Data</button><br/>
+      <button class="btn brk test-btn" data-test="TestShowMessage">Test Showing a Message</button><br/>
+      <button class="btn brk test-btn" data-test="TestSaleTipAdjust">Test doing a sale then a tip adjust (should fail)</button><br/>
+      <button class="btn brk test-btn" data-test="TestSaleVoid">Test Voiding a Payment</button><br/>
+      <button class="btn brk test-btn" data-test="TestSaleVoidErrorNoPaymentId">Test Failing to Void a Payment: no payment id</button><br/>
+      <button class="btn brk test-btn" data-test="TestSaleRefund">Test a full refund of a sale</button><br/>
+      <button class="btn brk test-btn" data-test="TestSaleRefundErr">Test a full refund of a sale that should FAIL (no order id set)</button><br/>
+      <button class="btn brk test-btn" data-test="TestSalePartialRefund">Test a partial refund of a sale</button><br/>
+      <button class="btn brk test-btn" data-test="TestShowReceiptOptions">Test showing the receipt screen</button><br/>
+      <button class="btn brk test-btn" data-test="TestSaleWithReconnectLogic">Test Sale that tries to reconnect on timeout</button><br/>
+      <!--
+      This is no longer possible with new design.  That is ok, because we don't want people doing this anyway.
+      <button class="btn brk test-btn" data-test="TestSaleRefuseReconnectLogic">Test Sale, refuse reconnect request.</button><br/>
+
+      No longer possible to hook into connector this way
+      <button class="btn brk test-btn" data-test="TestLogAllFrames">Log all frames.</button><br/>
+      -->
+      <button class="btn brk test-btn" data-test="TestVaultCard">Test Vaulting a card.</button><br/>
+      <button class="btn brk test-btn" data-test="TestSaleNullRequest">Test a Sale Failure - missing request</button><br/>
+      <button class="btn brk test-btn" data-test="TestSaleNullExternalId">Test a Sale Failure - missing external id</button><br/>
+      <button class="btn brk test-btn" data-test="TestSaleNegZeroAmount">Test a Sale Failure - zero amount</button><br/>
+      <button class="btn brk test-btn" data-test="TestReadCardDataFail">Test a read card data - card entry methods = 1</button><br/>
+      <button class="btn brk test-btn" data-test="TestSaleExceptionProcessing">Test Sale With Exception Processing</button><br/>
+      <button class="btn brk test-btn" data-test="TestSaleDoubleReceiptProcessing">Test Sale With Double Receipt Window</button><br/>
+      <button class="btn brk test-btn" data-test="TestReset">Test resetting device</button><br/>
+      <button class="btn brk test-btn" data-test="TestSaleFailOnTransactionRestart">Test Fail Transaction on restart</button><br/>
+      <button class="btn brk test-btn" data-test="TestManualRefund">Test a Manual Refund</button><br/>
+      <button class="btn brk test-btn" data-test="TestBadConfirm">Test sending an invalid payment in to confirm.  Fails in sdk on confirm</button><br/>
+      <button class="btn brk test-btn" data-test="TestBadConfirm2">Test sending an invalid payment in to confirm. Fails on sdk on confirm (2nd case)</button><br/>
+      <button class="btn brk test-btn" data-test="TestBadConfirm3">Test sending an invalid payment in to confirm. Fails on device.</button><br/>
+      <button class="btn brk test-btn" data-test="TestBadReject">Test sending an invalid payment in to reject. Fails on device.</button><br/>
+      <button class="btn brk test-btn" data-test="TestBadSigVerify">1 Test sending an invalid payment in verify signature. Fails on device.</button><br/>
+      <button class="btn brk test-btn" data-test="TestBadSigVerify2">2 Test sending an invalid payment in verify signature. Fails on device.</button><br/>
+    </div>
+
+    <script src="../built/common.js"></script>
+    <script src="../built/test_js-bundle.js"></script>
+    <script>
+      /* **************************************************************************
+       *  Config functions
+       * **************************************************************************/
+
+      // Defaults for base path, config name and configuration.
+      const CONFIG_BASE_PATH = '../configuration/';
+      const DEFAULT_CONFIG_KEY = 'configKey';
+      var DEFAULT_CONFIG_NAME = 'test';
+      const DEFAULT_CONFIGURATION = {
+        'clientId': 'V1T1VKQC8Y65Y',
+        'remoteApplicationId': 'com.clover.remotepay.cloud.unit.examples:0.0.1-beta1',
+        'deviceSerialId': 'C031UQ52340045',
+        'domain': 'https://dev1.dev.clover.com/',
+        'friendlyId': 'test'
+      };
+
+      // Use the default config name.
+      var configFile = DEFAULT_CONFIG_NAME;
+
+      var searchInfo = parseSearch({});
+      if(searchInfo[DEFAULT_CONFIG_KEY]) {
+        configFile = searchInfo[DEFAULT_CONFIG_KEY];
+        // loadConfigStaticByKey(configFile);
+        saveConfigStaticResult(configFile);
+      } else {
+        // Load the default config.
+        document.getElementById("configText").value = JSON.stringify(DEFAULT_CONFIGURATION, null, '\t');
+        saveConfigStatic();
+      }
+
+      function saveConfigStatic() {
+        var newConfig = JSON.parse(document.getElementById("configText").value);
+        TestBase.simpleCloverConfig.saveCloverConfig(CONFIG_BASE_PATH, newConfig, function() {
+          saveConfigStaticResult(newConfig.friendlyId);
+        });
+      }
+
+      function saveConfigStaticResult(selectedId) {
+        collectAvailableConfigs(selectedId);
+      }
+
+      function loadConfigStatic() {
+        // Get the selected config id.
+        var friendlyId = document.getElementById("friendlyId").value;
+        reloadWithSelectedConfig(friendlyId);
+        loadConfigStaticByKey(friendlyId);
+      }
+
+      function loadConfigStaticByKey(friendlyId) {
+        // Load the configuration for this id.
+        TestBase.simpleCloverConfig.loadCloverConfig(CONFIG_BASE_PATH, {friendlyId: friendlyId}, 
+          function(error, configuration) {
+            if (!error) {
+              configFile = friendlyId;
+              document.getElementById("configText").value = JSON.stringify(configuration, null, '\t');
+              var selectObj = document.querySelector('select.load-config-selector');
+              selectObj.value = configFile;
+            }
+          }.bind(this));
+      }
+
+      function collectAvailableConfigs(selectedId) {
+        // Clear the available configs first.
+        var availableConfigs = document.getElementById("friendlyId");
+        for (var idx = availableConfigs.options.length - 1; idx >= 0; idx--) {
+          availableConfigs.remove(idx);
+        }
+
+        // Get a list of available configs.
+        TestBase.simpleCloverConfig.getConfigsList(CONFIG_BASE_PATH, function(error, configs) {
+          if (!error) {
+            // Fill the available configs drop-down.
+            for (var idx in configs.files) {
+              // Create a new option.
+              var option = document.createElement("option");
+
+              // Set the option text and value.
+              option.text = configs.files[idx];
+              option.value = configs.files[idx];
+
+              // Check to see if this option is selected.
+              if (!!selectedId && option.text == selectedId) {
+                // Set the config file name to the selected option.
+                configFile = selectedId;
+                option.selected = 'selected';
+              }
+
+              // Append the new option.
+              availableConfigs.appendChild(option);
+            }
+            loadConfigStaticByKey(configFile);
+          }
+        });
+      }
+
+      /* **************************************************************************
+       *  Test functions
+       * **************************************************************************/
+
+      function executeTest(testName) {
+        // Run the requested test.
+        TestBase[testName](CONFIG_BASE_PATH, configFile, function(message) {
+          // Process the response message.
+          var strMessage = message;
+          if (message.deviceErrorEvent) {
+            message.error = {};
+            message.error.code = message.deviceErrorEvent.code;
+            message.error.message = message.deviceErrorEvent.message;
+            message.error.type = message.deviceErrorEvent.type;
+            delete message.deviceErrorEvent;
+          }
+          try { strMessage = JSON.stringify(message); } catch(e) {}
+
+          // Update the response messages text area.
+          var infoMessagesTextArea = document.getElementById("infoMessages");
+          infoMessagesTextArea.value = strMessage + "\n" + infoMessagesTextArea.value;
+
+          // Update UI elements.
+          updateUI(testName, message);
+        });
+      }
+
+      /**
+       * Used to update any UI elements with info from a call.
+       *
+       * @param testName - the name of the test that was run
+       * @param message - has optional properties
+       *  {message:string, request:BaseRequest, response:BaseResponse, error:Object, success:success}
+       */
+      function updateUI(testName, message) {
+        var testBtnAttr = '[data-test=\''+testName+'\']';
+        if (message !== undefined && message.hasOwnProperty('success')) {
+          if (message !== undefined && message.success !== undefined && message.success == true) {
+            document.querySelector(testBtnAttr).style.background = '-webkit-linear-gradient(#AAFAAA, #00FF00 40%, #4AAA4A)';
+            document.querySelector(testBtnAttr).style.color = '#555555';
+          }
+          else {
+            document.querySelector(testBtnAttr).style.background = '-webkit-linear-gradient(#FAAAAA, #FF5454 40%, #AA4A4A)';
+            document.querySelector(testBtnAttr).style.color = '#FFFFFF';
+          }
+        }
+        else {
+          document.querySelector(testBtnAttr).style.background = '-webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5)';
+          document.querySelector(testBtnAttr).style.color = '#555555';
+        }
+      }
+
+      function clearMessages() {
+        var infoMessagesTextArea = document.getElementById("infoMessages");
+        infoMessagesTextArea.value = "";
+      }
+
+      function forceDisconnect() {
+        executeTest("ForceDisconnect");
+      }
+
+
+      function reloadWithSelectedConfig(configname) {
+        var searchInfo = parseSearch({});
+
+        if(searchInfo[DEFAULT_CONFIG_KEY] != configname) {
+          searchInfo[DEFAULT_CONFIG_KEY] = configname;
+          var hashInfo = parseHash({});
+
+          var reloadURI = window.location.origin +
+              window.location.pathname;
+          var tie = "?";
+          for(var property in searchInfo) {
+            if(searchInfo.hasOwnProperty(property)) {
+              reloadURI+=tie+property+"="+searchInfo[property];
+            }
+            tie = "&";
+          }
+          tie = "";
+          for(var property in hashInfo) {
+            if(hashInfo.hasOwnProperty(property)) {
+              reloadURI+=tie+property+"="+hashInfo[property];
+            }
+            tie = "&";
+          }
+          if (window.location.href != reloadURI) {
+            window.location.href = reloadURI;
+          }
+        }
+      }
+
+      function parseWindowURL() {
+        return parseURL(window.location);
+      }
+
+      function parseHash(urlParamsInfo) {
+        var params = window.location.hash.split('&');
+        parseStuff(params, urlParamsInfo);
+        return urlParamsInfo;
+      }
+
+      function parseSearch(urlParamsInfo) {
+        var params2 = window.location.search.substr(1).split('&');
+        parseStuff(params2, urlParamsInfo);
+        return urlParamsInfo;
+      }
+
+      function parseStuff(params, urlParamsInfo) {
+        var i = 0;
+        var param = null;
+        while (param = params[i++]) {
+          var multiParam = param.split("=");
+          urlParamsInfo[multiParam[0]] = multiParam[1];
+        }
+        return urlParamsInfo;
+      }
+
+      /* **************************************************************************
+       *  Click handler functions
+       * **************************************************************************/
+
+      // Create button click handlers.
+      [].slice.call(document.querySelectorAll('button.test-btn')).forEach(function(btn) {
+        btn.onclick = function(el) {
+          // Get the test name.
+          var testName = el.target.getAttribute('data-test');
+
+          // Execute the test.
+          executeTest(testName);
+        }
+      });
+      document.querySelector('button.clear-messages-btn').onclick = clearMessages;
+      document.querySelector('button.force-disconnect-btn').onclick = forceDisconnect;
+      document.querySelector('button.save-config-btn').onclick = saveConfigStatic;
+      document.querySelector('select.load-config-selector').onchange = loadConfigStatic;
+    </script>
+  </body>
+</html>

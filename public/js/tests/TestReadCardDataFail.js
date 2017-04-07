@@ -1,4 +1,3 @@
-var sdk = require("remote-pay-cloud-api");
 var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
 var clover = require("remote-pay-cloud");
 var TestBase = require("../TestBase.js");
@@ -27,7 +26,7 @@ try{
      */
     this.displayMessage({message: "Sending request to read card data"});
 
-    var readCardDataRequest = new sdk.remotepay.ReadCardDataRequest();
+    var readCardDataRequest = new clover.remotepay.ReadCardDataRequest();
     readCardDataRequest.setIsForceSwipePinEntry(false);
     // cardEntryMethods can be `ICC_CONTACT, MAG_STRIPE, NFC_CONTACTLESS` or some combination of those,
     // but not `MANUAL`
@@ -89,6 +88,7 @@ TestReadCardDataFail.prototype.getCloverConnectorListener = function (cloverConn
 /**
  * Attach the test of a sale to the testbase to facilitate calling from the main page.
  * @param configUrl
+ * @param configFile
  * @param progressinfoCallback
  */
 TestBase.TestReadCardDataFail = function (configUrl, configFile, progressinfoCallback) {
