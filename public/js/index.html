@@ -95,7 +95,7 @@
         'clientId': 'V1T1VKQC8Y65Y',
         'remoteApplicationId': 'com.clover.remotepay.cloud.unit.examples:0.0.1-beta1',
         'deviceSerialId': 'C031UQ52340045',
-        'domain': 'https://dev1.dev.clover.com/',
+        'domain': 'https://sandbox.dev.clover.com/',
         'friendlyId': 'test'
       };
 
@@ -133,7 +133,7 @@
 
       function loadConfigStaticByKey(friendlyId) {
         // Load the configuration for this id.
-        TestBase.simpleCloverConfig.loadCloverConfig(CONFIG_BASE_PATH, {friendlyId: friendlyId}, 
+        TestBase.simpleCloverConfig.loadCloverConfig(CONFIG_BASE_PATH, {friendlyId: friendlyId},
           function(error, configuration) {
             if (!error) {
               configFile = friendlyId;
