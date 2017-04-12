@@ -1,3 +1,5 @@
+"use strict";
+
 var webpack = require('webpack');
 
 let commonsPlugin = new webpack.optimize.CommonsChunkPlugin({

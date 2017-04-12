@@ -23,16 +23,19 @@
     "jquery": "3.1.1",
     "mkdirp": "0.5.1",
     "path": "0.12.7",
-    "remote-pay-cloud": "1.2.0-rc1.0"
-  },
-  "devDependencies": {
-    "@types/node": "7.0.5",
-    "del": "2.2.2",
     "gulp": "3.9.1",
-    "gulp-sourcemaps": "2.4.1",
+    "typedoc": "^0.5.10",
+    "gulp-typedoc": "^2.0.2",
     "gulp-typescript": "3.1.5",
-    "ts-loader": "^2.0.1",
     "typescript": "2.2.1",
-    "webpack": "2.2.1"
+    "del": "2.2.2",
+    "remote-pay-cloud": "1.2.0-rc1.0",
+    "webpack": "2.2.1",
+    "@types/node": "7.0.5",
+    "gulp-sourcemaps": "2.4.1",
+    "ts-loader": "^2.0.1"
+  },
+
+  "devDependencies": {
   }
 }
