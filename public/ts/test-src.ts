@@ -151,7 +151,22 @@ configLoader.addCloverConfigLoaderListener( {
         $(configurations).each(function() {
             configurationSelect.append($("<option>").attr('value',this).text(this));
         });
-        configLoader.loadCloverConfig(configurations[0]);
+        if(configurations && configurations.length > 0) {
+            configLoader.loadCloverConfig(configurations[0]);
+        } else {
+            // Hard coded default for examples
+            var defaultConfig = new ExampleWebsocketPairedCloverDeviceConfiguration({
+                "uri": "wss://Clover-C030UQ50550081.local.:12345/remote_pay",
+                "heartbeatInterval": 1000,
+                "reconnectDelay": 3000,
+                "pingRetryCountBeforeReconnect": 4,
+                "appId": "test.js.test",
+                "posName": "pos.name",
+                "serialNumber": "1122334455",
+                "authToken": null
+            });
+            configLoader.saveCloverConfig("Clover-C030UQ50550081.local", defaultConfig);
+        }
     }
 });
 
