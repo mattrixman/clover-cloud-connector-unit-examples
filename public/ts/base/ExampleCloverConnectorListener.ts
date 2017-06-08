@@ -110,5 +110,12 @@ export abstract class ExampleCloverConnectorListener
     protected onDeviceError(deviceErrorEvent: sdk.remotepay.CloverDeviceErrorEvent): void {
         console.error("onDeviceError", deviceErrorEvent);
         this.displayMessage({ message: "Test Error.", success: false, deviceErrorEvent});
+        if (deviceErrorEvent.getType() == sdk.remotepay.ErrorType.EXCEPTION ) {
+            setTimeout(function () {
+                // Always call this when your test is done, or the device may fail to connect the
+                // next time, because it is already connected.
+                this.testComplete(false);
+            }.bind(this), 5000);
+        }
     }
 }
