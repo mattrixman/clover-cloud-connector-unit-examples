@@ -1,5 +1,6 @@
 export {TestShowMessage} from "./TestShowMessage";
 export {TestSale} from "./TestSale";
+export {TestState} from "./TestState";
 export {TestBadConfirmFOD} from "./TestBadConfirmFOD";
 export {TestRetrievePayment} from "./TestRetrievePayment";
 export {TestCFP_BasicActivity} from "./TestCFP_BasicActivity";
