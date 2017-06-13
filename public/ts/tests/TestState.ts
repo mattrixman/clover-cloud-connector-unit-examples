@@ -53,11 +53,19 @@ export namespace TestState {
             /*
              The connector is ready, create a sale request and send it to the device.
              */
-            let saleRequest:sdk.remotepay.SaleRequest = new sdk.remotepay.SaleRequest();
-            saleRequest.setExternalId(Clover.CloverID.getNewId());
-            saleRequest.setAmount(10);
-            this.displayMessage({message: "Sending sale", request: saleRequest});
-            this.cloverConnector.sale(saleRequest);
+            this.nextAction = function (status: sdk.remotepay.RetrieveDeviceStatusResponse) {
+                let state: sdk.remotepay.ExternalDeviceState = status.getState();
+                this.displayMessage({message: "startTest " + state});
+                let saleRequest:sdk.remotepay.SaleRequest = new sdk.remotepay.SaleRequest();
+                saleRequest.setExternalId(Clover.CloverID.getNewId());
+                saleRequest.setAmount(10);
+                this.displayMessage({message: "Sending sale", request: saleRequest});
+                this.cloverConnector.sale(saleRequest);
+            }.bind(this);
+
+            // Ask for status
+            let statusRequest: sdk.remotepay.RetrieveDeviceStatusRequest = new sdk.remotepay.RetrieveDeviceStatusRequest();
+            this.cloverConnector.retrieveDeviceStatus(statusRequest);
         }
 
         /*
@@ -70,13 +78,13 @@ export namespace TestState {
 
         public onSaleResponse(response:sdk.remotepay.SaleResponse) {
 
-            // Ask for status
-            let statusRequest: sdk.remotepay.RetrieveDeviceStatusRequest = new sdk.remotepay.RetrieveDeviceStatusRequest();
-            statusRequest.setSendLastMessage(true);
-            this.cloverConnector.retrieveDeviceStatus(statusRequest);
-
             // Set up the callback
-            this.nextAction = function () {
+            this.nextAction = function (status: sdk.remotepay.RetrieveDeviceStatusResponse) {
+                let state: sdk.remotepay.ExternalDeviceState = status.getState();
+                this.displayMessage({message: "onSaleResponse " + state});
+                if(state != sdk.remotepay.ExternalDeviceState.IDLE) {
+                    this.displayMessage({message: "Unexpected state!  Expected IDLE, but got " + state, response});
+                }
                 /*
                  The sale is complete.  It might be canceled, or successful.  This can be determined by the
                  values in the response.
@@ -91,6 +99,10 @@ export namespace TestState {
                 // next time, because it is already connected.
                 this.testComplete(response.getSuccess());
             }.bind(this);
+
+            // Ask for status
+            let statusRequest: sdk.remotepay.RetrieveDeviceStatusRequest = new sdk.remotepay.RetrieveDeviceStatusRequest();
+            this.cloverConnector.retrieveDeviceStatus(statusRequest);
         }
 
         /**
@@ -98,18 +110,20 @@ export namespace TestState {
          * @param {sdk.remotepay.MerchantInfo} merchantInfo - information on supported operations, and configurations.
          */
         protected onReady(merchantInfo: sdk.remotepay.MerchantInfo): void {
-
-            // Ask for status
-            let statusRequest: sdk.remotepay.RetrieveDeviceStatusRequest = new sdk.remotepay.RetrieveDeviceStatusRequest();
-            statusRequest.setSendLastMessage(true);
-            this.cloverConnector.retrieveDeviceStatus(statusRequest);
-
             // Set up the callback
-            this.nextAction = function () {
+            this.nextAction = function (status: sdk.remotepay.RetrieveDeviceStatusResponse) {
+                let state: sdk.remotepay.ExternalDeviceState = status.getState();
+                this.displayMessage({message: "onReady " + state});
+                if(state != sdk.remotepay.ExternalDeviceState.IDLE) {
+                    this.displayMessage({message: "Unexpected state!  Expected IDLE, but got " + state, merchantInfo});
+                }
                 if(!this.testStarted) {
                     this.startTest();
                 }
             }.bind(this);
+            // Ask for status
+            let statusRequest: sdk.remotepay.RetrieveDeviceStatusRequest = new sdk.remotepay.RetrieveDeviceStatusRequest();
+            this.cloverConnector.retrieveDeviceStatus(statusRequest);
         }
 
         /**
@@ -121,16 +135,18 @@ export namespace TestState {
          * @return void
          */
         protected onConfirmPaymentRequest(request: sdk.remotepay.ConfirmPaymentRequest): void {
-
-            // Ask for status
-            let statusRequest: sdk.remotepay.RetrieveDeviceStatusRequest = new sdk.remotepay.RetrieveDeviceStatusRequest();
-            statusRequest.setSendLastMessage(true);
-            this.cloverConnector.retrieveDeviceStatus(statusRequest);
-
             // Set up the callback
-            this.nextAction = function () {
+            this.nextAction = function (status: sdk.remotepay.RetrieveDeviceStatusResponse) {
+                let state: sdk.remotepay.ExternalDeviceState = status.getState();
+                this.displayMessage({message: "onConfirmPaymentRequest " + state});
+                if(state != sdk.remotepay.ExternalDeviceState.WAITING_FOR_POS) {
+                    this.displayMessage({message: "Unexpected state!  Expected WAITING_FOR_POS, but got " + state, request});
+                }
                 this.cloverConnector.acceptPayment(request.getPayment());
             }.bind(this);
+            // Ask for status
+            let statusRequest: sdk.remotepay.RetrieveDeviceStatusRequest = new sdk.remotepay.RetrieveDeviceStatusRequest();
+            this.cloverConnector.retrieveDeviceStatus(statusRequest);
         }
 
         /**
@@ -142,27 +158,32 @@ export namespace TestState {
          * @return void
          */
         protected onVerifySignatureRequest(request: sdk.remotepay.onVerifySignatureRequest): void {
-            // Ask for status
-            let statusRequest: sdk.remotepay.RetrieveDeviceStatusRequest = new sdk.remotepay.RetrieveDeviceStatusRequest();
-            statusRequest.setSendLastMessage(true);
-            this.cloverConnector.retrieveDeviceStatus(statusRequest);
-
             // Set up the callback
-            this.nextAction = function () {
+            this.nextAction = function (status: sdk.remotepay.RetrieveDeviceStatusResponse) {
+                let state: sdk.remotepay.ExternalDeviceState = status.getState();
+                this.displayMessage({message: "onVerifySignatureRequest " + state});
+                if(state != sdk.remotepay.ExternalDeviceState.WAITING_FOR_POS) {
+                    this.displayMessage({message: "Unexpected state!  Expected WAITING_FOR_POS, but got " + state, request});
+                }
                 this.cloverConnector.acceptSignature(request);
             }.bind(this);
+            // Ask for status
+            let statusRequest: sdk.remotepay.RetrieveDeviceStatusRequest = new sdk.remotepay.RetrieveDeviceStatusRequest();
+            this.cloverConnector.retrieveDeviceStatus(statusRequest);
         }
 
         protected onTipAdded(response: sdk.remotepay.TipAdded): void {
+            // Set up the callback
+            this.nextAction = function (status: sdk.remotepay.RetrieveDeviceStatusResponse) {
+                let state: sdk.remotepay.ExternalDeviceState = status.getState();
+                this.displayMessage({message: "onTipAdded " + state});
+                if(state != sdk.remotepay.ExternalDeviceState.BUSY) {
+                    this.displayMessage({message: "Unexpected state!  Expected BUSY, but got " + state, response});
+                }
+            }.bind(this);
             // Ask for status
             let statusRequest: sdk.remotepay.RetrieveDeviceStatusRequest = new sdk.remotepay.RetrieveDeviceStatusRequest();
-            statusRequest.setSendLastMessage(true);
             this.cloverConnector.retrieveDeviceStatus(statusRequest);
-
-            // Set up the callback
-            this.nextAction = function () {
-                this.displayMessage({message: "This is the callback from onTipAdded", response});
-            }.bind(this);
         }
 
         /*
@@ -171,8 +192,9 @@ export namespace TestState {
         protected onRetrieveDeviceStatusResponse(response: sdk.remotepay.RetrieveDeviceStatusResponse): void {
             this.displayMessage({message: "Device status", response});
             if(this.nextAction) {
-                this.nextAction();
+                var tempAction = this.nextAction;
                 this.nextAction = null;
+                tempAction(response);
             }
         }
     }
