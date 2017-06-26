@@ -38,7 +38,7 @@ This will allow you to run a very simple test.  If you want to test clover conne
         ShowMessageExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
         ShowMessageExampleCloverConnectorListener.prototype.constructor = ShowMessageExampleCloverConnectorListener;
 
-3.  Add the override of the `startTest` function.  This is called by the `onReady` function when the connection to the device is ready for a test.  You will start your test flow from here.  At the end of the test, make sure to call the `testComplete(boolean)` function.  Passing a value will set a property named `success` to that value.  This value is then passed through to the supplied display function.
+3.  Add the override of the `startTest` function.  This is called by the `onDeviceReady` function when the connection to the device is ready for a test.  You will start your test flow from here.  At the end of the test, make sure to call the `testComplete(boolean)` function.  Passing a value will set a property named `success` to that value.  This value is then passed through to the supplied display function.
 
         ShowMessageExampleCloverConnectorListener.prototype.startTest = function () {
             ExampleCloverConnectorListener.prototype.startTest.call(this);

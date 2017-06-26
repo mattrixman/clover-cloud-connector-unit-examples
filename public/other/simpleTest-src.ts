@@ -38,8 +38,8 @@ export class StandAloneExampleCloverConnectorListener extends Clover.remotepay.I
         this.cloverConnector = cloverConnector;
         this.testStarted = false;
     }
-    protected onReady(merchantInfo: Clover.remotepay.MerchantInfo): void {
-        console.log("In onReady, starting test", merchantInfo);
+    public onDeviceReady(merchantInfo: Clover.remotepay.MerchantInfo): void {
+        console.log("In onDeviceReady, starting test", merchantInfo);
         if(!this.testStarted) {
             this.testStarted = true;
         }
@@ -110,7 +110,7 @@ $(window).on('beforeunload ', function () {
 });
 
 // This is where the processing will start.  This initializes the connection to the device, once successful it
-// calls the StandAloneExampleCloverConnectorListener.onReady() callback.
+// calls the StandAloneExampleCloverConnectorListener.onDeviceReady() callback.
 cloverConnector.initializeConnection();
 
 

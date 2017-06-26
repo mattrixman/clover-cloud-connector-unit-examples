@@ -29,16 +29,16 @@ export abstract class ExampleCloverConnectorListener
      * Call startTest() if not already flagged as a started test.
      * @param {sdk.remotepay.MerchantInfo} merchantInfo - information on supported operations, and configurations.
      */
-    protected onReady(merchantInfo: sdk.remotepay.MerchantInfo): void {
-        this.displayMessage({message: "In onReady, starting test"});
+    public onDeviceReady(merchantInfo: sdk.remotepay.MerchantInfo): void {
+        this.displayMessage({message: "In onDeviceReady, starting test"});
         if(!this.testStarted) {
             this.startTest();
         }
     }
     /**
-     * Flag the test as started.  Expected to be overridden to provide the meat of the test.  Called from the `onReady`
+     * Flag the test as started.  Expected to be overridden to provide the meat of the test.  Called from the `onDeviceReady`
      * function if the test has not already been started.  If the overriding function does NOT call this, then additional
-     * calls to `onReady` will result in additional calls to this function.
+     * calls to `onDeviceReady` will result in additional calls to this function.
      */
     protected startTest(): void {
         this.testStarted = true;

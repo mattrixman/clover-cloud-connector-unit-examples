@@ -58,7 +58,7 @@ export namespace TestResetResponse_onReady {
          * Call startTest() if not already flagged as a started test.
          * @param {sdk.remotepay.MerchantInfo} merchantInfo - information on supported operations, and configurations.
          */
-        protected onReady(merchantInfo: sdk.remotepay.MerchantInfo): void {
+        public onDeviceReady(merchantInfo: sdk.remotepay.MerchantInfo): void {
             // Reset Device
             this.cloverConnector.resetDevice();
         }

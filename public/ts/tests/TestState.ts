@@ -109,11 +109,11 @@ export namespace TestState {
          * Call startTest() if not already flagged as a started test.
          * @param {sdk.remotepay.MerchantInfo} merchantInfo - information on supported operations, and configurations.
          */
-        protected onReady(merchantInfo: sdk.remotepay.MerchantInfo): void {
+        public onDeviceReady(merchantInfo: sdk.remotepay.MerchantInfo): void {
             // Set up the callback
             this.nextAction = function (status: sdk.remotepay.RetrieveDeviceStatusResponse) {
                 let state: sdk.remotepay.ExternalDeviceState = status.getState();
-                this.displayMessage({message: "onReady " + state});
+                this.displayMessage({message: "onDeviceReady " + state});
                 if(state != sdk.remotepay.ExternalDeviceState.IDLE) {
                     this.displayMessage({message: "Unexpected state!  Expected IDLE, but got " + state, merchantInfo});
                 }
