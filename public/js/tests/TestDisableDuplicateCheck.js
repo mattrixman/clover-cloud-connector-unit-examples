@@ -52,6 +52,11 @@ DisableDuplicateCheckExampleCloverConnectorListener.prototype.getTestName = func
     return "Test the disableDuplicateCheck transaction setting";
 };
 
+DisableDuplicateCheckExampleCloverConnectorListener.prototype.onConfirmPaymentRequest = function() {
+  // do nothing. override the ExampleCloverConnectorListener's behavior of automatically
+  // verifying all challenges.
+};
+
 /**
  * A very simple subclass of the tests that specifies the listener (see above)
  * that defines the test flow.
