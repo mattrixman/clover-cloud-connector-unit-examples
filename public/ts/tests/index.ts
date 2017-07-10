@@ -10,3 +10,4 @@ export {TestResetResponse_end_START} from "./TestResetResponse_end_START";
 export {TestCFP_BasicActivity} from "./TestCFP_BasicActivity";
 export {TestCFP_BasicConversationalActivity} from "./TestCFP_BasicConversationalActivity";
 export {TestCFP_RatingsActivity} from "./TestCFP_RatingsActivity";
+export {TestSale_noTipOnScreen} from "./TestSale_noTipOnScreen";
