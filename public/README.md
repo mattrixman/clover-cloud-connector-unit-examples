@@ -1,12 +1,16 @@
 # Adding a new Test
 
+Before you begin, run webpack from the working directory to incorporate your JavaScript changes:
+
+    webpack --watch
+
 ## Create The Test To Include
 
-1.  Create a javascript file, and place it into the `public/tests/` directory, prefix the name with `Test`.  Example: 
+1.  Create a javascript file, and place it into the `public/tests/` directory, prefix the name with `Test`.  Example:
 
         public/tests/TestShowMessage.js
 
-2.  Write the test.  All that is required is the addition of a function to the TestBase object.  Example: 
+2.  Write the test.  All that is required is the addition of a function to the TestBase object.  Example:
 
         File: public/tests/TestShowMessage.js
         -----------------------------------------------------------------------------------------
@@ -28,13 +32,13 @@ This will allow you to run a very simple test.  If you want to test clover conne
         var ExampleCloverConnectorListener = require("../ExampleCloverConnectorListener.js");
 
 2.  Create the extension to the class.  Accept the `cloverConnector` parameter and the `progressinfoCallback`.  Ensure that the prototype for the object and the constructor are properly set up.  Example:
-        
+
         var ShowMessageExampleCloverConnectorListener = function (cloverConnector, progressinfoCallback) {
             ExampleCloverConnectorListener.call(this, cloverConnector, progressinfoCallback);
             this.cloverConnector = cloverConnector;
             this.progressinfoCallback = progressinfoCallback;
         };
-        
+
         ShowMessageExampleCloverConnectorListener.prototype = Object.create(ExampleCloverConnectorListener.prototype);
         ShowMessageExampleCloverConnectorListener.prototype.constructor = ShowMessageExampleCloverConnectorListener;
 
@@ -55,22 +59,22 @@ This will allow you to run a very simple test.  If you want to test clover conne
                 this.testComplete(true);
             }.bind(this), 5000);
         };
-        
+
 4.  Add the function override that helps identify the test for display output.
 
         ShowMessageExampleCloverConnectorListener.prototype.getTestName = function () {
             return "Test Displaying a message on the device";
         };
-    
+
 5.  Create the new extension of the `TestBase`.  This tells the test about your ICloverConnectorListener.
 
         TestShowMessage = function (configUrl, friendlyName, progressinfoCallback) {
             TestBase.call(this, configUrl, friendlyName, progressinfoCallback);
         };
-        
+
         TestShowMessage.prototype = Object.create(TestBase.prototype);
         TestShowMessage.prototype.constructor = TestShowMessage;
-        
+
         TestShowMessage.prototype.getCloverConnectorListener = function (cloverConnector) {
             return new ShowMessageExampleCloverConnectorListener(cloverConnector, this.progressinfoCallback);
         };
@@ -83,5 +87,3 @@ This will allow you to run a very simple test.  If you want to test clover conne
         };
 
 There may be additional steps in the flow depending on the functionality being tested.  For more complex tests, look at `public/tests/TestSale.js`, `public/tests/TestAuth.js`, `public/tests/TestPreAuth.js` as well as the other tests in this directory.
- 
- 
