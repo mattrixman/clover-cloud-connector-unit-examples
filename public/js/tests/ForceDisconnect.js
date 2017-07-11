@@ -43,8 +43,8 @@ ForceDisconnect = function (configUrl, friendlyName, progressinfoCallback) {
 ForceDisconnect.prototype = Object.create(TestBase.prototype);
 ForceDisconnect.prototype.constructor = ForceDisconnect;
 
-ForceDisconnect.prototype.readyTest = function(error, configuration) {
-    if(configuration) {
+ForceDisconnect.prototype.readyTest = function (error, configuration) {
+    if (configuration) {
         configuration.forceConnect = true;
     }
     TestBase.prototype.readyTest.call(this, error, configuration);
@@ -55,7 +55,7 @@ ForceDisconnect.prototype.getCloverConnectorListener = function (cloverConnector
 };
 
 TestBase.ForceDisconnect = function (configUrl, configFile, progressinfoCallback) {
-    progressinfoCallback('Running ForceDisconnect with config '+configUrl+configFile);
+    progressinfoCallback('Running ForceDisconnect with config ' + configUrl + configFile);
     var testObj = new ForceDisconnect(configUrl, configFile, progressinfoCallback);
     testObj.test();
 };

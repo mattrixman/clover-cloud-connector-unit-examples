@@ -25,24 +25,32 @@ DisableDuplicateCheckExampleCloverConnectorListener.prototype.startTest = functi
     var saleRequest = new sdk.remotepay.SaleRequest();
     saleRequest.setExternalId(clover.CloverID.getNewId());
     saleRequest.setAmount(100);
-    saleRequest.disableDuplicateCheck = true;
+    saleRequest.setDisableDuplicateChecking(true);
     this.displayMessage({message: "Sending sale", request: saleRequest});
     this.cloverConnector.sale(saleRequest);
 };
 DisableDuplicateCheckExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
-    /*
-     The sale is complete.  It might be canceled, or successful.  This can be determined by the
-     values in the response.
-     */
+    try{
+        /*
+         The sale is complete.  It might be canceled, or successful.  This can be determined by the
+         values in the response.
+         */
 
-    this.displayMessage({message: "Sale response received", response: response});
-    if (!response.getIsSale()) {
-        // Exit if a sale did not process as expected
-        console.error("Response is not a sale!");
-        this.testComplete();
-        return;
+        this.displayMessage({message: "Sale response received", response: response});
+        if (!response.getIsSale()) {
+            // Exit if a sale did not process as expected
+            console.error("Response is not a sale!");
+            this.testComplete();
+            return;
+        }
+        // Always call this when your test is done, or the device may fail to connect the
+        // next time, because it is already connected.
+        this.testComplete(response.getSuccess());
+    } catch (e) {
+        console.log(e);
+        this.testComplete(false);
     }
-};
+}
 
 /**
  * Used in the test to help identify where messages come from.
