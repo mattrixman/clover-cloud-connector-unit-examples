@@ -7,7 +7,7 @@
     "url": "https://github.com/clover/clover-cloud-connector-unit-examples"
   },
   "engines": {
-    "node": "5.9.1",
+    "node": "6.11.1",
     "npm": "3.3.6"
   },
   "scripts": {
