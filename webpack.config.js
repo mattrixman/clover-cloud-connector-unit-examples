@@ -13,7 +13,12 @@ module.exports = {
 	entry: {
 		simpleTest: "./public/other/simpleTest-src.ts",
 		test_ts: "./public/ts/test-src.ts",
-		test_js: "./public/js/test-src.js"
+		test_js: "./public/js/test-src.js",
+		cloud_connect_js: "./public/cloud_connect/test-src.js",
+		npd_welcome_js: "./public/npd_welcome/test-src.js",
+		npd_sale_js: "./public/npd_sale/test-src.js",
+		npd_read_card_data_js: "./public/npd_read_card_data/test-src.js",
+		cloud_read_card_data_js: "./public/cloud_read_card_data/test-src.js"
 	},
 	resolve: {
 		extensions: ['.js', '.ts']
