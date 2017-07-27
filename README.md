@@ -12,7 +12,7 @@ for when the repo goes public
 In order to deploy this to Heroku, you will need to have an account on Heroku.  You can sign up for a free account to 
 test this if you do not have one.
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/clover/clover-cloud-connector-unit-examples)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ### Clone and run locally
 
