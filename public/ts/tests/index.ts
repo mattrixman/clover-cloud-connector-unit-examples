@@ -6,6 +6,7 @@ export {TestImagePrint_2} from "./TestImagePrint_2";
 export {TestImagePrint_3} from "./TestImagePrint_3";
 export {TestImagePrint_4} from "./TestImagePrint_4";
 export {TestImagePrint_5} from "./TestImagePrint_5";
+export {TestDisplayOrder} from "./TestDisplayOrder";
 export {TestSale} from "./TestSale";
 export {TestState} from "./TestState";
 export {TestBadConfirmFOD} from "./TestBadConfirmFOD";
