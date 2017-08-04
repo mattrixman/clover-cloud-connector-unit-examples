@@ -11,7 +11,7 @@ export class TestImagePrint extends TestBase2 {
     constructor(loader: CloverConfigLoader, progressInfoCallback: any, imageLocation?: string) {
         super(loader, progressInfoCallback);
         if(!imageLocation) {
-            this.imageLocation = "/images/test_receipt_0.png";
+            this.imageLocation = "/images/test_receipt_6.jpg";
         } else {
             this.imageLocation = imageLocation;
         }
