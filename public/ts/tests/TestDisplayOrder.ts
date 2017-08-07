@@ -60,16 +60,21 @@ export namespace TestDisplayOrder {
             let lineItem:sdk.order.DisplayLineItem = new sdk.order.DisplayLineItem();
             lineItem.setId("TI1");
             lineItem.setName("Test Item 1");
+            // The price set here is display only. It is up to the POS to
+            // set this to the proper value.
             lineItem.setPrice("$12.34");
             let lineItems:Array<sdk.order.DisplayLineItem> = [];
             lineItems.push(lineItem);
             this.displayOrder.setLineItems(lineItems);
 
+            // The totals set here are for display only. It is up to the POS to
+            // set these to the proper value.
             this.displayOrder.setSubtotal("$12.34");
             this.displayOrder.setTotal("$12.34");
 
             this.displayMessage({message: "Showing a display order", displayOrder: this.displayOrder});
             this.cloverConnector.showDisplayOrder(this.displayOrder);
+            // Show the order for 5 seconds then go to the next step
             setTimeout(function () {
                 this.showOrder_2();
             }.bind(this), 5000);
@@ -85,11 +90,14 @@ export namespace TestDisplayOrder {
             lineItems.push(lineItem);
             this.displayOrder.setLineItems(lineItems);
 
+            // The totals set here are for display only. It is up to the POS to
+            // set these to the proper value.
             this.displayOrder.setSubtotal("$46.90");
             this.displayOrder.setTotal("$46.90");
 
             this.displayMessage({message: "Showing a display order", displayOrder: this.displayOrder});
             this.cloverConnector.showDisplayOrder(this.displayOrder);
+            // Show the order for 5 seconds then go to the next step
             setTimeout(function () {
                 this.showOrder_3();
             }.bind(this), 5000);
@@ -97,12 +105,15 @@ export namespace TestDisplayOrder {
         private showOrder_3 () {
 
             // Add some tax
+            // The totals set here are for display only. It is up to the POS to
+            // set these to the proper value.
             this.displayOrder.setSubtotal("$46.90");
             this.displayOrder.setTax(      "$3.28");
             this.displayOrder.setTotal(   "$50.18");
 
             this.displayMessage({message: "Showing a display order", displayOrder: this.displayOrder});
             this.cloverConnector.showDisplayOrder(this.displayOrder);
+            // Show the order for 5 seconds then go to the next step
             setTimeout(function () {
                 this.showOrder_4();
             }.bind(this), 5000);
@@ -118,18 +129,23 @@ export namespace TestDisplayOrder {
             discount.setId("TD1");
             discount.setLineItemId(lineItem.getId());
             discount.setName("Test Discount 1");
+            // The discount set here is display only. It is up to the POS to
+            // set this to the proper value.
             discount.setAmount("$2.34");
 
             discounts.push(discount);
             lineItem.setDiscounts(discounts);
             lineItem.setDiscountAmount("$2.34");
 
+            // The totals set here are for display only. It is up to the POS to
+            // set these to the proper value.
             this.displayOrder.setSubtotal("$44.56");
             this.displayOrder.setTax(      "$3.28");
             this.displayOrder.setTotal(   "$50.18");
 
             this.displayMessage({message: "Showing a display order", displayOrder: this.displayOrder});
             this.cloverConnector.showDisplayOrder(this.displayOrder);
+            // Show the order for 5 seconds then finish
             setTimeout(function () {
                 // Always call this when your test is done, or the device may fail to connect the
                 // next time, because it is already connected.
