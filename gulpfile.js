@@ -8,8 +8,9 @@ var tsProject = ts.createProject('tsconfig.json', {
 });
 
 gulp.task('clean:dist', function() {
+	console.log('Deleting all of public/built');
 	return del([
-		'public/dist/**/*'
+		'public/built/**/*'
 	]);
 });
 
