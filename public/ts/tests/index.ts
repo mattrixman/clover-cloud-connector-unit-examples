@@ -7,6 +7,14 @@ export {TestImagePrint_3} from "./TestImagePrint_3";
 export {TestImagePrint_4} from "./TestImagePrint_4";
 export {TestImagePrint_5} from "./TestImagePrint_5";
 export {TestDisplayOrder} from "./TestDisplayOrder";
+
+export {TestImageUrlPrint} from "./TestImageUrlPrint"
+export {TestImageUrlPrint_1} from "./TestImageUrlPrint_1"
+export {TestImageUrlPrint_2} from "./TestImageUrlPrint_2"
+export {TestImageUrlPrint_3} from "./TestImageUrlPrint_3"
+export {TestImageUrlPrint_4} from "./TestImageUrlPrint_4"
+export {TestImageUrlPrint_5} from "./TestImageUrlPrint_5"
+
 export {TestTextPrint} from "./TestTextPrint";
 export {TestSale} from "./TestSale";
 export {TestState} from "./TestState";
