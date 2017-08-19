@@ -15,6 +15,7 @@ export {TestImageUrlPrint_3} from "./TestImageUrlPrint_3"
 export {TestImageUrlPrint_4} from "./TestImageUrlPrint_4"
 export {TestImageUrlPrint_5} from "./TestImageUrlPrint_5"
 export {TestImageUrlPrint_6} from "./TestImageUrlPrint_6"
+export {TestImageUrlPrint_8} from "./TestImageUrlPrint_8"
 
 export {TestTextPrint} from "./TestTextPrint";
 export {TestSale} from "./TestSale";
