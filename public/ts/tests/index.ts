@@ -31,3 +31,7 @@ export {TestCFP_BasicConversationalActivity} from "./TestCFP_BasicConversational
 export {TestCFP_RatingsActivity} from "./TestCFP_RatingsActivity";
 export {TestSale_noTipOnScreen} from "./TestSale_noTipOnScreen";
 export {TestSaleTippableAmount} from "./TestSaleTippableAmount";
+export {TestOpenCashDrawerCall} from "./TestOpenCashDrawerCall";
+export {TestOpenCashDrawerRequest} from "./TestOpenCashDrawerRequest";
+export {TestRetrievePrinters} from "./TestRetrievePrinters";
+export {TestRetrievePrintJobStatus} from "./TestRetrievePrintJobStatus";
