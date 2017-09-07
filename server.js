@@ -1,4 +1,11 @@
 var fs = require("fs");
+var http = require('http');
+var https = require('https');
+var privateKey  = fs.readFileSync('server.key', 'utf8');
+var certificate = fs.readFileSync('server.crt', 'utf8');
+// openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout server.key -out server.crt
+
+var credentials = {key: privateKey, cert: certificate};
 var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -117,8 +124,18 @@ https.createServer(options, app).listen(443, function () {
 });
 */
 
-app.set('port', (process.env.PORT || 3000));
+//app.set('port', (process.env.PORT || 3000));
 
-app.listen(app.get('port'), function() {
-  console.log('Server started: http://localhost:' + app.get('port') + '/');
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(8080, function() {
+  console.log('Server started: http://localhost:8080/');
 });
+httpsServer.listen(8443, function() {
+  console.log('Server started: https://localhost:8443/');
+});
+
+//app.listen(app.get('port'), function() {
+//  console.log('Server started: http://localhost:' + app.get('port') + '/');
+//});
