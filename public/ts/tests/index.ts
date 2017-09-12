@@ -1,4 +1,3 @@
-
 export {TestShowMessage} from "./TestShowMessage";
 export {TestImagePrint} from "./TestImagePrint";
 export {TestImagePrint_1} from "./TestImagePrint_1";
@@ -6,6 +5,8 @@ export {TestImagePrint_2} from "./TestImagePrint_2";
 export {TestImagePrint_3} from "./TestImagePrint_3";
 export {TestImagePrint_4} from "./TestImagePrint_4";
 export {TestImagePrint_5} from "./TestImagePrint_5";
+export {TestImagePrint_8} from "./TestImagePrint_8";
+
 export {TestDisplayOrder} from "./TestDisplayOrder";
 
 export {TestImageUrlPrint} from "./TestImageUrlPrint"
@@ -35,3 +36,4 @@ export {TestOpenCashDrawerCall} from "./TestOpenCashDrawerCall";
 export {TestOpenCashDrawerRequest} from "./TestOpenCashDrawerRequest";
 export {TestRetrievePrinters} from "./TestRetrievePrinters";
 export {TestRetrievePrintJobStatus} from "./TestRetrievePrintJobStatus";
+export {TestBadIDRetrievePrintJobStatus} from "./TestBadIDRetrievePrintJobStatus";
