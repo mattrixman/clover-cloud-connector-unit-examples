@@ -68,7 +68,8 @@ export namespace TestImageUrlPrint {
              */
             this.displayMessage({message: "Sending print request"});
             this.cloverConnector.printImageFromURL(window.location.origin + this.imageLocation);
-            this.testComplete(true);
+            setTimeout(function(){this.testComplete(true);}.bind(this), 20000);
+            // this.testComplete(true);
         }
     }
 }
