@@ -71,7 +71,7 @@ export namespace TestImagePrint {
             downloadingImage.onload = function () {
                 this.displayMessage({message: "Image loaded, sending print request"});
                 this.cloverConnector.printImage(downloadingImage);
-                setTimeout(function(){this.testComplete(true);}.bind(this), 20000);
+                setTimeout(function () {this.testComplete(true);}.bind(this), 20000);
             }.bind(this);
             downloadingImage.src = this.imageLocation;
         }
