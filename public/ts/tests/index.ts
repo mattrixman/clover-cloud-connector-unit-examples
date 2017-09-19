@@ -37,3 +37,4 @@ export {TestOpenCashDrawerRequest} from "./TestOpenCashDrawerRequest";
 export {TestRetrievePrinters} from "./TestRetrievePrinters";
 export {TestRetrievePrintJobStatus} from "./TestRetrievePrintJobStatus";
 export {TestBadIDRetrievePrintJobStatus} from "./TestBadIDRetrievePrintJobStatus";
+export {TestRefund} from "./TestRefund";

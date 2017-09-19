@@ -152,7 +152,19 @@ configLoader.addCloverConfigLoaderListener( {
             configurationSelect.append($("<option>").attr('value',this).text(this));
         });
         if(configurations && configurations.length > 0) {
-            configLoader.loadCloverConfig(configurations[0]);
+            if (typeof(Storage) !== "undefined") {
+                let selected: string = localStorage.selected;
+                if (selected) {
+                    configLoader.loadCloverConfig(selected);
+                    let dropdown: any = document.getElementById('friendlyId');
+                    dropdown.value = selected;
+                } else {
+                    configLoader.loadCloverConfig(configurations[0]);
+                    localStorage.selected = configurations[0];
+                }
+            } else {
+                configLoader.loadCloverConfig(configurations[0]);
+            }
         } else {
             // Hard coded default for examples
             var defaultConfig = new ExampleWebsocketPairedCloverDeviceConfiguration({
@@ -173,6 +185,9 @@ configLoader.addCloverConfigLoaderListener( {
 // Handle the change of the select
 configurationSelect.on('change', function() {
     configLoader.loadCloverConfig( this.value );
+    if (typeof(Storage) !== "undefined") {
+        localStorage.selected = this.value;
+    }
 });
 
 // Add a button to load configurations

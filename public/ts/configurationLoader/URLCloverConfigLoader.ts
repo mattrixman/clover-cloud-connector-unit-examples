@@ -30,6 +30,9 @@ export abstract class URLCloverConfigLoader extends CloverConfigLoader {
                     this.notifyOnCloverConfigSaveComplete(false, configurationKey, typedConfiguration);
                 }.bind(this)
             });
+            if (typeof(Storage) !== "undefined") {
+                localStorage.selected = configurationKey;
+            }
         } else {
             this.notifyOnCloverConfigSaveComplete(false, configurationKey, configuration);
         }
