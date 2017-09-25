@@ -225,6 +225,19 @@ $('body').append('<BR/>');
 $('body').append(configeditor);
 $('body').append('<BR/>');
 
+var buttonCount = 0;
+for (var property in tests) {
+    if (tests.hasOwnProperty(property)) {
+        buttonCount++;
+    }
+}
+var columnCount = 1;
+var divs = [];
+for (let i = 0; i < columnCount; i++) {
+    divs[i] = document.createElement("div");
+    divs[i].className = "button-container";
+}
+var divCount = 0;
 // Build the buttons
 for (var property in tests) {
     if (tests.hasOwnProperty(property)) {
@@ -234,9 +247,20 @@ for (var property in tests) {
         var t = document.createTextNode(testMessage.getName());
         btn.appendChild(t);
         btn.addEventListener("click", function(){testMessage.test()}, false);
-        document.body.appendChild(btn);
-        document.body.appendChild(document.createElement("BR") );
+        btn.className = "func-button";
+        /*
+        if (divCount % 2 == 0) {
+            btn.className += " even-button";
+        } else {
+            btn.className += " odd-button";
+        }
+        */
+        divs[Math.floor(divCount / Math.ceil(buttonCount/columnCount))].appendChild(btn);
+        divCount++;
+        //document.body.appendChild(document.createElement("BR") );
     }
 }
-
+for (let i = 0; i < columnCount; i++) {
+    document.body.appendChild(divs[i]);
+}
 console.log("Done loading typescript example.");
