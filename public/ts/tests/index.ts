@@ -53,3 +53,8 @@ export {TestRejectSignature} from "./TestRejectSignature";
 export {TestRejectPayment} from "./TestRejectPayment";
 export {TestAuth} from "./TestAuth";
 export {TestAuthFAIL} from "./TestAuthFAIL";
+export {TestPreAuth} from "./TestPreAuth";
+export {TestCapturePreAuth} from "./TestCapturePreAuth";
+export {TestTipAdjustAuth} from "./TestTipAdjustAuth";
+export {TestCloseout} from "./TestCloseout";
+export {TestManualRefund} from "./TestManualRefund";
