@@ -71,9 +71,13 @@ export namespace TestImagePrint {
             downloadingImage.onload = function () {
                 this.displayMessage({message: "Image loaded, sending print request"});
                 this.cloverConnector.printImage(downloadingImage);
-                setTimeout(function () {this.testComplete(true);}.bind(this), 20000);
+                setTimeout(function(){this.testComplete(true);}.bind(this), 40000);
             }.bind(this);
             downloadingImage.src = this.imageLocation;
+        }
+
+        public onPrintJobStatusResponse(response) {
+            console.log("CAPS - got print job status response:",response);
         }
     }
 }
