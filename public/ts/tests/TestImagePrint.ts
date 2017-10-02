@@ -69,15 +69,12 @@ export namespace TestImagePrint {
             this.displayMessage({message: "Loading image..."});
             let downloadingImage = new Image();
             downloadingImage.onload = function () {
-                this.displayMessage({message: "Image loaded, sending print request"});
-                this.cloverConnector.printImage(downloadingImage);
-                setTimeout(function(){this.testComplete(true);}.bind(this), 40000);
+                let request: sdk.remotepay.PrintRequest = new sdk.remotepay.PrintRequest();
+                request.setImage([downloadingImage]); //For future extensibility, this is an array, but currently only accepts one image/url or an array of strings
+                this.displayMessage({message: "Image loaded, sending print request", request: request});
+                this.cloverConnector.print(request);
             }.bind(this);
             downloadingImage.src = this.imageLocation;
-        }
-
-        public onPrintJobStatusResponse(response) {
-            console.log("CAPS - got print job status response:",response);
         }
     }
 }
