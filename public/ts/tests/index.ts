@@ -1,4 +1,5 @@
 export {TestShowMessage} from "./TestShowMessage";
+
 export {TestImagePrint} from "./TestImagePrint";
 export {TestImagePrint_1} from "./TestImagePrint_1";
 export {TestImagePrint_2} from "./TestImagePrint_2";
@@ -58,3 +59,10 @@ export {TestCapturePreAuth} from "./TestCapturePreAuth";
 export {TestTipAdjustAuth} from "./TestTipAdjustAuth";
 export {TestCloseout} from "./TestCloseout";
 export {TestManualRefund} from "./TestManualRefund";
+
+// no point in including TestSaleWithOptions because it does not have any settings associated with it.
+export {TestSaleWithOptions_1} from "./TestSaleWithOptions_1";
+
+// no point in including TestAuthWithOptions because it does not have any settings associated with it.
+export {TestAuthWithOptions_1} from "./TestAuthWithOptions_1";
+

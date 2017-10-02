@@ -248,13 +248,6 @@ for (var property in tests) {
         btn.appendChild(t);
         btn.addEventListener("click", function(){testMessage.test()}, false);
         btn.className = "func-button";
-        /*
-        if (divCount % 2 == 0) {
-            btn.className += " even-button";
-        } else {
-            btn.className += " odd-button";
-        }
-        */
         divs[Math.floor(divCount / Math.ceil(buttonCount/columnCount))].appendChild(btn);
         divCount++;
         //document.body.appendChild(document.createElement("BR") );
