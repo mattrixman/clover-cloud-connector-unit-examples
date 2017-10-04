@@ -7,20 +7,20 @@ var tsProject = ts.createProject('tsconfig.json', {
 	allowJs: true
 });
 
-gulp.task('clean:dist', function() {
+gulp.task('clean:built', function() {
 	console.log('Deleting all of public/built');
 	return del([
 		'public/built/**/*'
 	]);
 });
 
-gulp.task('build:src', ['clean:dist'], () => {
+gulp.task('build:src', ['clean:built'], () => {
 	var tsResult = gulp.src(["public/src/**/*.ts"])
 		.pipe(sourcemaps.init())
 		.pipe(tsProject());
 	return tsResult.js
 		.pipe(sourcemaps.write('maps/'))
-		.pipe(gulp.dest('public/dist/'));
+		.pipe(gulp.dest('public/built/'));
 });
 
-gulp.task('default', ['clean:dist', 'build:src']);
+gulp.task('default', ['clean:built', 'build:src']);
