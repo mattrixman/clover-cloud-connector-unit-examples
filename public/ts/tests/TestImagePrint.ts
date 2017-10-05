@@ -21,7 +21,7 @@ export class TestImagePrint extends TestBase2 {
      *
      */
     public getName(): string {
-        return "Test printing " + this.imageLocation;
+        return "Test printImage: " + this.imageLocation;
     }
 
     /**
@@ -55,7 +55,7 @@ export namespace TestImagePrint {
          * @returns {string}
          */
         protected getTestName(): string {
-            return "Test printing " + this.imageLocation;
+            return "Test printImage: " + this.imageLocation;
         }
 
         /**
@@ -69,12 +69,19 @@ export namespace TestImagePrint {
             this.displayMessage({message: "Loading image..."});
             let downloadingImage = new Image();
             downloadingImage.onload = function () {
-                let request: sdk.remotepay.PrintRequest = new sdk.remotepay.PrintRequest();
-                request.setImage([downloadingImage]); //For future extensibility, this is an array, but currently only accepts one image/url or an array of strings
-                this.displayMessage({message: "Image loaded, sending print request", request: request});
-                this.cloverConnector.print(request);
+                this.displayMessage({message: "Image loaded, sending print request"});
+                this.cloverConnector.printImage(downloadingImage);
             }.bind(this);
             downloadingImage.src = this.imageLocation;
+        }
+
+        public onPrintJobStatusResponse(response: sdk.remotepay.PrintJobStatusResponse) {
+            this.displayMessage({message: "Got print job status", response});
+            if (response && response.getStatus() && response.getStatus() == sdk.printer.PrintJobStatus.DONE) {
+                this.testComplete(true);
+            } else if(response && response.getStatus() && response.getStatus() == sdk.printer.PrintJobStatus.ERROR) {
+                this.testComplete(false);
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ export class TestTextPrint extends TestBase2 {
      *
      */
     public getName(): string {
-        return "Test printing text";
+        return "Test printText";
     }
 
     /**
@@ -44,7 +44,7 @@ export namespace TestTextPrint {
          * @returns {string}
          */
         protected getTestName(): string {
-            return "Test printing text";
+            return "Test printText";
         }
 
         /**
@@ -57,10 +57,15 @@ export namespace TestTextPrint {
              */
             this.displayMessage({message: "sending print request, will wait ten seconds"});
             this.cloverConnector.printText(["Test line 1", "Test line 2", "Test line 3", "Test line 4", "Test line 5", "Long Test line, Long Test line, Long Test line, Long Test line, Long Test line, Long Test line, Long Test line, Long Test line, Long Test line" ]);
+        }
 
-            setTimeout(function () {
+        public onPrintJobStatusResponse(response: sdk.remotepay.PrintJobStatusResponse) {
+            this.displayMessage({message: "Got print job status", response});
+            if (response && response.getStatus() && response.getStatus() == sdk.printer.PrintJobStatus.DONE) {
                 this.testComplete(true);
-            }.bind(this), 10000);
+            } else if(response && response.getStatus() && response.getStatus() == sdk.printer.PrintJobStatus.ERROR) {
+                this.testComplete(false);
+            }
         }
     }
 }

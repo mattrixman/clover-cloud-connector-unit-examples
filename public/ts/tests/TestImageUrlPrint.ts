@@ -21,7 +21,7 @@ export class TestImageUrlPrint extends TestBase2 {
      *
      */
     public getName(): string {
-        return "Test printing " + this.imageLocation + " from url";
+        return "Test printingImageFromURL " + this.imageLocation;
     }
 
     /**
@@ -55,7 +55,7 @@ export namespace TestImageUrlPrint {
          * @returns {string}
          */
         protected getTestName(): string {
-            return "Test printing " + this.imageLocation + " from url";
+            return "Test printingImageFromURL " + this.imageLocation;
         }
 
         /**
@@ -67,9 +67,16 @@ export namespace TestImageUrlPrint {
              The connector is ready
              */
             this.displayMessage({message: "Sending print request"});
-            this.cloverConnector.printImageFromURL(window.location.origin + this.imageLocation);
-            setTimeout(function(){this.testComplete(true);}.bind(this), 20000);
-            // this.testComplete(true);
+            this.cloverConnector.printImageFromURL("https://raw.githubusercontent.com/clover/clover-cloud-connector-unit-examples/master/public" + this.imageLocation);
+        }
+
+        public onPrintJobStatusResponse(response: sdk.remotepay.PrintJobStatusResponse) {
+            this.displayMessage({message: "Got print job status", response});
+            if (response && response.getStatus() && response.getStatus() == sdk.printer.PrintJobStatus.DONE) {
+                this.testComplete(true);
+            } else if(response && response.getStatus() && response.getStatus() == sdk.printer.PrintJobStatus.ERROR) {
+                this.testComplete(false);
+            }
         }
     }
 }
