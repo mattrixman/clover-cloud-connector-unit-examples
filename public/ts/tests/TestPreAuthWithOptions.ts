@@ -4,11 +4,11 @@ import {TestBase2} from '../base/TestBase2';
 import {ExampleCloverConnectorListener} from '../base/ExampleCloverConnectorListener';
 import {CloverConfigLoader} from '../configurationLoader/CloverConfigLoader';
 
-export class TestAuthWithOptions extends TestBase2 {
+export class TestPreAuthWithOptions extends TestBase2 {
 
-    private transactionSettings: sdk.remotepay.AuthRequest;
+    private transactionSettings: sdk.remotepay.PreAuthRequest;
 
-    constructor(loader: CloverConfigLoader, progressInfoCallback: any, transactionSettings?: sdk.remotepay.AuthRequest) {
+    constructor(loader: CloverConfigLoader, progressInfoCallback: any, transactionSettings?: sdk.remotepay.PreAuthRequest) {
         super(loader, progressInfoCallback);
         if (transactionSettings) {
             this.transactionSettings = transactionSettings;
@@ -19,7 +19,7 @@ export class TestAuthWithOptions extends TestBase2 {
      *
      */
     public getName(): string {
-        return `Test making a auth with transaction options: ${JSON.stringify(this.transactionSettings, null, 1)}`;
+        return `Test making a PreAuth with transaction options: ${JSON.stringify(this.transactionSettings, null, 1)}`;
     }
 
     /**
@@ -30,17 +30,17 @@ export class TestAuthWithOptions extends TestBase2 {
      * @param progressInfoCallback
      */
     public getCloverConnectorListener(cloverConnector: Clover.CloverConnector, progressInfoCallback: any): sdk.remotepay.ICloverConnectorListener {
-        let connectorListener: TestAuthWithOptions.CloverConnectorListener = new TestAuthWithOptions.CloverConnectorListener(this.transactionSettings, cloverConnector, progressInfoCallback);
+        let connectorListener: TestPreAuthWithOptions.CloverConnectorListener = new TestPreAuthWithOptions.CloverConnectorListener(this.transactionSettings, cloverConnector, progressInfoCallback);
         return connectorListener;
     }
 }
 
-export namespace TestAuthWithOptions {
+export namespace TestPreAuthWithOptions {
     export class CloverConnectorListener extends ExampleCloverConnectorListener {
 
-        private transactionSettings: sdk.remotepay.AuthRequest;
+        private transactionSettings: sdk.remotepay.PreAuthRequest;
 
-        constructor(transactionSettings: sdk.remotepay.AuthRequest, cloverConnector: sdk.remotepay.ICloverConnector, progressinfoCallback) {
+        constructor(transactionSettings: sdk.remotepay.PreAuthRequest, cloverConnector: sdk.remotepay.ICloverConnector, progressinfoCallback) {
             super(cloverConnector, progressinfoCallback);
             this.transactionSettings = transactionSettings;
         }
@@ -52,7 +52,7 @@ export namespace TestAuthWithOptions {
          * @returns {string}
          */
         protected getTestName(): string {
-            return "Test making an auth with transaction options";
+            return "Test making an PreAuth with transaction options";
         }
 
         /**
@@ -63,22 +63,22 @@ export namespace TestAuthWithOptions {
             /*
              The connector is ready, create a sale request and send it to the device.
              */
-            let request:sdk.remotepay.AuthRequest = new sdk.remotepay.AuthRequest();
+            let request:sdk.remotepay.PreAuthRequest = new sdk.remotepay.PreAuthRequest();
             request.setExternalId(Clover.CloverID.getNewId());
             request.setAmount(10);
             request = this.pullSettings(request);
-            this.displayMessage({message: "Sending auth", request: request});
-            this.cloverConnector.auth(request);
+            this.displayMessage({message: "Sending PreAuth", request: request});
+            this.cloverConnector.preAuth(request);
         }
 
-        public onAuthResponse(response:sdk.remotepay.AuthResponse) {
+        public onPreAuthResponse(response:sdk.remotepay.PreAuthResponse) {
             /*
-             The auth is complete.  It might be canceled, or successful.  This can be determined by the
+             The PreAuth is complete.  It might be canceled, or successful.  This can be determined by the
              values in the response.
              */
-            this.displayMessage({message: "Auth response received", response: response});
-            if (!response.getIsAuth()) {
-                this.displayMessage({error: "Response is not an auth!"});
+            this.displayMessage({message: "PreAuth response received", response: response});
+            if (!response.getIsPreAuth()) {
+                this.displayMessage({error: "Response is not a PreAuth!"});
                 this.testComplete(false);
                 return;
             }
@@ -87,7 +87,7 @@ export namespace TestAuthWithOptions {
             this.testComplete(response.getSuccess());
         }
 
-        private pullSettings(request: sdk.remotepay.AuthRequest): sdk.remotepay.AuthRequest {
+        private pullSettings(request: sdk.remotepay.PreAuthRequest): sdk.remotepay.PreAuthRequest {
             if (this.transactionSettings) {
                 for(let setting in this.transactionSettings) {
                     if (this.transactionSettings.hasOwnProperty(setting)) {
