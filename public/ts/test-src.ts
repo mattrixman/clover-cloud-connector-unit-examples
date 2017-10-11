@@ -248,6 +248,7 @@ for (var property in tests) {
         btn.appendChild(t);
         btn.addEventListener("click", function(){testMessage.test()}, false);
         btn.className = "func-button";
+        btn.id = testMessage.getClass(); //this will make finding the files for each button easier and allow for later changes or additions to the button's class
         divs[Math.floor(divCount / Math.ceil(buttonCount/columnCount))].appendChild(btn);
         divCount++;
         //document.body.appendChild(document.createElement("BR") );

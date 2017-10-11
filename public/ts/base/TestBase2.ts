@@ -96,6 +96,15 @@ export abstract class TestBase2 implements CloverConfigLoaderListener {
 	protected abstract getCloverConnectorListener(cloverConnector: Clover.CloverConnector, progressInfoCallback: any): sdk.remotepay.ICloverConnectorListener;
 
 	public abstract getName(): string;
+
+    /*
+     * Gets the name of the class (should match file name) for reference
+     */
+	public getClass(): string {
+	    var funcNameRegex = /function (.{1,})\(/;
+	    var results = funcNameRegex.exec((this).constructor.toString());
+	    return (results && results.length > 1) ? results[1] : "Failed to get class";
+	}
 }
 
 export default TestBase2;

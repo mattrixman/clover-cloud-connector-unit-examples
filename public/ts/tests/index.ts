@@ -30,6 +30,7 @@ export {TestPrint_Image_5} from "./TestPrint_Image_5";
 export {TestPrint_Image_6} from "./TestPrint_Image_6";
 export {TestPrint_Image_7} from "./TestPrint_Image_7";
 export {TestPrint_Image_8} from "./TestPrint_Image_8";
+
 export {TestPrint_Url_1} from "./TestPrint_Url_1";
 export {TestPrint_Url_01} from "./TestPrint_Url_01";
 export {TestPrint_Url_2} from "./TestPrint_Url_2";
@@ -38,7 +39,9 @@ export {TestPrint_Url_4} from "./TestPrint_Url_4";
 export {TestPrint_Url_5} from "./TestPrint_Url_5";
 export {TestPrint_Url_6} from "./TestPrint_Url_6";
 export {TestPrint_Url_8} from "./TestPrint_Url_8";
+
 export {TestPrint_Text_1} from "./TestPrint_Text_1";
+
 export {TestPrint_All_1} from "./TestPrint_All_1";
 
 export {TestDisplayOrder} from "./TestDisplayOrder";
@@ -89,3 +92,8 @@ export {TestSaleWithOptions_1} from "./TestSaleWithOptions_1";
 // no point in including TestAuthWithOptions because it does not have any settings associated with it.
 export {TestAuthWithOptions_1} from "./TestAuthWithOptions_1";
 
+// no point in including TestPreAuthWithOptions because it does not have any settings associated with it.
+export {TestPreAuthWithOptions_1} from "./TestPreAuthWithOptions_1";
+
+// no point in including TestManualRefundWithOptions because it does not have any settings associated with it.
+export {TestManualRefundWithOptions_1} from "./TestManualRefundWithOptions_1";
