@@ -38,6 +38,14 @@ export {TestPrint_Url_4} from "./TestPrint_Url_4";
 export {TestPrint_Url_5} from "./TestPrint_Url_5";
 export {TestPrint_Url_6} from "./TestPrint_Url_6";
 export {TestPrint_Url_8} from "./TestPrint_Url_8";
+export {TestPrint_Url_Origin_1} from "./TestPrint_Url_Origin_1";
+export {TestPrint_Url_Origin_01} from "./TestPrint_Url_Origin_01";
+export {TestPrint_Url_Origin_2} from "./TestPrint_Url_Origin_2";
+export {TestPrint_Url_Origin_3} from "./TestPrint_Url_Origin_3";
+export {TestPrint_Url_Origin_4} from "./TestPrint_Url_Origin_4";
+export {TestPrint_Url_Origin_5} from "./TestPrint_Url_Origin_5";
+export {TestPrint_Url_Origin_6} from "./TestPrint_Url_Origin_6";
+export {TestPrint_Url_Origin_8} from "./TestPrint_Url_Origin_8";
 export {TestPrint_Text_1} from "./TestPrint_Text_1";
 export {TestPrint_All_1} from "./TestPrint_All_1";
 
