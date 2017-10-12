@@ -18,12 +18,12 @@ export class TestManualRefundWithOptions_1 extends TestManualRefundWithOptions {
         *       signatureEntryLocation					sdk.payments.DataEntryLocation
         *       signatureThreshold						number
         */
-        let settings: sdk.remotepay.ManualRefundRequest = {
+        let settings: sdk.remotepay.ManualRefundRequest = (<any>Object).assign({}, {
             autoAcceptPaymentConfirmations: true,
             autoAcceptSignature: true,
             disableReceiptSelection: true,
             signatureThreshold: 500
-        };
+        });
         super(loader, progressInfoCallback, settings);
     }
 }

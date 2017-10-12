@@ -59,9 +59,9 @@ export namespace TestRejectPayment {
             this.cloverConnector.sale(saleRequest);
         }
 
-        protected onConfirmPaymentRequest(request: sdk.remotepay.ConfirmPaymentRequest): void {
+        public onConfirmPaymentRequest(request: sdk.remotepay.ConfirmPaymentRequest): void {
             this.displayMessage({message: "Automatically reject Payment", request: request});
-            this.cloverConnector.rejectPayment(request.getPayment(), request.challenges[0]);
+            this.cloverConnector.rejectPayment(request.getPayment(), request.getChallenges()[0]);
         }
 
         public onSaleResponse(response:sdk.remotepay.SaleResponse) {

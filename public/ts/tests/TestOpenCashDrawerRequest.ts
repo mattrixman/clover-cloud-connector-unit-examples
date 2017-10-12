@@ -56,7 +56,7 @@ export namespace TestOpenCashDrawerRequest {
             this.cloverConnector.retrievePrinters(request);
         }
 
-        protected onRetrievePrintersResponse(response: sdk.remotepay.RetrievePrintersResponse): void {
+        public onRetrievePrintersResponse(response: sdk.remotepay.RetrievePrintersResponse): void {
             /*
              The connector is ready, you can use it to communicate with the device.
              */
@@ -67,7 +67,7 @@ export namespace TestOpenCashDrawerRequest {
             if(idx < printers.length) {
                 this.displayMessage({message: "Call open cash drawer"});
                 let request:sdk.remotepay.OpenCashDrawerRequest = new sdk.remotepay.OpenCashDrawerRequest();
-                request.setReason("Test opening cash drawer with message, set printer to", printers[idx]);
+                request.setReason(`Test opening cash drawer with message, set printer to ${printers[idx]}`);
                 request.setDeviceId(printers[idx].getId());
                 this.cloverConnector.openCashDrawer(request);
                 setTimeout(function () {

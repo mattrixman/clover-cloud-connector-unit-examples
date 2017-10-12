@@ -35,17 +35,7 @@ export namespace TestBadIDRetrievePrintJobStatus {
 
         private askedForStatus:boolean = false;
 
-        /**
-         * Used to identify the test in progress messages.
-         *
-         * @override
-         * @returns {string}
-         */
-        protected getTestName(): string {
-            return "Test getting the status of a print job that does not exist";
-        }
-
-        protected onPrintJobStatusResponse(response: sdk.remotepay.PrintJobStatusResponse): void {
+        public onPrintJobStatusResponse(response: sdk.remotepay.PrintJobStatusResponse): void {
             this.displayMessage({message: "Print job status received...", response});
             if (
                 this.askedForStatus && // we are not even going to try to quit until we actually ASK for the status.
@@ -62,6 +52,16 @@ export namespace TestBadIDRetrievePrintJobStatus {
                 // next time, because it is already connected.
                 this.testComplete(response.getSuccess());
             }
+        }
+
+        /**
+         * Used to identify the test in progress messages.
+         *
+         * @override
+         * @returns {string}
+         */
+        protected getTestName(): string {
+            return "Test getting the status of a print job that does not exist";
         }
 
         /**

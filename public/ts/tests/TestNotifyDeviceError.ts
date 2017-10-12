@@ -52,7 +52,10 @@ export namespace TestNotifyDeviceError {
              The connector is ready, you can use it to communicate with the device.
              */
             this.displayMessage({message: "Running notifyDeviceError"});
-            this.cloverConnector.notifyDeviceError("Testing message for notifyDeviceError");
+            (<Clover.CloverConnector>this.cloverConnector).notifyDeviceError(sdk.remotepay.ErrorType.EXCEPTION,
+                sdk.remotepay.DeviceErrorEventCode.UnknownError,
+                new Error(),
+                "Testing message for notifyDeviceError");
             setTimeout(function () {
                 // Always call this when your test is done, or the device may fail to connect the
                 // next time, because it is already connected.

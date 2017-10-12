@@ -61,7 +61,7 @@ export namespace TestVaultCard {
              The connector is ready, you can use it to communicate with the device.
              */
             this.displayMessage({message: "Call vaultCard"});
-            this.cloverConnector.vaultCard();
+            this.cloverConnector.vaultCard(Clover.CardEntryMethods.DEFAULT);
         }
     }
 }

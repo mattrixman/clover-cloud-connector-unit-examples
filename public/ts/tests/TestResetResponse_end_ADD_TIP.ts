@@ -58,7 +58,7 @@ export namespace TestResetResponse_end_ADD_TIP {
             this.cloverConnector.sale(saleRequest);
         }
 
-        protected onDeviceActivityEnd( deviceEvent: sdk.remotepay.CloverDeviceEvent): void {
+        public onDeviceActivityEnd( deviceEvent: sdk.remotepay.CloverDeviceEvent): void {
             if (deviceEvent.getEventState() == sdk.remotepay.DeviceEventState.ADD_TIP) {
                 this.cloverConnector.resetDevice();
             }
@@ -67,7 +67,7 @@ export namespace TestResetResponse_end_ADD_TIP {
         /*
          This is where we will call the callback that was just set up from one of the above.
          */
-        protected onResetDeviceResponse(response: sdk.remotepay.ResetDeviceResponse): void {
+        public onResetDeviceResponse(response: sdk.remotepay.ResetDeviceResponse): void {
             this.displayMessage({message: "Reset device response", response});
             this.testComplete(true);
             return;

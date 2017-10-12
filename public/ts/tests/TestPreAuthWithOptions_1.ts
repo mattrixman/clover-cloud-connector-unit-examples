@@ -18,12 +18,12 @@ export class TestPreAuthWithOptions_1 extends TestPreAuthWithOptions {
         *       signatureEntryLocation					sdk.payments.DataEntryLocation
         *       signatureThreshold						number
         */
-        let settings: sdk.remotepay.PreAuthRequest = {
+        let settings: sdk.remotepay.PreAuthRequest = (<any>Object).assign({}, {
             autoAcceptPaymentConfirmations: true,
             autoAcceptSignature: true,
             disableReceiptSelection: true,
             signatureThreshold: 500
-        };
+        });
         super(loader, progressInfoCallback, settings);
     }
 }

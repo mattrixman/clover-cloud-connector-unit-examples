@@ -6,11 +6,11 @@ import {ExampleCloverConnectorListener} from "../base/ExampleCloverConnectorList
 
 export class TestPrint extends TestBase2 {
 
-    private image:string[];
-    private url:string[];
-    private text:string[];
+    private image: any;
+    private url: string[];
+    private text: string[];
 
-    constructor(loader: CloverConfigLoader, progressInfoCallback: any, image?: string[], url?: string[], text?: string[]) {
+    constructor(loader: CloverConfigLoader, progressInfoCallback: any, image?: any, url?: string[], text?: string[]) {
         super(loader, progressInfoCallback);
         if(image) {
             this.image = image;
@@ -53,9 +53,9 @@ export class TestPrint extends TestBase2 {
 export namespace TestPrint {
     export class CloverConnectorListener extends ExampleCloverConnectorListener {
 
-        private image:string[];
-        private url:string[];
-        private text:string[];
+        private image: any;
+        private url: string[];
+        private text: string[];
 
         constructor(image: string[], url: string[], text: string[], cloverConnector: sdk.remotepay.ICloverConnector, progressinfoCallback) {
             super(cloverConnector, progressinfoCallback);

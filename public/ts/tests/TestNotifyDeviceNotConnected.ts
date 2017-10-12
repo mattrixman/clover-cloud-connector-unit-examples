@@ -52,7 +52,7 @@ export namespace TestNotifyDeviceNotConnected {
              The connector is ready, you can use it to communicate with the device.
              */
             this.displayMessage({message: "Running notifyDeviceNotConnected"});
-            this.cloverConnector.notifyDeviceNotConnected("Testing message for notifyDeviceNotConnected");
+            (<Clover.CloverConnector>this.cloverConnector).notifyDeviceNotConnected("Testing message for notifyDeviceNotConnected");
             setTimeout(function () {
                 // Always call this when your test is done, or the device may fail to connect the
                 // next time, because it is already connected.

@@ -6,7 +6,7 @@ import {ExampleCloverConnectorListener} from "../base/ExampleCloverConnectorList
 
 export class TestImagePrint extends TestBase2 {
 
-    private imageLocation:string;
+    private imageLocation: string;
 
     constructor(loader: CloverConfigLoader, progressInfoCallback: any, imageLocation?: string) {
         super(loader, progressInfoCallback);

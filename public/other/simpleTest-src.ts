@@ -12,7 +12,8 @@ export class StandAloneExampleWebsocketPairedCloverDeviceConfiguration extends C
             "My_Pos_System", // posName,
             "8675309142856", // serialNumber,
             null, // authToken,
-            Clover.BrowserWebSocketImpl.createInstance // Since we are doing this in a browser, use this
+            Clover.BrowserWebSocketImpl.createInstance,
+            new Clover.ImageUtil()
         );
     }
 
@@ -70,20 +71,19 @@ export class StandAloneExampleCloverConnectorListener extends Clover.remotepay.I
 
     // -----------------------------------------------------------------------------------------------
     // Implement callbacks that may happen depending on the card used, and settings
-    protected onConfirmPaymentRequest(request: Clover.remotepay.ConfirmPaymentRequest): void {
+    public onConfirmPaymentRequest(request: Clover.remotepay.ConfirmPaymentRequest): void {
         console.log({message: "Automatically accepting payment", request: request});
         this.cloverConnector.acceptPayment(request.getPayment());
     }
-    protected onVerifySignatureRequest(request: Clover.remotepay.onVerifySignatureRequest): void {
+    public onVerifySignatureRequest(request: Clover.remotepay.VerifySignatureRequest): void {
         console.log({message: "Automatically accepting signature", request: request});
         this.cloverConnector.acceptSignature(request);
     }
     // Not strictly necessary, but useful for problems unless you watch the websocket traffic
-    protected onDeviceError(deviceErrorEvent: Clover.remotepay.CloverDeviceErrorEvent): void {
+    public onDeviceError(deviceErrorEvent: Clover.remotepay.CloverDeviceErrorEvent): void {
         console.error("onDeviceError", deviceErrorEvent);
     }
 }
-
 
 // Create a factory that will give us 1.2 versions of the ICloverConnector
 let configuration = {};
@@ -97,7 +97,7 @@ let cloverConnector: Clover.remotepay.ICloverConnector =
     connectorFactory.createICloverConnector( new StandAloneExampleWebsocketPairedCloverDeviceConfiguration());
 
 // Add a listener to the connector
-cloverConnector.addCloverConnectorListener(new StandAloneExampleCloverConnectorListener(cloverConnector));
+(<Clover.CloverConnector>cloverConnector).addCloverConnectorListener(new StandAloneExampleCloverConnectorListener(cloverConnector));
 
 // Clean up the connection on exit of the window.  This should be done with all connectors.
 // This example uses jQuery to add a hook for the window `beforeunload` event that ensures that the connector is displosed of.
