@@ -4,11 +4,11 @@ import {TestBase2} from '../base/TestBase2';
 import {ExampleCloverConnectorListener} from '../base/ExampleCloverConnectorListener';
 import {CloverConfigLoader} from '../configurationLoader/CloverConfigLoader';
 
-export class TestAuthWithOptions extends TestBase2 {
+export class TestManualRefundWithOptions extends TestBase2 {
 
-    private transactionSettings: sdk.remotepay.AuthRequest;
+    private transactionSettings: sdk.remotepay.ManualRefundRequest;
 
-    constructor(loader: CloverConfigLoader, progressInfoCallback: any, transactionSettings?: sdk.remotepay.AuthRequest) {
+    constructor(loader: CloverConfigLoader, progressInfoCallback: any, transactionSettings?: sdk.remotepay.ManualRefundRequest) {
         super(loader, progressInfoCallback);
         if (transactionSettings) {
             this.transactionSettings = transactionSettings;
@@ -19,7 +19,7 @@ export class TestAuthWithOptions extends TestBase2 {
      *
      */
     public getName(): string {
-        return `Test making a auth with transaction options: ${JSON.stringify(this.transactionSettings, null, 1)}`;
+        return `Test making a manual refund with transaction options: ${JSON.stringify(this.transactionSettings, null, 1)}`;
     }
 
     /**
@@ -30,17 +30,17 @@ export class TestAuthWithOptions extends TestBase2 {
      * @param progressInfoCallback
      */
     public getCloverConnectorListener(cloverConnector: Clover.CloverConnector, progressInfoCallback: any): sdk.remotepay.ICloverConnectorListener {
-        let connectorListener: TestAuthWithOptions.CloverConnectorListener = new TestAuthWithOptions.CloverConnectorListener(this.transactionSettings, cloverConnector, progressInfoCallback);
+        let connectorListener: TestManualRefundWithOptions.CloverConnectorListener = new TestManualRefundWithOptions.CloverConnectorListener(this.transactionSettings, cloverConnector, progressInfoCallback);
         return connectorListener;
     }
 }
 
-export namespace TestAuthWithOptions {
+export namespace TestManualRefundWithOptions {
     export class CloverConnectorListener extends ExampleCloverConnectorListener {
 
-        private transactionSettings: sdk.remotepay.AuthRequest;
+        private transactionSettings: sdk.remotepay.ManualRefundRequest;
 
-        constructor(transactionSettings: sdk.remotepay.AuthRequest, cloverConnector: sdk.remotepay.ICloverConnector, progressinfoCallback) {
+        constructor(transactionSettings: sdk.remotepay.ManualRefundRequest, cloverConnector: sdk.remotepay.ICloverConnector, progressinfoCallback) {
             super(cloverConnector, progressinfoCallback);
             this.transactionSettings = transactionSettings;
         }
@@ -52,7 +52,7 @@ export namespace TestAuthWithOptions {
          * @returns {string}
          */
         protected getTestName(): string {
-            return "Test making an auth with transaction options";
+            return `Test making a manual refund with transaction options: ${JSON.stringify(this.transactionSettings, null, 1)}`;
         }
 
         /**
@@ -63,31 +63,22 @@ export namespace TestAuthWithOptions {
             /*
              The connector is ready, create a sale request and send it to the device.
              */
-            let request:sdk.remotepay.AuthRequest = new sdk.remotepay.AuthRequest();
-            request.setExternalId(Clover.CloverID.getNewId());
-            request.setAmount(10);
+            let request: sdk.remotepay.ManualRefundRequest = new sdk.remotepay.ManualRefundRequest();
             request = this.pullSettings(request);
-            this.displayMessage({message: "Sending auth", request: request});
-            this.cloverConnector.auth(request);
+            request.setAmount(2000);
+            request.setExternalId(Clover.CloverID.getNewId());
+            this.displayMessage({message: "Sending refund request", request: request});
+            this.cloverConnector.manualRefund(request);
         }
 
-        public onAuthResponse(response:sdk.remotepay.AuthResponse) {
-            /*
-             The auth is complete.  It might be canceled, or successful.  This can be determined by the
-             values in the response.
-             */
-            this.displayMessage({message: "Auth response received", response: response});
-            if (!response.getIsAuth()) {
-                this.displayMessage({error: "Response is not an auth!"});
-                this.testComplete(false);
-                return;
-            }
+        public onManualRefundResponse(response:sdk.remotepay.ManualRefundResponse) {
+            this.displayMessage({message: "Refund response received", response: response});
             // Always call this when your test is done, or the device may fail to connect the
             // next time, because it is already connected.
             this.testComplete(response.getSuccess());
         }
 
-        private pullSettings(request: sdk.remotepay.AuthRequest): sdk.remotepay.AuthRequest {
+        private pullSettings(request: sdk.remotepay.ManualRefundRequest): sdk.remotepay.ManualRefundRequest {
             if (this.transactionSettings) {
                 for(let setting in this.transactionSettings) {
                     if (this.transactionSettings.hasOwnProperty(setting)) {

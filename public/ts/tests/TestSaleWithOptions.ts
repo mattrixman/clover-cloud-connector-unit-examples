@@ -6,9 +6,9 @@ import {CloverConfigLoader} from '../configurationLoader/CloverConfigLoader';
 
 export class TestSaleWithOptions extends TestBase2 {
 
-    private transactionSettings: sdk.remotepay.SalesRequest;
+    private transactionSettings: sdk.remotepay.SaleRequest;
 
-    constructor(loader: CloverConfigLoader, progressInfoCallback: any, transactionSettings?: sdk.remotepay.SalesRequest) {
+    constructor(loader: CloverConfigLoader, progressInfoCallback: any, transactionSettings?: sdk.remotepay.SaleRequest) {
         super(loader, progressInfoCallback);
         if (transactionSettings) {
             this.transactionSettings = transactionSettings;
@@ -38,9 +38,9 @@ export class TestSaleWithOptions extends TestBase2 {
 export namespace TestSaleWithOptions {
     export class CloverConnectorListener extends ExampleCloverConnectorListener {
 
-        private transactionSettings: sdk.remotepay.SalesRequest;
+        private transactionSettings: sdk.remotepay.SaleRequest;
 
-        constructor(transactionSettings: sdk.remotepay.SalesRequest, cloverConnector: sdk.remotepay.ICloverConnector, progressinfoCallback) {
+        constructor(transactionSettings: sdk.remotepay.SaleRequest, cloverConnector: sdk.remotepay.ICloverConnector, progressinfoCallback) {
             super(cloverConnector, progressinfoCallback);
             this.transactionSettings = transactionSettings;
         }
@@ -52,7 +52,7 @@ export namespace TestSaleWithOptions {
          * @returns {string}
          */
         protected getTestName(): string {
-            return "Test making a sale with transaction options";
+            return `Test making a sale with transaction options: ${JSON.stringify(this.transactionSettings, null, 1)}`;
         }
 
         /**
@@ -91,7 +91,7 @@ export namespace TestSaleWithOptions {
             if (this.transactionSettings) {
                 for(let setting in this.transactionSettings) {
                     if (this.transactionSettings.hasOwnProperty(setting)) {
-                        request[setting] = this.transactionSettings[setting];
+                        request['set' + setting.charAt(0).toUpperCase() + setting.slice(1)](this.transactionSettings[setting]);
                     }
                 }
             }
