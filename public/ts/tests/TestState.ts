@@ -134,7 +134,7 @@ export namespace TestState {
          * @param {sdk.remotepay.ConfirmPaymentRequest} request
          * @return void
          */
-        protected onConfirmPaymentRequest(request: sdk.remotepay.ConfirmPaymentRequest): void {
+        public onConfirmPaymentRequest(request: sdk.remotepay.ConfirmPaymentRequest): void {
             // Set up the callback
             this.nextAction = function (status: sdk.remotepay.RetrieveDeviceStatusResponse) {
                 let state: sdk.remotepay.ExternalDeviceState = status.getState();
@@ -157,7 +157,7 @@ export namespace TestState {
          * @param {sdk.remotepay.onVerifySignatureRequest} request
          * @return void
          */
-        protected onVerifySignatureRequest(request: sdk.remotepay.onVerifySignatureRequest): void {
+        public onVerifySignatureRequest(request: sdk.remotepay.VerifySignatureRequest): void {
             // Set up the callback
             this.nextAction = function (status: sdk.remotepay.RetrieveDeviceStatusResponse) {
                 let state: sdk.remotepay.ExternalDeviceState = status.getState();
@@ -172,7 +172,7 @@ export namespace TestState {
             this.cloverConnector.retrieveDeviceStatus(statusRequest);
         }
 
-        protected onTipAdded(response: sdk.remotepay.TipAdded): void {
+        public onTipAdded(response: sdk.remotepay.TipAdded): void {
             // Set up the callback
             this.nextAction = function (status: sdk.remotepay.RetrieveDeviceStatusResponse) {
                 let state: sdk.remotepay.ExternalDeviceState = status.getState();
@@ -189,7 +189,7 @@ export namespace TestState {
         /*
         This is where we will call the callback that was just set up from one of the above.
          */
-        protected onRetrieveDeviceStatusResponse(response: sdk.remotepay.RetrieveDeviceStatusResponse): void {
+        public onRetrieveDeviceStatusResponse(response: sdk.remotepay.RetrieveDeviceStatusResponse): void {
             this.displayMessage({message: "Device status", response});
             if(this.nextAction) {
                 var tempAction = this.nextAction;

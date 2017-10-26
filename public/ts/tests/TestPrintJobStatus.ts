@@ -59,8 +59,7 @@ export namespace TestPrintJobStatus {
              The connector is ready
              */
             this.displayMessage({message: "sending print request"});
-
-            this.printRequestId = sdk.CloverID.getNewId();
+            this.printRequestId = Clover.CloverID.getNewId();
             let request: sdk.remotepay.PrintRequest = new sdk.remotepay.PrintRequest();
             request.setText(['This is a test of status']);
             request.setPrintRequestId(this.printRequestId);
@@ -73,7 +72,7 @@ export namespace TestPrintJobStatus {
                 this.askedForStatus = true;
                 setTimeout(function () {
                     let pjsr: sdk.remotepay.PrintJobStatusRequest = new sdk.remotepay.PrintJobStatusRequest();
-                    pjsr.setPrintRequestId();
+                    pjsr.setPrintRequestId(this.printRequestId);
                     this.cloverConnector.retrievePrintJobStatus(this.printRequestId);
                 }.bind(this), 1000);
             } else {

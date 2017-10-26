@@ -9,7 +9,7 @@ export abstract class TestBase2 implements CloverConfigLoaderListener {
 	protected progressInfoCallback: any;
 
 	private connector: Clover.CloverConnector;
-	private connectorListener: Clover.CloverConnectorListener;
+	private connectorListener: Clover.remotepay.ICloverConnectorListener;
 
 	private simpleCloverConfig: CloverConfigLoader;
 	private configuration:Clover.CloverDeviceConfiguration;

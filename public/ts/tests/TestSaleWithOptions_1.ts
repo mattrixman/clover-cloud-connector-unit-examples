@@ -24,14 +24,15 @@ export class TestSaleWithOptions_1 extends TestSaleWithOptions {
         *       forceOfflinePayments					boolean
         *       tipMode									sdk.payments.TipMode
         */
-        let settings: sdk.remotepay.SaleRequest = {
+
+        let settings: sdk.remotepay.SaleRequest = (<any>Object).assign({}, {
             autoAcceptPaymentConfirmations: true,
             autoAcceptSignature: true,
             disableReceiptSelection: true,
             disableCashback: true,
             disableTipOnScreen: true,
             signatureThreshold: 500
-        };
+        });
         super(loader, progressInfoCallback, settings);
     }
 }

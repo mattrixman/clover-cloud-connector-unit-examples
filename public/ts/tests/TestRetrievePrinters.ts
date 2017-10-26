@@ -43,7 +43,7 @@ export namespace TestRetrievePrinters {
             return "Test getting the list of printers from the device";
         }
 
-        protected onRetrievePrintersResponse(response: sdk.remotepay.RetrievePrintersResponse): void {
+        public onRetrievePrintersResponse(response: sdk.remotepay.RetrievePrintersResponse): void {
             this.displayMessage({message: "Response to getting printers", response});
             // Always call this when your test is done, or the device may fail to connect the
             // next time, because it is already connected.

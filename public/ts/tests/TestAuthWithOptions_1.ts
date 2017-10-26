@@ -22,13 +22,13 @@ export class TestAuthWithOptions_1 extends TestAuthWithOptions {
         *       disableCashback							boolean
         *       forceOfflinePayments					boolean
         */
-        let settings: sdk.remotepay.AuthRequest = {
+        let settings: sdk.remotepay.AuthRequest = (<any>Object).assign({}, {
             autoAcceptPaymentConfirmations: true,
             autoAcceptSignature: true,
             disableReceiptSelection: true,
             disableCashback: true,
             signatureThreshold: 500
-        };
+        });
         super(loader, progressInfoCallback, settings);
     }
 }

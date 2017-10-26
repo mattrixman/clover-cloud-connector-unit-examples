@@ -7,15 +7,11 @@ import sdk = require("remote-pay-cloud-api");
  * @param progressinfoCallback
  * @constructor
  */
-export abstract class ExampleCloverConnectorListener
-//implements
-    extends
-    sdk.remotepay.ICloverConnectorListener {
+export abstract class ExampleCloverConnectorListener extends sdk.remotepay.ICloverConnectorListener {
 
     protected cloverConnector: sdk.remotepay.ICloverConnector;
     private progressinfoCallback: any; // todo - type this later?
     private testStarted: boolean;
-
 
     constructor(cloverConnector: sdk.remotepay.ICloverConnector, progressinfoCallback) {
         super();
@@ -35,14 +31,6 @@ export abstract class ExampleCloverConnectorListener
             this.startTest();
         }
     }
-    /**
-     * Flag the test as started.  Expected to be overridden to provide the meat of the test.  Called from the `onDeviceReady`
-     * function if the test has not already been started.  If the overriding function does NOT call this, then additional
-     * calls to `onDeviceReady` will result in additional calls to this function.
-     */
-    protected startTest(): void {
-        this.testStarted = true;
-    }
 
     /**
      * Send an automatic verification for all challenges.  If this is not implemented
@@ -52,7 +40,7 @@ export abstract class ExampleCloverConnectorListener
      * @param {sdk.remotepay.ConfirmPaymentRequest} request
      * @return void
      */
-    protected onConfirmPaymentRequest(request: sdk.remotepay.ConfirmPaymentRequest): void {
+    public onConfirmPaymentRequest(request: sdk.remotepay.ConfirmPaymentRequest): void {
         this.displayMessage({message: "Automatically accepting payment", request: request});
         this.cloverConnector.acceptPayment(request.getPayment());
     }
@@ -65,9 +53,51 @@ export abstract class ExampleCloverConnectorListener
      * @param {sdk.remotepay.onVerifySignatureRequest} request
      * @return void
      */
-    protected onVerifySignatureRequest(request: sdk.remotepay.onVerifySignatureRequest): void {
+    public onVerifySignatureRequest(request: sdk.remotepay.VerifySignatureRequest): void {
         this.displayMessage({message: "Automatically accepting signature", request: request});
         this.cloverConnector.acceptSignature(request);
+    }
+
+    /**
+     * Calls the passed progressinfoCallback with the passed message, decorating it with the test name.
+     * @param message
+     */
+    public displayMessage(message: any /* todo: Type this later */):void {
+        if(message.hasOwnProperty('message') || message.hasOwnProperty('error')) {
+            message.testName = this.getTestName();
+        } else {
+            message = {testName: this.getTestName(), message: message};
+        }
+        this.progressinfoCallback(message);
+    }
+
+    /**
+     * Will be called when an error occurs when trying to send messages to the device
+     * @memberof remotepay.ICloverConnectorListener
+     *
+     * @override
+     * @param {sdk.remotepay.CloverDeviceErrorEvent} deviceErrorEvent
+     * @return void
+     */
+    public onDeviceError(deviceErrorEvent: sdk.remotepay.CloverDeviceErrorEvent): void {
+        console.error("onDeviceError", deviceErrorEvent);
+        this.displayMessage({ message: "Test Error.", success: false, deviceErrorEvent});
+        if (deviceErrorEvent.getType() == sdk.remotepay.ErrorType.EXCEPTION ) {
+            setTimeout(function () {
+                // Always call this when your test is done, or the device may fail to connect the
+                // next time, because it is already connected.
+                this.testComplete(false);
+            }.bind(this), 5000);
+        }
+    }
+
+    /**
+     * Flag the test as started.  Expected to be overridden to provide the meat of the test.  Called from the `onDeviceReady`
+     * function if the test has not already been started.  If the overriding function does NOT call this, then additional
+     * calls to `onDeviceReady` will result in additional calls to this function.
+     */
+    protected startTest(): void {
+        this.testStarted = true;
     }
 
     /**
@@ -81,41 +111,9 @@ export abstract class ExampleCloverConnectorListener
     }
 
     /**
-     * Calls the passed progressinfoCallback with the passed message, decorating it with the test name.
-     * @param message
-     */
-    protected displayMessage(message: any /* todo: Type this later */):void {
-        if(message.hasOwnProperty('message') || message.hasOwnProperty('error')) {
-            message.testName = this.getTestName();
-        } else {
-            message = {testName: this.getTestName(), message: message};
-        }
-        this.progressinfoCallback(message);
-    }
-
-    /**
      * Used to identify the test in progress messages.
      * @returns {string}
      */
     protected abstract getTestName(): string;
 
-    /**
-     * Will be called when an error occurs when trying to send messages to the device
-     * @memberof remotepay.ICloverConnectorListener
-     *
-     * @override
-     * @param {sdk.remotepay.CloverDeviceErrorEvent} deviceErrorEvent
-     * @return void
-     */
-    protected onDeviceError(deviceErrorEvent: sdk.remotepay.CloverDeviceErrorEvent): void {
-        console.error("onDeviceError", deviceErrorEvent);
-        this.displayMessage({ message: "Test Error.", success: false, deviceErrorEvent});
-        if (deviceErrorEvent.getType() == sdk.remotepay.ErrorType.EXCEPTION ) {
-            setTimeout(function () {
-                // Always call this when your test is done, or the device may fail to connect the
-                // next time, because it is already connected.
-                this.testComplete(false);
-            }.bind(this), 5000);
-        }
-    }
 }

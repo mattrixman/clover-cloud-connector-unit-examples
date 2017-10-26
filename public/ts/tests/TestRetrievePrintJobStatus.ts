@@ -45,7 +45,7 @@ export namespace TestRetrievePrintJobStatus {
             return "Test getting the status of a print job request";
         }
 
-        protected onPrintJobStatusResponse(response: sdk.remotepay.PrintJobStatusResponse): void {
+        public onPrintJobStatusResponse(response: sdk.remotepay.PrintJobStatusResponse): void {
             this.displayMessage({message: "Print job status received...", response});
             if (
                 this.askedForStatus && // we are not even going to try to quit until we actually ASK for the status.

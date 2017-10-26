@@ -82,7 +82,7 @@ export namespace TestBadConfirmFOD {
          * @override
          * @param request
          */
-        protected onConfirmPaymentRequest(request: sdk.remotepay.ConfirmPaymentRequest): void {
+        public onConfirmPaymentRequest(request: sdk.remotepay.ConfirmPaymentRequest): void {
             try{
                 this.displayMessage({message: "Sending in bad payment to acceptPayment", request: request});
                 let badPayment:sdk.payments.Payment = new sdk.payments.Payment();

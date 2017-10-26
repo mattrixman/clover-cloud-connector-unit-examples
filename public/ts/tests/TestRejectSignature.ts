@@ -60,7 +60,7 @@ export namespace TestRejectSignature {
             this.cloverConnector.sale(saleRequest);
         }
 
-        protected onVerifySignatureRequest(request: sdk.remotepay.onVerifySignatureRequest): void {
+        public onVerifySignatureRequest(request: sdk.remotepay.VerifySignatureRequest): void {
             this.displayMessage({message: "Automatically reject signature", request: request});
             this.cloverConnector.rejectSignature(request);
         }

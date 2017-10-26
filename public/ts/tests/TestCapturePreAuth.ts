@@ -51,7 +51,7 @@ export namespace TestCapturePreAuth {
             /*
              The connector is ready, create a sale request and send it to the device.
              */
-            let request:sdk.remotepay.PreAuthRequest = new sdk.remotepay.PreAuthRequest();
+            let request: sdk.remotepay.AuthRequest = new sdk.remotepay.AuthRequest();
             request.setExternalId(Clover.CloverID.getNewId());
             request.setAmount(10);
             this.displayMessage({message: "Sending preauth", request: request});

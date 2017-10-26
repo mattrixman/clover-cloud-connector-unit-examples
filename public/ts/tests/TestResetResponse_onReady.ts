@@ -66,7 +66,7 @@ export namespace TestResetResponse_onReady {
         /*
          This is where we will call the callback that was just set up from one of the above.
          */
-        protected onResetDeviceResponse(response: sdk.remotepay.ResetDeviceResponse): void {
+        public onResetDeviceResponse(response: sdk.remotepay.ResetDeviceResponse): void {
             this.displayMessage({message: "Reset device response", response});
             this.testComplete(true);
             return;

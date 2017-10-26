@@ -75,8 +75,8 @@ export namespace TestInvokeInputOption {
         }
 
         public onDeviceActivityStart(deviceEvent:sdk.remotepay.CloverDeviceEvent) {
-            if(deviceEvent.inputOptions.length) {
-                this.cloverConnector.invokeInputOption(deviceEvent.inputOptions[0]);
+            if(deviceEvent.getInputOptions().length) {
+                this.cloverConnector.invokeInputOption(deviceEvent.getInputOptions()[0]);
             }
         }
     }

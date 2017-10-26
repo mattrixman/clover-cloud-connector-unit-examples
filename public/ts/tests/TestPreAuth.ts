@@ -55,7 +55,7 @@ export namespace TestPreAuth {
             request.setExternalId(Clover.CloverID.getNewId());
             request.setAmount(10);
             this.displayMessage({message: "Sending auth", request: request});
-            this.cloverConnector.auth(request);
+            this.cloverConnector.preAuth(request);
         }
 
         public onPreAuthResponse(response:sdk.remotepay.AuthResponse) {

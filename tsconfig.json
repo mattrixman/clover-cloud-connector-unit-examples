@@ -5,6 +5,7 @@
 		"moduleResolution": "node",
 		"allowJs": true,
 		"allowSyntheticDefaultImports": true,
+		"suppressExcessPropertyErrors": true,
 		"sourceMap": false
 	}
 }

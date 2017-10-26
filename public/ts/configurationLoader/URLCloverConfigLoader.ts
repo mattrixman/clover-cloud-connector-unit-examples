@@ -21,7 +21,7 @@ export abstract class URLCloverConfigLoader extends CloverConfigLoader {
                 method: "POST",
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                data: JSON.stringify({type: typedConfiguration.constructor.name, value: typedConfiguration}),
+                data: JSON.stringify({type: (<any>typedConfiguration.constructor).name, value: typedConfiguration}),
                 cache: false,
                 success: function (info) {
                     this.notifyOnCloverConfigSaveComplete(true, configurationKey, typedConfiguration);

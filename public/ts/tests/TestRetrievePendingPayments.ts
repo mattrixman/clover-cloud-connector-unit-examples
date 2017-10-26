@@ -43,7 +43,7 @@ export namespace TestRetrievePendingPayments {
             return "Test getting the list of pending payments from the device";
         }
 
-        protected onRetrievePendingPaymentsResponse(response: sdk.remotepay.RetrievePendingPaymentsResponse): void {
+        public onRetrievePendingPaymentsResponse(response: sdk.remotepay.RetrievePendingPaymentsResponse): void {
             this.displayMessage({message: "Response to getting pending payments", response});
             // Always call this when your test is done, or the device may fail to connect the
             // next time, because it is already connected.
