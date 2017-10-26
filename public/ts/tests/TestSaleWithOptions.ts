@@ -91,6 +91,7 @@ export namespace TestSaleWithOptions {
             if (this.transactionSettings) {
                 for(let setting in this.transactionSettings) {
                     if (this.transactionSettings.hasOwnProperty(setting)) {
+                        // This does not work for "tipmode"
                         request['set' + setting.charAt(0).toUpperCase() + setting.slice(1)](this.transactionSettings[setting]);
                     }
                 }
