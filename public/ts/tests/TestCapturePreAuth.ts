@@ -51,11 +51,14 @@ export namespace TestCapturePreAuth {
             /*
              The connector is ready, create a sale request and send it to the device.
              */
-            let request: sdk.remotepay.AuthRequest = new sdk.remotepay.AuthRequest();
+            /*
+             The connector is ready, create a sale request and send it to the device.
+             */
+            let request:sdk.remotepay.PreAuthRequest = new sdk.remotepay.PreAuthRequest();
             request.setExternalId(Clover.CloverID.getNewId());
             request.setAmount(10);
-            this.displayMessage({message: "Sending preauth", request: request});
-            this.cloverConnector.auth(request);
+            this.displayMessage({message: "Sending auth", request: request});
+            this.cloverConnector.preAuth(request);
         }
 
         public onPreAuthResponse(response:sdk.remotepay.PreAuthResponse) {

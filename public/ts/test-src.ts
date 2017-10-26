@@ -18,6 +18,9 @@ import * as tests from './tests';
 // Remove the following to turn off logging.
 Clover.DebugConfig.loggingEnabled = true;
 
+let configLoader:CloverConfigLoader = null;
+var confignameeditor = null;
+
 export class ExampleWebsocketPairedCloverDeviceConfiguration extends Clover.WebSocketPairedCloverDeviceConfiguration {
     /**
      * @param rawConfiguration - a raw json object for initialization.
@@ -43,6 +46,9 @@ export class ExampleWebsocketPairedCloverDeviceConfiguration extends Clover.WebS
 
     public onPairingSuccess(authToken: string): void {
         console.log("Pairing succeeded, authToken is " + authToken);
+        this.setAuthToken(authToken);
+        configLoader.saveCloverConfig(confignameeditor.val(), this);
+        configLoader.getConfigsList();
         clearPairingCode();
     }
 }
@@ -85,7 +91,7 @@ let configuration: Clover.CloverDeviceConfiguration = new ExampleWebsocketPaired
 // Configuration persistence.
 // These examples use this path to persist.  This is part of the example 'server.js'
 const CONFIG_BASE_PATH = '../configuration/';
-let configLoader:CloverConfigLoader = new (class ExampleLoader extends URLCloverConfigLoader {
+configLoader = new (class ExampleLoader extends URLCloverConfigLoader {
 
     constructor() {
         super(CONFIG_BASE_PATH);
@@ -128,7 +134,7 @@ function clearPairingCode() {
     pairingCodeDisplay.text("  ");
 }
 
-var confignameeditor = $('<input type="text" id="confignameeditor" size="60">');
+confignameeditor = $('<input type="text" id="confignameeditor" size="60">');
 var configeditor = $('<textarea id="configeditor" style="margin: 0px; width: 882px; height: 193px;">');
 // Make the configuration select
 var configurationSelect = $('<select id="friendlyId" class="load-config-selector">');
