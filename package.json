@@ -12,6 +12,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified, \"$npm_package_version && exit 1",
+    "install": "gulp && webpack",
     "build": "gulp && webpack",
     "start": "node server.js"
   },
