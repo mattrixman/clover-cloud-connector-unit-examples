@@ -18,7 +18,7 @@
   "dependencies": {
     "jquery": "3.1.1",
     "remote-pay-cloud-api": "1.4.1",
-    "remote-pay-cloud": "1.4.1"
+    "remote-pay-cloud": "1.4.2"
   },
   "devDependencies": {
     "body-parser": "1.16.1",
