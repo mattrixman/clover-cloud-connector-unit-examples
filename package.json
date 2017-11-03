@@ -12,28 +12,29 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified, \"$npm_package_version && exit 1",
-    "install": "gulp && webpack",
     "build": "gulp && webpack",
     "start": "node server.js"
   },
   "dependencies": {
     "jquery": "3.1.1",
-    "gulp": "3.9.1",
-    "webpack": "2.2.1",
+    "remote-pay-cloud-api": "1.4.1",
+    "remote-pay-cloud": "1.4.2"
+  },
+  "devDependencies": {
     "body-parser": "1.16.1",
     "express": "4.14.1",
     "https": "1.0.0",
     "mkdirp": "0.5.1",
     "path": "0.12.7",
+    "gulp": "3.9.1",
     "typedoc": "^0.7.1",
     "gulp-typedoc": "^2.0.2",
     "gulp-typescript": "3.1.5",
     "typescript": "2.4.1",
     "del": "2.2.2",
+    "webpack": "2.2.1",
     "@types/node": "7.0.5",
     "gulp-sourcemaps": "2.4.1",
-    "ts-loader": "^2.0.1",
-    "remote-pay-cloud-api": "1.4.1",
-    "remote-pay-cloud": "1.4.2"
+    "ts-loader": "^2.0.1"
   }
 }
