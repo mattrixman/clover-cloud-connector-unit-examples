@@ -68,6 +68,8 @@ export {TestSaleTippableAmount} from "./TestSaleTippableAmount";
 export {TestOpenCashDrawerCall} from "./TestOpenCashDrawerCall";
 export {TestOpenCashDrawerRequest} from "./TestOpenCashDrawerRequest";
 export {TestOpenCashDrawerCallNullMessage} from "./TestOpenCashDrawerCallNullMessage";
+export {TestOpenCashDrawerRequestNullPrinterId} from "./TestOpenCashDrawerRequestNullPrinterId";
+
 export {TestRetrievePrinters} from "./TestRetrievePrinters";
 export {TestRetrievePrintJobStatus} from "./TestRetrievePrintJobStatus";
 export {TestBadIDRetrievePrintJobStatus} from "./TestBadIDRetrievePrintJobStatus";
